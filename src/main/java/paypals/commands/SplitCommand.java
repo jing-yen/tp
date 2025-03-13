@@ -32,14 +32,18 @@ public class SplitCommand extends Command {
 
             if (leftAmount > rightAmount) { // Creditor has more than debtor can pay
                 leftPerson.setAmount(leftAmount - rightAmount);
-                System.out.println(rightPerson.getName() + " pays " + leftPerson.getName() + " " + rightAmount);
+                rightPerson.setAmount(0);
+                System.out.println(rightPerson.getName() + " pays " + leftPerson.getName() + " $" + rightAmount);
                 rightIndex--; // Move to next debtor
             } else if (leftAmount < rightAmount) { // Debtor still owes after paying
                 rightPerson.setAmount(-(rightAmount - leftAmount)); // Keep it negative
-                System.out.println(rightPerson.getName() + " pays " + leftPerson.getName() + " " + leftAmount);
+                leftPerson.setAmount(0);
+                System.out.println(rightPerson.getName() + " pays " + leftPerson.getName() + " $" + leftAmount);
                 leftIndex++; // Move to next creditor
             } else { // Exact match
-                System.out.println(rightPerson.getName() + " pays " + leftPerson.getName() + " " + rightAmount);
+                rightPerson.setAmount(0);
+                leftPerson.setAmount(0);
+                System.out.println(rightPerson.getName() + " pays " + leftPerson.getName() + " $" + rightAmount);
                 leftIndex++;
                 rightIndex--;
             }

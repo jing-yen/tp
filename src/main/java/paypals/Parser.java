@@ -21,7 +21,7 @@ public class Parser {
         case "list":
             return new ListCommand(tokens[1]);
         case "split":
-            return new SplitCommand(tokens[1]);
+            return new SplitCommand("");
         case "paid":
             return new PaidCommand(tokens[1]);
         case "exit":
