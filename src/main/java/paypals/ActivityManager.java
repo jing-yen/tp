@@ -3,11 +3,11 @@ package paypals;
 import java.util.ArrayList;
 
 public class ActivityManager {
-    private ArrayList<Activities> activitiesArray;
+    private ArrayList<Activity> activities;
     private ArrayList<Person> netOwed;
 
     public ActivityManager() {
-        activitiesArray = new ArrayList<>();
+        activities = new ArrayList<>();
         netOwed = new ArrayList<>();
     }
 
@@ -15,4 +15,7 @@ public class ActivityManager {
         return this.netOwed;
     }
 
+    public void addActivity(Activity activity) {
+        activities.add(activity);
+    }
 }

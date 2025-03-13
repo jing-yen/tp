@@ -1,6 +1,7 @@
 package paypals.commands;
 
 import paypals.ActivityManager;
+import paypals.exception.PayPalsException;
 
 public class Command {
     String command;
@@ -9,7 +10,7 @@ public class Command {
         this.command = command;
     }
 
-    public void execute(ActivityManager activityManager) {
+    public void execute(ActivityManager activityManager) throws PayPalsException {
 
     }
 }

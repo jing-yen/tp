@@ -1,7 +1,11 @@
 package paypals.exception;
 
 public enum ExceptionMessage {
-    INVALID_COMMAND("INPUT ERROR: Invalid command entered");
+    INVALID_COMMAND("INPUT ERROR: Invalid command entered"),
+    NO_DESCRIPTION("INPUT ERROR: No activity description"),
+    NO_PAYER("INPUT ERROR: No name of payer"),
+    PAYER_OWES("LOGIC ERROR: Payer owes himself or herself"),
+    DUPLICATE_FRIEND("LOGIC ERROR: Friend is mentioned twice in an activity");
 
     private final String message;
 

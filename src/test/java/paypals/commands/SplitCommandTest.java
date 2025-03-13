@@ -13,8 +13,12 @@ class SplitCommandTest {
 
     @Test
     void testSplitCommand_nullInput_twoSystemPrintLines() {
-        AddCommand addCommand = new AddCommand("d/lunch n/John f/Jane /a28 f/Bob /a30");
-        addCommand.execute(activityManager);
+        AddCommand addCommand = new AddCommand("d/lunch n/John f/Jane a/28 f/Bob a/30");
+        try {
+            addCommand.execute(activityManager);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         SplitCommand splitCommand = new SplitCommand("");
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -29,7 +33,6 @@ class SplitCommandTest {
                 Jane pays John $28
                 Bob pays John $30
                 """;
-
         assertEquals(expectedOutput, outputStream.toString().trim());
     }
 }
