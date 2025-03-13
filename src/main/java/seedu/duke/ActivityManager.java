@@ -1,7 +1,6 @@
 package seedu.duke;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class ActivityManager {
@@ -21,7 +20,8 @@ public class ActivityManager {
 
         System.out.println("Best way to settle debts:");
 
-        int leftIndex = 0, rightIndex = netOwedArrayCopy.size() - 1;
+        int leftIndex = 0;
+        int rightIndex = netOwedArrayCopy.size() - 1;
 
         while (leftIndex < rightIndex) {
             Person leftPerson = netOwedArrayCopy.get(leftIndex);  // Creditor
