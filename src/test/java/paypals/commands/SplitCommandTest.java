@@ -15,11 +15,12 @@ class SplitCommandTest {
     void testSplitCommand_nullInput_twoSystemPrintLines() {
         AddCommand addCommand = new AddCommand("d/lunch n/John f/Jane /a28 f/Bob /a30");
         addCommand.execute(activityManager);
+        SplitCommand splitCommand = new SplitCommand("");
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
 
-        SplitCommand splitCommand = new SplitCommand("");
+        splitCommand.execute(activityManager);
 
         System.setOut(System.out);
 
