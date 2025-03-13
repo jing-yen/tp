@@ -1,7 +1,5 @@
 package paypals;
 
-import java.util.List;
-
 import paypals.commands.AddCommand;
 import paypals.commands.Command;
 import paypals.commands.DeleteCommand;

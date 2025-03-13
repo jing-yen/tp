@@ -1,7 +1,6 @@
 package paypals;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class ActivityManager {
     private ArrayList<Activities> activitiesArray;
