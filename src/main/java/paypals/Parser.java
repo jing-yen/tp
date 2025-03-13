@@ -1,4 +1,7 @@
-package seedu.duke;
+package paypals;
+
+import paypals.exception.ExceptionMessage;
+import paypals.exception.PayPalsException;
 
 public class Parser {
     public void decodeCommand(ActivityManager activityManager, String command) {
@@ -18,9 +21,9 @@ public class Parser {
                 activityManager.executeSplitCommand();
                 break;
             default:
-                throw new IllegalArgumentException("Invalid command");
+                throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
             }
-        } catch (Exception e){
+        } catch (PayPalsException e){
             System.out.println(e.getMessage());
         }
 

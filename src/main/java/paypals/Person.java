@@ -1,4 +1,4 @@
-package seedu.duke;
+package paypals;
 
 public class Person {
     private String name;

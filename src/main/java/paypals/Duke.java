@@ -1,4 +1,4 @@
-package seedu.duke;
+package paypals;
 
 import java.util.Scanner;
 
