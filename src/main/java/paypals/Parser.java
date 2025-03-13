@@ -1,32 +1,35 @@
 package paypals;
 
+import java.util.List;
+
+import paypals.commands.AddCommand;
+import paypals.commands.Command;
+import paypals.commands.DeleteCommand;
+import paypals.commands.ExitCommand;
+import paypals.commands.ListCommand;
+import paypals.commands.PaidCommand;
+import paypals.commands.SplitCommand;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
 public class Parser {
-    public void decodeCommand(ActivityManager activityManager, String command) {
-        try {
-            String[] tokens = command.split(" ", 2);
-            switch (tokens[0]) {
-            case "add":
-                activityManager.executeAddCommand(tokens[1]);
-                break;
-            case "delete":
-                activityManager.executeDeleteCommand(Integer.parseInt(tokens[1]));
-                break;
-            case "list":
-                activityManager.executeListCommand(tokens[1]);
-                break;
-            case "split":
-                activityManager.executeSplitCommand();
-                break;
-            default:
-                throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
-            }
-        } catch (PayPalsException e){
-            System.out.println(e.getMessage());
+    public Command decodeCommand(String command) throws PayPalsException {
+        String[] tokens = command.split(" ", 2);
+        switch (tokens[0]) {
+        case "add":
+            return new AddCommand(tokens[1]);
+        case "delete":
+            return new DeleteCommand(tokens[1]);
+        case "list":
+            return new ListCommand(tokens[1]);
+        case "split":
+            return new SplitCommand(tokens[1]);
+        case "paid":
+            return new PaidCommand(tokens[1]);
+        case "exit":
+            return new ExitCommand(tokens[1]);
+        default:
+            throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
         }
-
     }
-
 }
