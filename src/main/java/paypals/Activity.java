@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 public class Activity {
     private String description;
     private Person payer;
-    private Map<Person, Integer> owed;
+    private Map<Person, Double> owed;
 
-    public Activity(String description, String name, HashMap<String, Integer> owed) {
+    public Activity(String description, String name, HashMap<String, Double> owed) {
         this.description = description;
         this.payer = PersonManager.getPerson(name);
         this.owed = owed.entrySet().stream()

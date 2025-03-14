@@ -2,6 +2,8 @@ package paypals.commands;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 import paypals.ActivityManager;
 import paypals.Person;
@@ -14,18 +16,23 @@ public class SplitCommand extends Command {
     }
 
     public void execute(ActivityManager activityManager) {
-        ArrayList<Person> netOwed = activityManager.getNetOwed();
-
-        netOwed.sort(Comparator.comparingDouble(Person::getAmount).reversed());
+        HashMap<String,Double> netOwedMap = activityManager.getNetOwedMap();
+        ArrayList<Person> netOwedArray = new ArrayList<>();
+        for (Map.Entry<String, Double> entry : netOwedMap.entrySet()) {
+            String key = entry.getKey();
+            Double value = entry.getValue();
+            netOwedArray.add(new Person(key,value));
+        }
+        netOwedArray.sort(Comparator.comparingDouble(Person::getAmount).reversed());
 
         System.out.println("Best way to settle debts:");
 
         int leftIndex = 0;
-        int rightIndex = netOwed.size() - 1;
+        int rightIndex = netOwedArray.size() - 1;
 
         while (leftIndex < rightIndex) {
-            Person leftPerson = netOwed.get(leftIndex);  // Creditor
-            Person rightPerson = netOwed.get(rightIndex); // Debtor
+            Person leftPerson = netOwedArray.get(leftIndex);  // Creditor
+            Person rightPerson = netOwedArray.get(rightIndex); // Debtor
 
             double leftAmount = leftPerson.getAmount();
             double rightAmount = Math.abs(rightPerson.getAmount());
