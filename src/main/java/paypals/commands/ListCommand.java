@@ -1,5 +1,7 @@
 package paypals.commands;
 
+import paypals.ActivityManager;
+
 public class ListCommand extends Command {
     String command;
 
@@ -7,7 +9,8 @@ public class ListCommand extends Command {
         super(command);
     }
 
-    public void execute() {
+    @Override
+    public void execute(ActivityManager activityManager) {
 
     }
 }

@@ -8,6 +8,7 @@ import paypals.exception.PayPalsException;
 public class PayPals {
     private static Parser parser;
     private static ActivityManager activityManager;
+    public static boolean isExit = false;
 
     public PayPals() {
         parser = new Parser();
@@ -15,7 +16,7 @@ public class PayPals {
     }
 
     public static void main(String[] args) {
-        boolean isExit = false;
+        PayPals payPals = new PayPals();
         Scanner in = new Scanner(System.in);
         while (!isExit) {
             try {

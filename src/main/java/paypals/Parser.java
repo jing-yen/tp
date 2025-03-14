@@ -25,7 +25,7 @@ public class Parser {
         case "paid":
             return new PaidCommand(tokens[1]);
         case "exit":
-            return new ExitCommand(tokens[1]);
+            return new ExitCommand("");
         default:
             throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
         }
