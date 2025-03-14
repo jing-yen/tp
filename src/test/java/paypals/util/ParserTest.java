@@ -3,10 +3,7 @@ package paypals.util;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
-
-import java.net.PasswordAuthentication;
 
 import paypals.Parser;
 import paypals.commands.Command;
