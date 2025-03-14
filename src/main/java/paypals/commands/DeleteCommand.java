@@ -1,5 +1,8 @@
 package paypals.commands;
 
+import paypals.ActivityManager;
+import paypals.exception.PayPalsException;
+
 public class DeleteCommand extends Command {
     String command;
 
@@ -7,7 +10,8 @@ public class DeleteCommand extends Command {
         super(command);
     }
 
-    public void execute() {
+    @Override
+    public void execute(ActivityManager activityManager) throws PayPalsException {
 
     }
 }

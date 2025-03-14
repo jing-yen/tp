@@ -30,6 +30,7 @@ public class PayPals {
     }
 
     public static void main(String[] args) {
+        System.out.println("Welcome to PayPals!");
         new PayPals().run();
     }
 }
