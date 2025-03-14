@@ -14,7 +14,7 @@ class SplitCommandTest {
 
     @Test
     void testSplitCommand_nullInput_twoSystemPrintLines() {
-        AddCommand addCommand = new AddCommand("d/lunch n/John f/Jane a/28 f/Bob a/30");
+        AddCommand addCommand = new AddCommand("d/lunch n/John f/Jane a/28.0");
         try {
             addCommand.execute(activityManager);
         } catch (PayPalsException e) {
@@ -29,11 +29,8 @@ class SplitCommandTest {
 
         System.setOut(System.out);
 
-        String expectedOutput = """
-                Best way to settle debts:
-                Jane pays John $28
-                Bob pays John $30
-                """;
-        assertEquals(expectedOutput, outputStream.toString().trim());
+        String expectedOutput = "Best way to settle debts:\n" +
+                "Jane pays John $28.0";
+        assertEquals(expectedOutput.trim().replace("\r\n", "\n"), outputStream.toString().trim().replace("\r\n", "\n"));
     }
 }

@@ -1,18 +1,19 @@
 package paypals;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ActivityManager {
     private ArrayList<Activity> activities;
-    private ArrayList<Person> netOwed;
+    private HashMap<String, Double> netOwedMap;
 
     public ActivityManager() {
         activities = new ArrayList<>();
-        netOwed = new ArrayList<>();
+        netOwedMap = new HashMap<>();
     }
 
-    public ArrayList<Person> getNetOwed() {
-        return this.netOwed;
+    public HashMap<String, Double> getNetOwedMap() {
+        return this.netOwedMap;
     }
 
     public void addActivity(Activity activity) {

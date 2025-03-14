@@ -18,8 +18,8 @@ public class AddCommand extends Command {
     public void execute(ActivityManager activityManager) throws PayPalsException {
         String description;
         String name;
-        HashMap<String, Integer> owed = new HashMap<String, Integer>();
-
+        HashMap<String, Double> owed = new HashMap<String, Double>();
+        HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
         // Step 1: Process the description and name
         String descRegex = "(?<=d\\/)(.*?)(?=\\s*[a-zA-Z]\\/\\s*)";
         Pattern descPattern = Pattern.compile(descRegex);
@@ -42,12 +42,13 @@ public class AddCommand extends Command {
         }
 
         // Step 2: Capture all (f/... a/...) pairs
+        double totalOwed = 0;
         String[] pairs = command.split("(\\s+f\\/\\s*)");
         for (int i = 1; i< pairs.length; i++) {
             String[] parameters = pairs[i].split("\\s*a/");
             if (parameters.length==2) {
                 String oweName = parameters[0];
-                int oweAmount = Integer.parseInt(parameters[1]);
+                Double oweAmount = Double.parseDouble(parameters[1]);
                 if (name.equals(oweName)) {
                     throw new PayPalsException(ExceptionMessage.PAYER_OWES);
                 }
@@ -55,8 +56,11 @@ public class AddCommand extends Command {
                     throw new PayPalsException(ExceptionMessage.DUPLICATE_FRIEND);
                 }
                 owed.put(oweName, oweAmount);
+                netOwedMap.put(oweName, netOwedMap.getOrDefault(oweName,0.0) - oweAmount);
+                totalOwed += oweAmount;
             }
         }
+        netOwedMap.put(name, netOwedMap.getOrDefault(name,0.0) + totalOwed);
         System.out.println("Desc: "+description);
         System.out.println("Name: "+name);
         System.out.println("Friends size: "+owed.size());
