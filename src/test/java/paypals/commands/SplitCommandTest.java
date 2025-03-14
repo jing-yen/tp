@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class SplitCommandTest {
     ActivityManager activityManager = new ActivityManager();
 
-    /**
     @Test
     void testSplitCommand_nullInput_twoSystemPrintLines() {
         AddCommand addCommand = new AddCommand("d/lunch n/John f/Jane a/28 f/Bob a/30");
@@ -37,5 +36,4 @@ class SplitCommandTest {
                 """;
         assertEquals(expectedOutput, outputStream.toString().trim());
     }
-    **/
 }
