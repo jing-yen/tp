@@ -13,4 +13,8 @@ public class Command {
     public void execute(ActivityManager activityManager) throws PayPalsException {
 
     }
+
+    public boolean isExit() {
+        return false;
+    }
 }
