@@ -16,7 +16,8 @@ public class AddCommand extends Command {
     }
 
     public void execute(ActivityManager activityManager) throws PayPalsException {
-        String description, name;
+        String description;
+        String name;
         HashMap<String, Integer> owed = new HashMap<String, Integer>();
 
         // Step 1: Process the description and name

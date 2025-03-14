@@ -1,7 +1,6 @@
 package paypals.commands;
 
 import paypals.ActivityManager;
-import paypals.PayPals;
 
 public class ExitCommand extends Command {
     String command;
@@ -12,6 +11,10 @@ public class ExitCommand extends Command {
 
     @Override
     public void execute(ActivityManager activityManager) {
-        PayPals.isExit = true;
+
+    }
+
+    public boolean isExit() {
+        return true;
     }
 }
