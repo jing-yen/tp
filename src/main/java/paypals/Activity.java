@@ -17,4 +17,5 @@ public class Activity {
                         entry -> PersonManager.getPerson(entry.getKey()),
                         entry -> entry.getValue()));
     }
+
 }
