@@ -10,7 +10,7 @@ public class PersonManager {
     }
 
     static Person getPerson(String name) {
-        if (personList.containsKey(name)) {
+        if (!personList.containsKey(name)) {
             addPerson(name);
         }
         return personList.get(name);
