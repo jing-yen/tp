@@ -18,4 +18,11 @@ public class Activity {
                         entry -> entry.getValue()));
     }
 
+    public Person getPayer() {
+        return payer;
+    }
+
+    public Map<Person, Double> getOwed() {
+        return owed;
+    }
 }

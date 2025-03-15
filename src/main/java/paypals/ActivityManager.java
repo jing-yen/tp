@@ -19,4 +19,17 @@ public class ActivityManager {
     public void addActivity(Activity activity) {
         activities.add(activity);
     }
+
+    public int getSize() {
+        return activities.size();
+    }
+
+
+    public Activity getActivity(int id) {
+        return activities.get(id);
+    }
+
+    public void deleteActivity(int id) {
+        activities.remove(id);
+    }
 }
