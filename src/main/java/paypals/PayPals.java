@@ -4,14 +4,23 @@ import java.util.Scanner;
 
 import paypals.commands.Command;
 import paypals.exception.PayPalsException;
+import paypals.util.Parser;
+import paypals.util.Storage;
 
 public class PayPals {
     private static Parser parser;
     private static ActivityManager activityManager;
+    private static Storage storage;
 
     public PayPals() {
-        parser = new Parser();
-        activityManager = new ActivityManager();
+        try {
+            parser = new Parser();
+            activityManager = new ActivityManager();
+            storage = new Storage();
+            storage.load(activityManager);
+        } catch (PayPalsException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void run() {
@@ -26,6 +35,11 @@ public class PayPals {
             } catch (PayPalsException e) {
                 System.out.println(e.getMessage());
             }
+        }
+        try {
+            storage.save(activityManager);
+        } catch (PayPalsException e) {
+            System.out.println(e.getMessage());
         }
     }
 

@@ -35,6 +35,10 @@ public class ActivityManager {
         activities.remove(id);
     }
 
+    public ArrayList<Activity> getActivityList() {
+        return this.activities;
+    }
+
     public HashMap<String, ArrayList<Activity>> getPersonActivitiesMap() {
         return this.personActivitiesMap;
     }

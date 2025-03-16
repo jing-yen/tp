@@ -48,4 +48,17 @@ public class Activity {
         return outputString;
     }
 
+    public String toStorageString(String separator) {
+        String data = this.description + separator;
+        data += payer.getName() + separator + payer.getAmount() + separator + payer.hasPaid() + separator;
+        for (Map.Entry<String, Person> entry : owed.entrySet()) {
+            Person person = entry.getValue();
+            data += person.getName() + separator + person.getAmount() + separator + person.hasPaid() + separator;
+        }
+        return data;
+    }
+
+    public void setOwed(HashMap<String, Person> owed) {
+        this.owed = owed;
+    }
 }
