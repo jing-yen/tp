@@ -1,46 +1,47 @@
 package paypals;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Activity {
     private String description;
     private Person payer;
-    private Map<String, Person> owed;
+    private HashMap<String, Person> owed;
 
-    public Activity(String description, String name, HashMap<String, Double> owedMap) {
+    public Activity(String description, Person payer, HashMap<String, Double> owedMap) {
         this.description = description;
-        this.payer = PersonManager.getPerson(name);
-        /*this.owed = owed.entrySet().stream()
-                .collect(Collectors.toMap(
-                        entry -> PersonManager.getPerson(entry.getKey()),
-                        entry -> entry.getValue()));*/
+        this.payer = payer;
         this.owed = new HashMap<>();
         for (Map.Entry<String, Double> entry : owedMap.entrySet()) {
             this.owed.put(entry.getKey(), new Person(entry.getKey(), entry.getValue(), false));
         }
     }
 
+    public String getDescription(){
+        return description;
+    }
+
     public Person getPayer() {
         return payer;
     }
 
-    public Map<String, Person> getOwed() {
-        return owed;
-    }
+    public Person getFriend(String name) { return owed.get(name); }
+
+    public Collection<Person> getAllFriends() { return owed.values(); }
 
     @Override
     public String toString() {
-        String outputString = description + " paid by " + payer.getName() +
+        String outputString = description + " paid by " + payer +
                 ". Owed by: ";
         int personCount = 0;
-        for (Person person : owed.values()) {
-            outputString += person.toString(false);
+        for (String name : owed.keySet()) {
+            outputString += name;
             if (personCount++ < owed.size() - 1) {
                 outputString += ", ";
             }
         }
-        return outputString.toString();
+        return outputString;
     }
 
     public String toStorageString(String separator) {
@@ -52,13 +53,4 @@ public class Activity {
         }
         return data;
     }
-
-    public Person getPerson(String name) {
-        return owed.get(name);
-    }
-
-    public String getDescription(){
-        return description;
-    }
-
 }

@@ -2,6 +2,7 @@ package paypals.commands;
 
 import paypals.Activity;
 import paypals.ActivityManager;
+import paypals.Person;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
@@ -13,39 +14,46 @@ import java.util.regex.Pattern;
 
 public class AddCommand extends Command {
 
+    private static final String WRONG_ADD_FORMAT =
+            "Format: add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_OWED_1 f/FRIEND2 a/AMOUNT_OWED_2...";
+
     public AddCommand(String command) {
         super(command);
     }
 
+    private String extractValue(String key, ExceptionMessage exceptionMessage) throws PayPalsException {
+        String regex = key + "\\s*([^/]+?)(?=\\s+[a-zA-Z]/|$)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(command);
+
+        if (matcher.find()) {
+            return matcher.group(1).trim();
+        } else {
+            System.out.println(WRONG_ADD_FORMAT);
+            throw new PayPalsException(exceptionMessage);
+        }
+    }
+
+    private void validateFriend(String payer, String oweName, HashMap<String, Double> owedMap) throws PayPalsException {
+        if (payer.equals(oweName)) {
+            throw new PayPalsException(ExceptionMessage.PAYER_OWES);
+        }
+        if (owedMap.containsKey(oweName)) {
+            System.out.println(WRONG_ADD_FORMAT);
+            throw new PayPalsException(ExceptionMessage.DUPLICATE_FRIEND);
+        }
+    }
+
     public void execute(ActivityManager activityManager) throws PayPalsException {
-        String description;
-        String name;
         HashMap<String, Double> owed = new HashMap<String, Double>();
         HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
         HashMap<String, ArrayList<Activity>> personActivitesMap = activityManager.getPersonActivitiesMap();
 
-        // Step 1: Process the description and name
-        String descRegex = "(?<=d\\/)(.*?)(?=\\s*[a-zA-Z]\\/\\s*)";
-        Pattern descPattern = Pattern.compile(descRegex);
-        Matcher descMatcher = descPattern.matcher(command);
-
-        if (descMatcher.find()) {
-            description = descMatcher.group(1);
-        } else {
-            throw new PayPalsException(ExceptionMessage.NO_DESCRIPTION);
-        }
-
-        String nameRegex = "(?<=n\\/)(.*?)(?=\\s*[a-zA-Z]\\/\\s*)";
-        Pattern namePattern = Pattern.compile(nameRegex);
-        Matcher nameMatcher = namePattern.matcher(command);
-
-        if (nameMatcher.find()) {
-            name = nameMatcher.group(1).trim();
-        } else {
-            throw new PayPalsException(ExceptionMessage.NO_PAYER);
-        }
-
         // Step 2: Capture all (f/... a/...) pairs
+
+        String description = extractValue("d/", ExceptionMessage.NO_DESCRIPTION);
+        String name = extractValue("n/", ExceptionMessage.NO_PAYER);
+
         double totalOwed = 0;
         String[] pairs = command.split("\\s+f/");
         for (int i = 1; i< pairs.length; i++) {
@@ -53,22 +61,19 @@ public class AddCommand extends Command {
             if (parameters.length==2) {
                 String oweName = parameters[0].trim();
                 Double oweAmount = Double.parseDouble(parameters[1]);
-                if (name.equals(oweName)) {
-                    throw new PayPalsException(ExceptionMessage.PAYER_OWES);
-                }
-                if (owed.containsKey(oweName)) {
-                    throw new PayPalsException(ExceptionMessage.DUPLICATE_FRIEND);
-                }
+                validateFriend(name, oweName, owed);
                 owed.put(oweName, oweAmount);
                 netOwedMap.put(oweName, netOwedMap.getOrDefault(oweName,0.0) - oweAmount);
                 totalOwed += oweAmount;
             }
         }
+
         netOwedMap.put(name, netOwedMap.getOrDefault(name,0.0) + totalOwed);
+
         System.out.println("Desc: "+description);
-        System.out.println("Name: "+name);
-        System.out.println("Friends size: "+owed.size());
-        Activity newActivity = new Activity(description, name, owed);
+        System.out.println("Name of payer: "+name);
+        System.out.println("Number of friends who owe " + name +": "+owed.size());
+        Activity newActivity = new Activity(description, new Person(name, -totalOwed, false), owed);
         activityManager.addActivity(newActivity);
 
         //Map each friend to the activity
