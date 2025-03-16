@@ -2,6 +2,7 @@ package paypals.commands;
 
 import paypals.Activity;
 import paypals.ActivityManager;
+import paypals.Person;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
@@ -48,7 +49,7 @@ public class AddCommand extends Command {
         HashMap<String, ArrayList<Activity>> personActivitesMap = activityManager.getPersonActivitiesMap();
 
         // Step 2: Capture all (f/... a/...) pairs
-        
+
         String description = extractValue("d/", ExceptionMessage.NO_DESCRIPTION);
         String name = extractValue("n/", ExceptionMessage.NO_PAYER);
 
@@ -61,17 +62,17 @@ public class AddCommand extends Command {
                 Double oweAmount = Double.parseDouble(parameters[1]);
                 validateFriend(name, oweName, owed);
                 owed.put(oweName, oweAmount);
-                activityManager.getNetOwedMap().put(oweName, activityManager.getNetOwedMap().getOrDefault(oweName,0.0) - oweAmount);
+                netOwedMap.put(oweName, netOwedMap.getOrDefault(oweName,0.0) - oweAmount);
                 totalOwed += oweAmount;
             }
         }
 
-        activityManager.getNetOwedMap().put(name, activityManager.getNetOwedMap().getOrDefault(name,0.0) + totalOwed);
+        netOwedMap.put(name, netOwedMap.getOrDefault(name,0.0) + totalOwed);
 
         System.out.println("Desc: "+description);
         System.out.println("Name of payer: "+name);
         System.out.println("Number of friends who owe " + name +": "+owed.size());
-        Activity newActivity = new Activity(description, name, owed);
+        Activity newActivity = new Activity(description, new Person(name, -totalOwed, false), owed);
         activityManager.addActivity(newActivity);
 
         //Map each friend to the activity

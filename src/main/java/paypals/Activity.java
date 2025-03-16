@@ -1,43 +1,34 @@
 package paypals;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Activity {
     private String description;
-    private String payer;
-    private HashMap<String, Double> owed;
-    private HashMap<String, Boolean> hasPaid;
+    private Person payer;
+    private HashMap<String, Person> owed;
 
-    public Activity(String description, String payerName, HashMap<String, Double> owedMap) {
+    public Activity(String description, Person payer, HashMap<String, Double> owedMap) {
         this.description = description;
-        this.payer = payerName;
-        this.owed = owedMap;
-        this.hasPaid = new HashMap<>();
+        this.payer = payer;
+        this.owed = new HashMap<>();
+        for (Map.Entry<String, Double> entry : owedMap.entrySet()) {
+            this.owed.put(entry.getKey(), new Person(entry.getKey(), entry.getValue(), false));
+        }
     }
 
-    public String getPayer() {
+    public String getDescription(){
+        return description;
+    }
+
+    public Person getPayer() {
         return payer;
     }
 
-    public Map<String, Double> getOwed() {
-        return owed;
-    }
+    public Person getFriend(String name) { return owed.get(name); }
 
-    public boolean checkHasPaid(String name) { return hasPaid.getOrDefault(name, false); }
-
-    public void markAsPaid(String name) { hasPaid.put(name, true); }
-
-    public Double getAmount(String name) { return owed.get(name); }
-
-    public String printPaidStatus(String name){
-        return checkHasPaid(name) ? "[Paid]" : "[Not Paid]";
-    }
-
-    public String personToString(String name, Boolean printAmount) {
-        return printAmount ? printPaidStatus(name) +  " $" + getAmount(name) + " for" :
-                name + " " + printPaidStatus(name);
-    }
+    public Collection<Person> getAllFriends() { return owed.values(); }
 
     @Override
     public String toString() {
@@ -50,11 +41,7 @@ public class Activity {
                 outputString += ", ";
             }
         }
-        return outputString.toString();
-    }
-
-    public String getDescription(){
-        return description;
+        return outputString;
     }
 
 }

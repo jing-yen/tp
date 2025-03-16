@@ -41,9 +41,10 @@ public class ListCommand extends Command {
         String outputString = name + ":\n";
         for (int i = 0; i < activities.size(); i++) {
             Activity activity = activities.get(i);
+            Person friend = activity.getFriend(name);
             int index = i + 1;
-            outputString += index + ". " + activity.personToString(name, true) + " " +
-                    activity.getDescription() + " to " + activity.getPayer() + "\n";
+            outputString += index + ". " + friend.toString(true) + " " +
+                    activity.getDescription() + " to " + activity.getPayer().getName() + "\n";
         }
         System.out.println(outputString);
     }
