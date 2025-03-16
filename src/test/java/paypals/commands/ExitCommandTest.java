@@ -9,7 +9,7 @@ public class ExitCommandTest {
     @Test
     public void testIsExit() {
         ExitCommand exitCommand = new ExitCommand("");
-        assertTrue(exitCommand.isExit(), "isExit() should return true for an ExitCommand");
+        assert exitCommand.isExit() : "isExit() should return true for an ExitCommand";
     }
 
 }
