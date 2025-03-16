@@ -45,14 +45,14 @@ public class DeleteCommand extends Command {
         }
 
         Activity deletedActivity = activityManager.getActivity(id);
-        Person payer = deletedActivity.getPayer();
-        Map<String, Person> owed = deletedActivity.getOwed();
+        String payerName = deletedActivity.getPayer();
+        Map<String, Double> owed = deletedActivity.getOwed();
         double totalOwed = 0;
 
-        for (String oweMame : owed.keySet()) {
-            Person owedPerson = owed.get(oweMame);
-            String personName = owedPerson.getName();
-            Double updatedAmount = netOwedMap.get(personName) + owedPerson.getAmount();
+        for (Map.Entry<String, Double> element: owed.entrySet()) {
+            String personName = element.getKey();
+            Double owedAmount = element.getValue();
+            Double updatedAmount = netOwedMap.get(personName) + owedAmount;
 
             if (updatedAmount == 0.0){
                 netOwedMap.remove(personName);
@@ -61,7 +61,6 @@ public class DeleteCommand extends Command {
             }
         }
 
-        String payerName = payer.getName();
         netOwedMap.put(payerName, netOwedMap.getOrDefault(payerName,0.0) - totalOwed);
 
         HashMap<String, ArrayList<Activity>> personActivitiesMap = activityManager.getPersonActivitiesMap();

@@ -44,15 +44,15 @@ public class PaidCommand extends Command {
             }
             Activity activity = activities.get(id);
 
-            Person friend = activity.getOwed().get(name);
-            if (friend.hasPaid()){
+            boolean hasPaid = activity.checkHasPaid(name);
+            if (hasPaid){
                 throw new PayPalsException(ExceptionMessage.ALREADY_PAID);
             }
-            friend.markAsPaid();
+            activity.markAsPaid(name);
 
             HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
 
-            double updatedAmount = netOwedMap.get(name) + friend.getAmount();
+            double updatedAmount = netOwedMap.get(name) + activity.getAmount(name);
             if (updatedAmount == 0.0) {
                 netOwedMap.remove(name);
             } else {

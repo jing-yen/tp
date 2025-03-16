@@ -2,6 +2,7 @@ package paypals.commands;
 
 import paypals.Activity;
 import paypals.ActivityManager;
+import paypals.PersonManager;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
@@ -21,7 +22,6 @@ public class AddCommand extends Command {
         String description;
         String name;
         HashMap<String, Double> owed = new HashMap<String, Double>();
-        HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
         HashMap<String, ArrayList<Activity>> personActivitesMap = activityManager.getPersonActivitiesMap();
 
         // Step 1: Process the description and name
@@ -60,11 +60,11 @@ public class AddCommand extends Command {
                     throw new PayPalsException(ExceptionMessage.DUPLICATE_FRIEND);
                 }
                 owed.put(oweName, oweAmount);
-                netOwedMap.put(oweName, netOwedMap.getOrDefault(oweName,0.0) - oweAmount);
+                activityManager.getNetOwedMap().put(oweName, activityManager.getNetOwedMap().getOrDefault(oweName,0.0) - oweAmount);
                 totalOwed += oweAmount;
             }
         }
-        netOwedMap.put(name, netOwedMap.getOrDefault(name,0.0) + totalOwed);
+        activityManager.getNetOwedMap().put(name, activityManager.getNetOwedMap().getOrDefault(name,0.0) + totalOwed);
         System.out.println("Desc: "+description);
         System.out.println("Name: "+name);
         System.out.println("Friends size: "+owed.size());

@@ -5,46 +5,52 @@ import java.util.Map;
 
 public class Activity {
     private String description;
-    private Person payer;
-    private Map<String, Person> owed;
+    private String payer;
+    private HashMap<String, Double> owed;
+    private HashMap<String, Boolean> hasPaid;
 
-    public Activity(String description, String name, HashMap<String, Double> owedMap) {
+    public Activity(String description, String payerName, HashMap<String, Double> owedMap) {
         this.description = description;
-        this.payer = PersonManager.getPerson(name);
-        /*this.owed = owed.entrySet().stream()
-                .collect(Collectors.toMap(
-                        entry -> PersonManager.getPerson(entry.getKey()),
-                        entry -> entry.getValue()));*/
-        this.owed = new HashMap<>();
-        for (Map.Entry<String, Double> entry : owedMap.entrySet()) {
-            this.owed.put(entry.getKey(), new Person(entry.getKey(), entry.getValue(), false));
-        }
+        this.payer = payerName;
+        this.owed = owedMap;
+        this.hasPaid = new HashMap<>();
     }
 
-    public Person getPayer() {
+    public String getPayer() {
         return payer;
     }
 
-    public Map<String, Person> getOwed() {
+    public Map<String, Double> getOwed() {
         return owed;
+    }
+
+    public boolean checkHasPaid(String name) { return hasPaid.getOrDefault(name, false); }
+
+    public void markAsPaid(String name) { hasPaid.put(name, true); }
+
+    public Double getAmount(String name) { return owed.get(name); }
+
+    public String printPaidStatus(String name){
+        return checkHasPaid(name) ? "[Paid]" : "[Not Paid]";
+    }
+
+    public String personToString(String name, Boolean printAmount) {
+        return printAmount ? printPaidStatus(name) +  " $" + getAmount(name) + " for" :
+                name + " " + printPaidStatus(name);
     }
 
     @Override
     public String toString() {
-        String outputString = description + " paid by " + payer.getName() +
+        String outputString = description + " paid by " + payer +
                 ". Owed by: ";
         int personCount = 0;
-        for (Person person : owed.values()) {
-            outputString += person.toString(false);
+        for (String name : owed.keySet()) {
+            outputString += name;
             if (personCount++ < owed.size() - 1) {
                 outputString += ", ";
             }
         }
         return outputString.toString();
-    }
-
-    public Person getPerson(String name) {
-        return owed.get(name);
     }
 
     public String getDescription(){
