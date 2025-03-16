@@ -22,7 +22,6 @@ public class SplitCommand extends Command {
             persons.add(new Person(entry.getKey(), entry.getValue(),false));
         }
 
-        // ArrayList to store the minimal transactions.
         ArrayList<String> transactions = new ArrayList<>();
 
         while (true) {
@@ -40,8 +39,8 @@ public class SplitCommand extends Command {
                     Math.abs(persons.get(maxDebtorIndex).getAmount()));
 
             // Update the balances.
-            persons.get(maxCreditorIndex).setAmount(persons.get(maxCreditorIndex).getAmount() - amountToSettle);
-            persons.get(maxDebtorIndex).setAmount(persons.get(maxDebtorIndex).getAmount() + amountToSettle);
+            persons.get(maxCreditorIndex).addAmount(-amountToSettle);
+            persons.get(maxDebtorIndex).addAmount(amountToSettle);
 
             // Save the transaction.
             String transaction = persons.get(maxDebtorIndex).getName() + " pays " +
