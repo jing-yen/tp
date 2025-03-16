@@ -19,7 +19,7 @@ public class Parser {
         case "delete":
             return new DeleteCommand(tokens[1]);
         case "list":
-            return new ListCommand(tokens[1]);
+            return tokens.length == 1 ? new ListCommand("") : new ListCommand(tokens[1]);
         case "split":
             return new SplitCommand("");
         case "paid":

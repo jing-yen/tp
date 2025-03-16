@@ -21,7 +21,7 @@ public class SplitCommand extends Command {
         for (Map.Entry<String, Double> entry : netOwedMap.entrySet()) {
             String key = entry.getKey();
             Double value = entry.getValue();
-            netOwedArray.add(new Person(key,value));
+            netOwedArray.add(new Person(key,value,false));
         }
         netOwedArray.sort(Comparator.comparingDouble(Person::getAmount).reversed());
 

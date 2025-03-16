@@ -6,10 +6,12 @@ import java.util.HashMap;
 public class ActivityManager {
     private ArrayList<Activity> activities;
     private HashMap<String, Double> netOwedMap;
+    private HashMap<String, ArrayList<Activity>> personActivitiesMap;
 
     public ActivityManager() {
         activities = new ArrayList<>();
         netOwedMap = new HashMap<>();
+        personActivitiesMap = new HashMap<>();
     }
 
     public HashMap<String, Double> getNetOwedMap() {
@@ -31,5 +33,9 @@ public class ActivityManager {
 
     public void deleteActivity(int id) {
         activities.remove(id);
+    }
+
+    public HashMap<String, ArrayList<Activity>> getPersonActivitiesMap() {
+        return this.personActivitiesMap;
     }
 }
