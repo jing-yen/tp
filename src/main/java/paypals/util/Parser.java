@@ -1,4 +1,4 @@
-package paypals;
+package paypals.util;
 
 import paypals.commands.AddCommand;
 import paypals.commands.Command;

@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import paypals.commands.Command;
 import paypals.exception.PayPalsException;
+import paypals.util.Parser;
 
 public class PayPals {
     private static Parser parser;

@@ -9,7 +9,11 @@ public enum ExceptionMessage {
     PAYER_OWES("LOGIC ERROR: Payer owes himself or herself"),
     DUPLICATE_FRIEND("LOGIC ERROR: Friend is mentioned twice in an activity"),
     INVALID_FRIEND("INPUT ERROR: Invalid friend entered"),
-    ALREADY_PAID("LOGIC ERROR: Friend has already paid for this activity");
+    ALREADY_PAID("LOGIC ERROR: Friend has already paid for this activity"),
+    STORAGE_DIR_NOT_CREATED("ERROR: An error has occurred, storage directory not created"),
+    STORAGE_FILE_NOT_CREATED("ERROR: An error has occurred, storage file not created"),
+    STORAGE_FILE_NOT_FOUND("ERROR: An error has occurred, storage file not found"),
+    SAVE_NOT_WRITTEN("ERROR: An error has occurred, storage file not written");
 
     private final String message;
 
