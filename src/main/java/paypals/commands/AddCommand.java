@@ -14,7 +14,8 @@ import java.util.regex.Pattern;
 
 public class AddCommand extends Command {
 
-    private static final String WRONG_ADD_FORMAT = "Format: add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_OWED_1 f/FRIEND2 a/AMOUNT_OWED_2...";
+    private static final String WRONG_ADD_FORMAT =
+            "Format: add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_OWED_1 f/FRIEND2 a/AMOUNT_OWED_2...";
 
     public AddCommand(String command) {
         super(command);
