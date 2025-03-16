@@ -43,35 +43,12 @@ public class AddCommand extends Command {
     }
 
     public void execute(ActivityManager activityManager) throws PayPalsException {
-        String description;
-        String name;
         HashMap<String, Double> owed = new HashMap<String, Double>();
         HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
         HashMap<String, ArrayList<Activity>> personActivitesMap = activityManager.getPersonActivitiesMap();
 
-        // Step 1: Process the description and name
-        String descRegex = "(?<=d\\/)(.*?)(?=\\s*[a-zA-Z]\\/\\s*)";
-        Pattern descPattern = Pattern.compile(descRegex);
-        Matcher descMatcher = descPattern.matcher(command);
-
-        if (descMatcher.find()) {
-            description = descMatcher.group(1);
-        } else {
-            throw new PayPalsException(ExceptionMessage.NO_DESCRIPTION);
-        }
-
-        String nameRegex = "(?<=n\\/)(.*?)(?=\\s*[a-zA-Z]\\/\\s*)";
-        Pattern namePattern = Pattern.compile(nameRegex);
-        Matcher nameMatcher = namePattern.matcher(command);
-
-        if (nameMatcher.find()) {
-            name = nameMatcher.group(1).trim();
-        } else {
-            throw new PayPalsException(ExceptionMessage.NO_PAYER);
-        }
-
         // Step 2: Capture all (f/... a/...) pairs
-
+        
         String description = extractValue("d/", ExceptionMessage.NO_DESCRIPTION);
         String name = extractValue("n/", ExceptionMessage.NO_PAYER);
 
@@ -88,7 +65,9 @@ public class AddCommand extends Command {
                 totalOwed += oweAmount;
             }
         }
+
         activityManager.getNetOwedMap().put(name, activityManager.getNetOwedMap().getOrDefault(name,0.0) + totalOwed);
+
         System.out.println("Desc: "+description);
         System.out.println("Name of payer: "+name);
         System.out.println("Number of friends who owe " + name +": "+owed.size());
