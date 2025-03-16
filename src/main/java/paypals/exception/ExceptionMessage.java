@@ -13,7 +13,8 @@ public enum ExceptionMessage {
     STORAGE_DIR_NOT_CREATED("ERROR: An error has occurred, storage directory not created"),
     STORAGE_FILE_NOT_CREATED("ERROR: An error has occurred, storage file not created"),
     STORAGE_FILE_NOT_FOUND("ERROR: An error has occurred, storage file not found"),
-    SAVE_NOT_WRITTEN("ERROR: An error has occurred, storage file not written");
+    SAVE_NOT_WRITTEN("ERROR: An error has occurred, storage file not written"),
+    LOAD_ERROR("ERROR: An error has occurred, save file not loaded");
 
     private final String message;
 
