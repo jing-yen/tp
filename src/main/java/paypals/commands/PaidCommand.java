@@ -44,7 +44,7 @@ public class PaidCommand extends Command {
             }
             Activity activity = activities.get(id);
 
-            Person friend = activity.getOwed().get(name);
+            Person friend = activity.getFriend(name);
             if (friend.hasPaid()){
                 throw new PayPalsException(ExceptionMessage.ALREADY_PAID);
             }

@@ -2,6 +2,7 @@ package paypals.commands;
 
 import paypals.Activity;
 import paypals.ActivityManager;
+import paypals.Person;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
@@ -13,7 +14,8 @@ import java.util.regex.Pattern;
 
 public class AddCommand extends Command {
 
-    private static final String WRONG_ADD_FORMAT = "Format: add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_OWED_1 f/FRIEND2 a/AMOUNT_OWED_2...";
+    private static final String WRONG_ADD_FORMAT =
+            "Format: add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_OWED_1 f/FRIEND2 a/AMOUNT_OWED_2...";
 
     public AddCommand(String command) {
         super(command);
@@ -71,7 +73,7 @@ public class AddCommand extends Command {
         System.out.println("Desc: "+description);
         System.out.println("Name of payer: "+name);
         System.out.println("Number of friends who owe " + name +": "+owed.size());
-        Activity newActivity = new Activity(description, name, owed);
+        Activity newActivity = new Activity(description, new Person(name, -totalOwed, false), owed);
         activityManager.addActivity(newActivity);
 
         //Map each friend to the activity
@@ -85,6 +87,5 @@ public class AddCommand extends Command {
         ArrayList<Activity> activitiesList = personActivitesMap.computeIfAbsent(name, k -> new ArrayList<>());
 
         activitiesList.add(newActivity);
-
     }
 }

@@ -7,6 +7,7 @@ import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -46,11 +47,10 @@ public class DeleteCommand extends Command {
 
         Activity deletedActivity = activityManager.getActivity(id);
         Person payer = deletedActivity.getPayer();
-        Map<String, Person> owed = deletedActivity.getOwed();
+        Collection<Person> owed = deletedActivity.getAllFriends();
         double totalOwed = 0;
 
-        for (String oweMame : owed.keySet()) {
-            Person owedPerson = owed.get(oweMame);
+        for (Person owedPerson : owed) {
             String personName = owedPerson.getName();
             Double updatedAmount = netOwedMap.get(personName) + owedPerson.getAmount();
 
