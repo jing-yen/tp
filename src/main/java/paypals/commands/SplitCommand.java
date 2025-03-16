@@ -48,7 +48,7 @@ public class SplitCommand extends Command {
         }
 
         // Print out each saved transaction one by one.
-        System.out.println("Transactions to settle all debts:");
+        System.out.println("Best way to settle debts:");
         for (String t : transactions) {
             System.out.println(t);
         }
