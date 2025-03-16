@@ -2,7 +2,6 @@ package paypals;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Activity {
     private String description;

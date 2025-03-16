@@ -73,7 +73,8 @@ public class AddCommand extends Command {
 
         //Map each friend to the activity
         for (Map.Entry<String, Double> entry : owed.entrySet()){
-            ArrayList<Activity> activitiesList = personActivitesMap.computeIfAbsent(entry.getKey(), k -> new ArrayList<>());
+            ArrayList<Activity> activitiesList =
+                    personActivitesMap.computeIfAbsent(entry.getKey(), k -> new ArrayList<>());
 
             activitiesList.add(newActivity);
         }

@@ -31,7 +31,9 @@ public class Person {
         this.hasPaid = true;
     }
 
-    public Boolean hasPaid() { return hasPaid; }
+    public Boolean hasPaid() {
+        return hasPaid;
+    }
 
     public String toString(Boolean printAmount) {
         return printAmount ? printPaidStatus() +  " $" + amount + " for" :
