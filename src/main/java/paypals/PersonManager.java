@@ -6,7 +6,7 @@ public class PersonManager {
     private static HashMap<String, Person> personList = new HashMap<String, Person>();
 
     private static void addPerson(String name) {
-        personList.put(name, new Person(name, 0));
+        personList.put(name, new Person(name, 0,false));
     }
 
     static Person getPerson(String name) {

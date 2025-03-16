@@ -7,7 +7,9 @@ public enum ExceptionMessage {
     INVALID_IDENTIFIER("INPUT ERROR: Invalid identifier entered"),
     NO_PAYER("INPUT ERROR: No name of payer"),
     PAYER_OWES("LOGIC ERROR: Payer owes himself or herself"),
-    DUPLICATE_FRIEND("LOGIC ERROR: Friend is mentioned twice in an activity");
+    DUPLICATE_FRIEND("LOGIC ERROR: Friend is mentioned twice in an activity"),
+    INVALID_FRIEND("INPUT ERROR: Invalid friend entered"),
+    ALREADY_PAID("LOGIC ERROR: Friend has already paid for this activity");
 
     private final String message;
 

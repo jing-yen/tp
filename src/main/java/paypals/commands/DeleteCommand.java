@@ -6,6 +6,7 @@ import paypals.Person;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -45,18 +46,40 @@ public class DeleteCommand extends Command {
 
         Activity deletedActivity = activityManager.getActivity(id);
         Person payer = deletedActivity.getPayer();
-        Map<Person, Double> owed = deletedActivity.getOwed();
+        Map<String, Person> owed = deletedActivity.getOwed();
         double totalOwed = 0;
 
-        for (Person person : owed.keySet()) {
-            String oweName = person.getName();
-            Double oweAmount = owed.get(person);
-            netOwedMap.put(oweName, netOwedMap.getOrDefault(oweName,0.0) + oweAmount);
-            totalOwed += oweAmount;
+        for (String oweMame : owed.keySet()) {
+            Person owedPerson = owed.get(oweMame);
+            String personName = owedPerson.getName();
+            Double updatedAmount = netOwedMap.get(personName) + owedPerson.getAmount();
+
+            if (updatedAmount == 0.0){
+                netOwedMap.remove(personName);
+            } else {
+                netOwedMap.put(personName, updatedAmount);
+            }
         }
 
         String payerName = payer.getName();
         netOwedMap.put(payerName, netOwedMap.getOrDefault(payerName,0.0) - totalOwed);
+
+        HashMap<String, ArrayList<Activity>> personActivitiesMap = activityManager.getPersonActivitiesMap();
+        ArrayList<String> personToRemove = new ArrayList<>();
+
+        for (Map.Entry<String, ArrayList<Activity>> entry : personActivitiesMap.entrySet()) {
+            ArrayList<Activity> activitiesList = entry.getValue();
+            activitiesList.remove(deletedActivity);
+
+            if (activitiesList.isEmpty()) {
+                personToRemove.add(entry.getKey());
+            }
+        }
+        for (String personName : personToRemove) {
+            personActivitiesMap.remove(personName);
+        }
+
+
         System.out.println("Expense removed successfully!");
         activityManager.deleteActivity(id);
     }
