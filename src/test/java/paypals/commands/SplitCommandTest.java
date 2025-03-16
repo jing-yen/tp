@@ -30,7 +30,7 @@ class SplitCommandTest {
         System.setOut(System.out);
 
         String expectedOutput = "Best way to settle debts:\n" +
-                "Jane pays John $28.0";
+                "Jane pays John $28.00";
         assertEquals(expectedOutput.trim().replace("\r\n", "\n"), outputStream.toString().trim().replace("\r\n", "\n"));
     }
 }

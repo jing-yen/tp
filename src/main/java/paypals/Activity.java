@@ -26,9 +26,13 @@ public class Activity {
         return payer;
     }
 
-    public Person getFriend(String name) { return owed.get(name); }
+    public Person getFriend(String name) {
+        return owed.get(name);
+    }
 
-    public Collection<Person> getAllFriends() { return owed.values(); }
+    public Collection<Person> getAllFriends() {
+        return owed.values();
+    }
 
     @Override
     public String toString() {
