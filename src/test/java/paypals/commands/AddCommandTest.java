@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import paypals.Activity;
 import paypals.ActivityManager;
 import paypals.Person;
+import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class AddCommandTest {
             addCommand.execute(activityManager);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals("INPUT ERROR: No activity description", e.getMessage());
+            assertEquals(ExceptionMessage.NO_DESCRIPTION.getMessage(), e.getMessage());
         }
     }
 
@@ -83,7 +84,31 @@ public class AddCommandTest {
             addCommand.execute(activityManager);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals("INPUT ERROR: No name of payer", e.getMessage());        }
+            assertEquals(ExceptionMessage.NO_PAYER.getMessage(), e.getMessage());        }
+    }
+
+    @Test
+    public void execute_missingAmount_exceptionThrown() {
+        String command = "add d/Dinner n/Alice f/Bob";
+        AddCommand addCommand = new AddCommand(command);
+
+        try {
+            addCommand.execute(activityManager);
+            fail("Expected PayPalsException but none was thrown");
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.NO_AMOUNT_ENTERED.getMessage(), e.getMessage());        }
+    }
+
+    @Test
+    public void execute_multipleAmount_exceptionThrown() {
+        String command = "add d/Dinner n/Alice f/Bob a/5.0 a/3.0";
+        AddCommand addCommand = new AddCommand(command);
+
+        try {
+            addCommand.execute(activityManager);
+            fail("Expected PayPalsException but none was thrown");
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.MULTIPLE_AMOUNTS_ENTERED.getMessage(), e.getMessage());        }
     }
 
     @Test
@@ -95,7 +120,7 @@ public class AddCommandTest {
             addCommand.execute(activityManager);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals("LOGIC ERROR: Payer owes himself or herself", e.getMessage());
+            assertEquals(ExceptionMessage.PAYER_OWES.getMessage(), e.getMessage());
         }
     }
 
@@ -108,7 +133,7 @@ public class AddCommandTest {
             addCommand.execute(activityManager);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals("LOGIC ERROR: Friend is mentioned twice in an activity", e.getMessage());
+            assertEquals(ExceptionMessage.DUPLICATE_FRIEND.getMessage(), e.getMessage());
         }
     }
 }
