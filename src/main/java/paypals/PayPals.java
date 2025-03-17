@@ -33,10 +33,14 @@ public class PayPals {
                 Command c = parser.decodeCommand(fullCommand);
                 c.execute(activityManager);
                 isExit = c.isExit();
-                storage.save(activityManager);
             } catch (PayPalsException e) {
                 System.out.println(e.getMessage());
             }
+        }
+        try {
+            storage.save(activityManager);
+        } catch (PayPalsException e) {
+            System.out.println(e.getMessage());
         }
     }
 
