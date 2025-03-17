@@ -28,6 +28,7 @@ public class PayPals {
         boolean isExit = false;
         while (!isExit) {
             try {
+                System.out.print("> ");
                 String fullCommand = in.nextLine();
                 Command c = parser.decodeCommand(fullCommand);
                 c.execute(activityManager);

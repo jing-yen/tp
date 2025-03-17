@@ -49,22 +49,30 @@ public class AddCommand extends Command {
         HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
         HashMap<String, ArrayList<Activity>> personActivitesMap = activityManager.getPersonActivitiesMap();
 
-        // Step 2: Capture all (f/... a/...) pairs
-
+        // Step 1: Extract description and payer name
         String description = extractValue("d/", ExceptionMessage.NO_DESCRIPTION);
         String name = extractValue("n/", ExceptionMessage.NO_PAYER);
 
+        // Step 2: Capture all (f/... a/...) pairs
         double totalOwed = 0;
         String[] pairs = command.split("\\s+f/");
         for (int i = 1; i< pairs.length; i++) {
             String[] parameters = pairs[i].split("\\s+a/");
             if (parameters.length==2) {
                 String oweName = parameters[0].trim();
-                Double oweAmount = Double.parseDouble(parameters[1]);
+                Double oweAmount;
+                try {
+                    oweAmount = Double.parseDouble(parameters[1]);
+                } catch (Exception e) {
+                    throw new PayPalsException(ExceptionMessage.INVALID_AMOUNT);
+                }
                 validateFriend(name, oweName, owed);
                 owed.put(oweName, oweAmount);
                 netOwedMap.put(oweName, netOwedMap.getOrDefault(oweName,0.0) - oweAmount);
                 totalOwed += oweAmount;
+            } else {
+                throw new PayPalsException(parameters.length < 2 ?
+                        ExceptionMessage.NO_AMOUNT_ENTERED: ExceptionMessage.MULTIPLE_AMOUNTS_ENTERED);
             }
         }
 

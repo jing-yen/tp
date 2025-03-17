@@ -36,7 +36,7 @@ public class Activity {
 
     @Override
     public String toString() {
-        String outputString = description + " paid by " + payer +
+        String outputString = description + " paid by " + payer.getName() +
                 ". Owed by: ";
         int personCount = 0;
         for (String name : owed.keySet()) {
