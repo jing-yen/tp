@@ -28,18 +28,15 @@ public class PayPals {
         boolean isExit = false;
         while (!isExit) {
             try {
+                System.out.print("> ");
                 String fullCommand = in.nextLine();
                 Command c = parser.decodeCommand(fullCommand);
                 c.execute(activityManager);
                 isExit = c.isExit();
+                storage.save(activityManager);
             } catch (PayPalsException e) {
                 System.out.println(e.getMessage());
             }
-        }
-        try {
-            storage.save(activityManager);
-        } catch (PayPalsException e) {
-            System.out.println(e.getMessage());
         }
     }
 

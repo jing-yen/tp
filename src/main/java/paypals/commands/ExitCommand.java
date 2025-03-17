@@ -11,7 +11,7 @@ public class ExitCommand extends Command {
 
     @Override
     public void execute(ActivityManager activityManager) {
-
+        System.out.println("Thank you for using Paypals!");
     }
 
     @Override
