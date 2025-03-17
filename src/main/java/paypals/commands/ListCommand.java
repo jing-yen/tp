@@ -24,6 +24,9 @@ public class ListCommand extends Command {
     }
 
     public void printAllActivities(ActivityManager activityManager) {
+        if (activityManager.getSize()==0) {
+            System.out.println("You currently have no activities.");
+        }
         for (int i = 0; i < activityManager.getSize(); i++) {
             Activity activity = activityManager.getActivity(i);
             int index = i + 1;

@@ -9,6 +9,9 @@ public enum ExceptionMessage {
     PAYER_OWES("LOGIC ERROR: Payer owes himself or herself"),
     DUPLICATE_FRIEND("LOGIC ERROR: Friend is mentioned twice in an activity"),
     INVALID_FRIEND("INPUT ERROR: Invalid friend entered"),
+    INVALID_AMOUNT("INPUT ERROR: Amount owed is not a number"),
+    NO_AMOUNT_ENTERED("INPUT ERROR: Amount owed is not entered for 1 or more friends"),
+    MULTIPLE_AMOUNTS_ENTERED("INPUT ERROR: Multiple amounts entered for 1 or more friends"),
     ALREADY_PAID("LOGIC ERROR: Friend has already paid for this activity"),
     STORAGE_DIR_NOT_CREATED("ERROR: An error has occurred, storage directory not created"),
     STORAGE_FILE_NOT_CREATED("ERROR: An error has occurred, storage file not created"),
@@ -21,6 +24,7 @@ public enum ExceptionMessage {
     ExceptionMessage(String message) {
         this.message = message;
     }
+
     public String getMessage() {
         return this.message;
     }
