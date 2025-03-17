@@ -5,12 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 import paypals.Activity;
 import paypals.ActivityManager;
-import paypals.Person;
+import paypals.commands.AddCommand;
+import paypals.commands.Command;
+import paypals.commands.PaidCommand;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
@@ -29,6 +30,8 @@ public class Storage {
                 throw new PayPalsException(ExceptionMessage.STORAGE_DIR_NOT_CREATED);
             }
         }
+        assert dir.exists() && dir.isDirectory() : "The storage directory exists and is a directory";
+
         String activityFilePath = storageFolderPath + "/" + SAVE_FILE_STRING;
         this.activityFile = new File(activityFilePath);
         try {
@@ -36,6 +39,8 @@ public class Storage {
         } catch (IOException e) {
             throw new PayPalsException(ExceptionMessage.STORAGE_FILE_NOT_CREATED);
         }
+        assert activityFile.exists() && activityFile.isFile() : "The activity file exists and should be a file";
+
         try {
             this.scanner = new Scanner(this.activityFile);
         } catch (FileNotFoundException e) {
@@ -58,32 +63,52 @@ public class Storage {
     }
 
     public void load(ActivityManager activityManager) throws PayPalsException {
+        int activityIdentifier = 1;
         while (scanner.hasNextLine()) {
             try {
+                ArrayList<String> hasPaidNames = new ArrayList<>();
                 String data = scanner.nextLine();
                 String[] parts = data.split(SEPARATOR);
                 if (parts.length < 4) {
                     throw new PayPalsException(ExceptionMessage.LOAD_ERROR);
                 }
-                String description = parts[0];
-                Person payer = new Person(parts[1], Double.parseDouble(parts[2]), Boolean.parseBoolean(parts[3]));
-                HashMap<String, Person> owed = new HashMap<>();
+                assert ((parts.length - 1) % 3) == 0 : "Parts should contain full data of each Person";
+                String description = "d/" + parts[0] + " ";
+                String payer = "n/" + parts[1] + " ";
+                String input = "add " + description + payer;
                 for (int i = 4; i < parts.length; i += 3) {
                     if (i + 2 >= parts.length) {
                         throw new PayPalsException(ExceptionMessage.LOAD_ERROR);
                     }
-                    String owedName = parts[i];
-                    double owedAmount = Double.parseDouble(parts[i + 1]);
-                    boolean owedHasPaid = Boolean.parseBoolean(parts[i + 2]);
-                    Person owedPerson = new Person(owedName, owedAmount, owedHasPaid);
-                    owed.put(owedName, owedPerson);
+                    String owedName = "f/ " + parts[i] + " ";
+                    String owedAmount = "a/ " + parts[i + 1] + " ";
+                    boolean hasPaid = Boolean.parseBoolean(parts[i + 2]);
+                    if (hasPaid) {
+                        hasPaidNames.add(parts[i]);
+                    }
+                    input += owedName + owedAmount;
                 }
-                Activity activity = new Activity(description, payer, new HashMap<>());
-                activity.setOwed(owed);
-                activityManager.addActivity(activity);
+                Command c = new AddCommand(input);
+                c.execute(activityManager);
+                for (String name : hasPaidNames) {
+                    String paidInput = "n/" + name + " i/" + activityIdentifier;
+                    Command paidCommand = new PaidCommand(paidInput);
+                    paidCommand.execute(activityManager);
+                }
+                activityIdentifier++;
             } catch (PayPalsException e) {
                 throw new PayPalsException(ExceptionMessage.LOAD_ERROR);
             }
         }
+    }
+
+    public void deleteDir(File dir) {
+        File[] contents = dir.listFiles();
+        if (contents != null) {
+            for (File file : contents) {
+                deleteDir(file);
+            }
+        }
+        dir.delete();
     }
 }
