@@ -91,4 +91,14 @@ public class Storage {
             }
         }
     }
+
+    public void deleteDir(File dir) {
+        File[] contents = dir.listFiles();
+        if (contents != null) {
+            for (File file : contents) {
+                deleteDir(file);
+            }
+        }
+        dir.delete();
+    }
 }
