@@ -29,6 +29,8 @@ public class Storage {
                 throw new PayPalsException(ExceptionMessage.STORAGE_DIR_NOT_CREATED);
             }
         }
+        assert dir.exists() && dir.isDirectory() : "The storage directory exists and is a directory";
+
         String activityFilePath = storageFolderPath + "/" + SAVE_FILE_STRING;
         this.activityFile = new File(activityFilePath);
         try {
@@ -36,6 +38,8 @@ public class Storage {
         } catch (IOException e) {
             throw new PayPalsException(ExceptionMessage.STORAGE_FILE_NOT_CREATED);
         }
+        assert activityFile.exists() && activityFile.isFile() : "The activity file exists and should be a file";
+
         try {
             this.scanner = new Scanner(this.activityFile);
         } catch (FileNotFoundException e) {
@@ -65,6 +69,7 @@ public class Storage {
                 if (parts.length < 4) {
                     throw new PayPalsException(ExceptionMessage.LOAD_ERROR);
                 }
+                assert ((parts.length - 1) % 3) == 0 : "Parts should contain full data of each Person";
                 String description = parts[0];
                 Person payer = new Person(parts[1], Double.parseDouble(parts[2]), Boolean.parseBoolean(parts[3]));
                 HashMap<String, Person> owed = new HashMap<>();
