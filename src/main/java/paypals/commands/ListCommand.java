@@ -51,9 +51,13 @@ public class ListCommand extends Command {
         String outputString = name + ":\n";
         for (int i = 0; i < activities.size(); i++) {
             Activity activity = activities.get(i);
+            int index = i + 1;
             Person friend = activity.getFriend(name);
-            if (friend != null) {
-                int index = i + 1;
+
+            //name entered is the payer for the activity
+            if (friend == null) {
+                outputString += index + ". " + activity.toString() + "\n";
+            } else {
                 outputString += index + ". " + friend.toString(true) + " " +
                         activity.getDescription() + " to " + activity.getPayer().getName() + "\n";
             }

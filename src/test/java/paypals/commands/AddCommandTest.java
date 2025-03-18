@@ -84,7 +84,8 @@ public class AddCommandTest {
             addCommand.execute(activityManager);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.NO_PAYER.getMessage(), e.getMessage());        }
+            assertEquals(ExceptionMessage.NO_PAYER.getMessage(), e.getMessage());
+        }
     }
 
     @Test
@@ -96,7 +97,8 @@ public class AddCommandTest {
             addCommand.execute(activityManager);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.NO_AMOUNT_ENTERED.getMessage(), e.getMessage());        }
+            assertEquals(ExceptionMessage.NO_AMOUNT_ENTERED.getMessage(), e.getMessage());
+        }
     }
 
     @Test
@@ -108,7 +110,8 @@ public class AddCommandTest {
             addCommand.execute(activityManager);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.MULTIPLE_AMOUNTS_ENTERED.getMessage(), e.getMessage());        }
+            assertEquals(ExceptionMessage.MULTIPLE_AMOUNTS_ENTERED.getMessage(), e.getMessage());
+        }
     }
 
     @Test
