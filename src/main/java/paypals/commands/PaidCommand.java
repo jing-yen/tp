@@ -48,7 +48,7 @@ public class PaidCommand extends Command {
             Person friend = activity.getFriend(friendName);
 
             if (payerName.equals(friendName)){
-                throw new PayPalsException(ExceptionMessage.INVALID_FRIEND);
+                throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER);
             }
 
             if (friend.hasPaid()){
