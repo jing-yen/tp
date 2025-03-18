@@ -75,7 +75,7 @@ public class Storage {
                 assert ((parts.length - 1) % 3) == 0 : "Parts should contain full data of each Person";
                 String description = "d/" + parts[0] + " ";
                 String payer = "n/" + parts[1] + " ";
-                String input = "add " + description + payer;
+                String input = description + payer;
                 for (int i = 4; i < parts.length; i += 3) {
                     if (i + 2 >= parts.length) {
                         throw new PayPalsException(ExceptionMessage.LOAD_ERROR);
@@ -100,6 +100,7 @@ public class Storage {
                 throw new PayPalsException(ExceptionMessage.LOAD_ERROR);
             }
         }
+        Logging.logInfo("Data has been loaded from save file");
     }
 
     public void deleteDir(File dir) {

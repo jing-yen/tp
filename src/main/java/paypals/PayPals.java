@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import paypals.commands.Command;
 import paypals.exception.PayPalsException;
+import paypals.util.Logging;
 import paypals.util.Parser;
 import paypals.util.Storage;
 
@@ -14,6 +15,7 @@ public class PayPals {
 
     public PayPals() {
         try {
+            new Logging();
             parser = new Parser();
             activityManager = new ActivityManager();
             storage = new Storage();
@@ -26,6 +28,7 @@ public class PayPals {
     public void run() {
         Scanner in = new Scanner(System.in);
         boolean isExit = false;
+        Logging.logInfo("Entering main program body. Begin accepting user commands");
         while (!isExit) {
             try {
                 System.out.print("> ");

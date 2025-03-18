@@ -44,13 +44,14 @@ public class PaidCommand extends Command {
                 throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER);
             }
             Activity activity = activities.get(id);
+
             String payerName = activity.getPayer().getName();
             Person friend = activity.getFriend(friendName);
 
             if (payerName.equals(friendName)){
                 throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER);
             }
-
+          
             if (friend.hasPaid()){
                 throw new PayPalsException(ExceptionMessage.ALREADY_PAID);
             }
