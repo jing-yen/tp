@@ -5,6 +5,7 @@ import paypals.ActivityManager;
 import paypals.Person;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
+import paypals.util.UI;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +22,8 @@ public class DeleteCommand extends Command {
     }
 
     @Override
-    public void execute(ActivityManager activityManager) throws PayPalsException {
+    public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
+        UI ui = new UI(enablePrint);
         String identifier;
         HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
         // Step 1: Process the description and name
@@ -80,7 +82,7 @@ public class DeleteCommand extends Command {
         }
 
 
-        System.out.println("Expense removed successfully!");
+        ui.print("Expense removed successfully!");
         activityManager.deleteActivity(id);
     }
 }

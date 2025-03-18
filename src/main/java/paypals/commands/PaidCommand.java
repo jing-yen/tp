@@ -5,6 +5,7 @@ import paypals.ActivityManager;
 import paypals.Person;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
+import paypals.util.UI;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,9 +19,10 @@ public class PaidCommand extends Command {
     }
 
     @Override
-    public void execute(ActivityManager activityManager) throws PayPalsException {
+    public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
         try {
             //step 1: split the command
+            UI ui = new UI(enablePrint);
             Pattern pattern = Pattern.compile("^n/([^\\s]+)\\s+i/(\\S+)$");
             Matcher matcher = pattern.matcher(command);
 
@@ -74,7 +76,7 @@ public class PaidCommand extends Command {
             } else {
                 netOwedMap.put(payerName, updatedAmount);
             }
-            System.out.println("Marked as paid!");
+            ui.print("Marked as paid!");
         } catch (NumberFormatException e) {
             throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER);
         }

@@ -89,11 +89,11 @@ public class Storage {
                     input += owedName + owedAmount;
                 }
                 Command c = new AddCommand(input);
-                c.execute(activityManager);
+                c.execute(activityManager, false);
                 for (String name : hasPaidNames) {
                     String paidInput = "n/" + name + " i/" + activityIdentifier;
                     Command paidCommand = new PaidCommand(paidInput);
-                    paidCommand.execute(activityManager);
+                    paidCommand.execute(activityManager, false);
                 }
                 activityIdentifier++;
             } catch (PayPalsException e) {

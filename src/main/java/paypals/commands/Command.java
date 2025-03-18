@@ -10,7 +10,7 @@ public abstract class Command {
         this.command = command;
     }
 
-    public abstract void execute(ActivityManager activityManager) throws PayPalsException;
+    public abstract void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException;
 
     public boolean isExit() {
         return false;

@@ -17,7 +17,7 @@ public class ListCommand extends Command {
     }
 
     @Override
-    public void execute(ActivityManager activityManager) throws PayPalsException {
+    public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
         if (command.isEmpty()) {
             printAllActivities(activityManager);
         } else {
