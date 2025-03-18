@@ -1,7 +1,5 @@
 package paypals;
 
-import java.util.Scanner;
-
 import paypals.commands.Command;
 import paypals.exception.PayPalsException;
 import paypals.util.Logging;
