@@ -100,6 +100,7 @@ public class Storage {
                 throw new PayPalsException(ExceptionMessage.LOAD_ERROR);
             }
         }
+        Logging.logInfo("Data has been loaded from save file");
     }
 
     public void deleteDir(File dir) {
