@@ -34,17 +34,23 @@ public class PaidCommand extends Command {
             HashMap<String, ArrayList<Activity>> personActivitesMap = activityManager.getPersonActivitiesMap();
             ArrayList<Activity> activities = personActivitesMap.get(friendName);
 
+            int id = Integer.parseInt(matcher.group(2)) -1;
+
             if (activities == null) {
                 throw new PayPalsException(ExceptionMessage.INVALID_FRIEND);
             }
 
-            int id = Integer.parseInt(matcher.group(2)) -1;
             if (id < 0 || id >= activities.size()) {
                 throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER);
             }
             Activity activity = activities.get(id);
             String payerName = activity.getPayer().getName();
             Person friend = activity.getFriend(friendName);
+
+            if (payerName.equals(friendName)){
+                throw new PayPalsException(ExceptionMessage.INVALID_FRIEND);
+            }
+
             if (friend.hasPaid()){
                 throw new PayPalsException(ExceptionMessage.ALREADY_PAID);
             }
