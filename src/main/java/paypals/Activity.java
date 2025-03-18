@@ -36,8 +36,8 @@ public class Activity {
 
     @Override
     public String toString() {
-        String outputString = description + " paid by " + payer.getName() +
-                ". Owed by: ";
+        String outputString = description + ", Payer: " + payer.getName() +
+                ", Owed by: ";
         int personCount = 0;
         for (String name : owed.keySet()) {
             outputString += name;
@@ -61,4 +61,5 @@ public class Activity {
     public void setOwed(HashMap<String, Person> owed) {
         this.owed = owed;
     }
+
 }

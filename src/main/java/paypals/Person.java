@@ -36,11 +36,11 @@ public class Person {
     }
 
     public String toString(Boolean printAmount) {
-        return printAmount ? printPaidStatus() +  " $" + amount + " for" :
+        return printAmount ? "$" + String.format("%.2f", amount) + " " + printPaidStatus() :
                 name + " " + printPaidStatus();
     }
 
     public String printPaidStatus(){
-        return hasPaid ? "[Paid]" : "[Not Paid]";
+        return hasPaid ? "[Paid]" : "[Unpaid]";
     }
 }
