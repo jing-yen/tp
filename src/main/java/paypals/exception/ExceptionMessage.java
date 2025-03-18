@@ -13,7 +13,6 @@ public enum ExceptionMessage {
     NO_AMOUNT_ENTERED("INPUT ERROR: Amount owed is not entered for 1 or more friends"),
     MULTIPLE_AMOUNTS_ENTERED("INPUT ERROR: Multiple amounts entered for 1 or more friends"),
     ALREADY_PAID("LOGIC ERROR: Friend has already paid for this activity"),
-    PERSON_IS_PAYER("INPUT ERROR: An error has occurred, person specified was the payer for that activity"),
     STORAGE_DIR_NOT_CREATED("ERROR: An error has occurred, storage directory not created"),
     STORAGE_FILE_NOT_CREATED("ERROR: An error has occurred, storage file not created"),
     STORAGE_FILE_NOT_FOUND("ERROR: An error has occurred, storage file not found"),

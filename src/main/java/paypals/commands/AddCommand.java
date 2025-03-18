@@ -5,6 +5,7 @@ import paypals.ActivityManager;
 import paypals.Person;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
+import paypals.util.UI;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +45,8 @@ public class AddCommand extends Command {
         }
     }
 
-    public void execute(ActivityManager activityManager) throws PayPalsException {
+    public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
+        UI ui = new UI(enablePrint);
         HashMap<String, Double> owed = new HashMap<String, Double>();
         HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
         HashMap<String, ArrayList<Activity>> personActivitesMap = activityManager.getPersonActivitiesMap();
@@ -78,9 +80,9 @@ public class AddCommand extends Command {
 
         netOwedMap.put(name, netOwedMap.getOrDefault(name,0.0) + totalOwed);
 
-        System.out.println("Desc: "+description);
-        System.out.println("Name of payer: "+name);
-        System.out.println("Number of friends who owe " + name +": "+owed.size());
+        ui.print("Desc: "+description);
+        ui.print("Name of payer: "+name);
+        ui.print("Number of friends who owe " + name +": "+owed.size());
         Activity newActivity = new Activity(description, new Person(name, -totalOwed, false), owed);
         activityManager.addActivity(newActivity);
 

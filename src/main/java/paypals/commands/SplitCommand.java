@@ -6,6 +6,7 @@ import java.util.Map;
 
 import paypals.ActivityManager;
 import paypals.Person;
+import paypals.util.UI;
 
 public class SplitCommand extends Command {
     String command;
@@ -14,7 +15,8 @@ public class SplitCommand extends Command {
         super(command);
     }
 
-    public void execute(ActivityManager activityManager) {
+    public void execute(ActivityManager activityManager, boolean enablePrint) {
+        UI ui = new UI(enablePrint);
         HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
         ArrayList<Person> persons = new ArrayList<>();
         for (Map.Entry<String, Double> entry : netOwedMap.entrySet()) {
@@ -46,9 +48,9 @@ public class SplitCommand extends Command {
         }
 
         // Print out each saved transaction one by one.
-        System.out.println("Best way to settle debts:");
+        ui.print("Best way to settle debts:");
         for (String t : transactions) {
-            System.out.println(t);
+            ui.print(t);
         }
     }
 

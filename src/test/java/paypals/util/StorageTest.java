@@ -36,9 +36,9 @@ public class StorageTest {
             ActivityManager activityManager = new ActivityManager();
             ActivityManager result = new ActivityManager();
             AddCommand c = new AddCommand("add d/tickets n/John f/Betty a/23.53 f/Jane a/20.21 f/Bob a/38.10");
-            c.execute(activityManager);
+            c.execute(activityManager, false);
             c = new AddCommand("add d/lunch n/John f/Jane a/28");
-            c.execute(activityManager);
+            c.execute(activityManager, false);
             storage.save(activityManager);
             storage.load(result);
             ArrayList<Activity> expected = activityManager.getActivityList();
