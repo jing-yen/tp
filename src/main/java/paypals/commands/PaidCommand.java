@@ -29,10 +29,10 @@ public class PaidCommand extends Command {
                 throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
             }
 
-            String name = matcher.group(1).trim();
+            String friendName = matcher.group(1).trim();
 
             HashMap<String, ArrayList<Activity>> personActivitesMap = activityManager.getPersonActivitiesMap();
-            ArrayList<Activity> activities = personActivitesMap.get(name);
+            ArrayList<Activity> activities = personActivitesMap.get(friendName);
 
             if (activities == null) {
                 throw new PayPalsException(ExceptionMessage.INVALID_FRIEND);
@@ -55,13 +55,21 @@ public class PaidCommand extends Command {
 
             HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
 
-            double updatedAmount = netOwedMap.get(name) + friend.getAmount();
+            //update netOwedMap for friend
+            double updatedAmount = netOwedMap.get(friendName) + friend.getAmount();
             if (updatedAmount == 0.0) {
-                netOwedMap.remove(name);
+                netOwedMap.remove(friendName);
             } else {
-                netOwedMap.put(name, updatedAmount);
+                netOwedMap.put(friendName, updatedAmount);
             }
 
+            //update netOwedMap for payer
+            updatedAmount = netOwedMap.get(payerName) - friend.getAmount();
+            if (updatedAmount == 0.0) {
+                netOwedMap.remove(payerName);
+            } else {
+                netOwedMap.put(payerName, updatedAmount);
+            }
             System.out.println("Marked as paid!");
         } catch (NumberFormatException e) {
             throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER);

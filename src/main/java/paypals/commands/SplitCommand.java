@@ -20,7 +20,6 @@ public class SplitCommand extends Command {
         for (Map.Entry<String, Double> entry : netOwedMap.entrySet()) {
             persons.add(new Person(entry.getKey(), entry.getValue(),false));
         }
-
         ArrayList<String> transactions = new ArrayList<>();
 
         while (true) {
@@ -32,7 +31,6 @@ public class SplitCommand extends Command {
             if (Math.abs(persons.get(maxCreditorIndex).getAmount()) < 1e-9) {
                 break;
             }
-
             // Determine the amount to settle.
             double amountToSettle = Math.min(persons.get(maxCreditorIndex).getAmount(),
                     Math.abs(persons.get(maxDebtorIndex).getAmount()));
