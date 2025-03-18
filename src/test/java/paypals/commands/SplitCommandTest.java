@@ -14,7 +14,7 @@ class SplitCommandTest {
 
     void callCommand(Command command) {
         try {
-            command.execute(activityManager);
+            command.execute(activityManager, true);
         } catch (PayPalsException e) {
             System.out.println(e.getMessage());
         }
