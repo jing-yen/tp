@@ -5,6 +5,7 @@ public enum ExceptionMessage {
     NO_DESCRIPTION("INPUT ERROR: No activity description"),
     NO_IDENTIFIER("INPUT ERROR: No identifier entered"),
     INVALID_IDENTIFIER("INPUT ERROR: Invalid identifier entered"),
+    OUTOFBOUNDS_IDENTIFIER("INPUT ERROR: Identifier entered is out of bounds"),
     NO_PAYER("INPUT ERROR: No name of payer"),
     PAYER_OWES("LOGIC ERROR: Payer owes himself or herself"),
     DUPLICATE_FRIEND("LOGIC ERROR: Friend is mentioned twice in an activity"),
@@ -18,7 +19,6 @@ public enum ExceptionMessage {
     STORAGE_FILE_NOT_FOUND("ERROR: An error has occurred, storage file not found"),
     SAVE_NOT_WRITTEN("ERROR: An error has occurred, storage file not written"),
     LOAD_ERROR("ERROR: An error has occurred, save file not loaded");
-
     private final String message;
 
     ExceptionMessage(String message) {
