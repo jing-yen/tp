@@ -25,6 +25,9 @@ public class SplitCommand extends Command {
         ArrayList<String> transactions = new ArrayList<>();
 
         while (true) {
+            if (persons.isEmpty()) {
+                break;
+            }
             int maxCreditorIndex = getMaxCreditorIndex(persons);
             int maxDebtorIndex = getMaxDebtorIndex(persons);
 
