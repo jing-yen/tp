@@ -8,20 +8,21 @@ import paypals.exception.PayPalsException;
 
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class DeleteCommandTest {
-    private ActivityManager activityManager;
-    HashMap<String, Double> netOwedMap;
+    private ActivityManager activityManager = new ActivityManager();
+    HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
 
     @BeforeEach
     public void setUp() throws PayPalsException {
-        activityManager = new ActivityManager();
         AddCommand c1 = new AddCommand("d/lunch n/john f/jane a/30 f/jake a/20");
         c1.execute(activityManager, false);
         AddCommand c2 = new AddCommand("d/dinner n/jane f/john a/20 f/jake a/20");
         c2.execute(activityManager, false);
-        netOwedMap = activityManager.getNetOwedMap();
         for (String key : netOwedMap.keySet()) {  //ensure set up is correct
             if (key.equals("john")) {
                 assertEquals(30.0, netOwedMap.get(key), 0.001, "For john expected 30.0");
@@ -37,8 +38,8 @@ public class DeleteCommandTest {
 
     @Test
     public void execute_validIdentifier_correctlyUpdatesNetOwedMap() throws PayPalsException {
-       DeleteCommand command = new DeleteCommand("i/2");
-       command.execute(activityManager,false);
+        DeleteCommand command = new DeleteCommand("i/2");
+        command.execute(activityManager, false);
         for (String key : netOwedMap.keySet()) {  //ensure set up is correct
             if (key.equals("john")) {
                 assertEquals(50.0, netOwedMap.get(key), 0.001, "For john expected 50.0");
@@ -55,9 +56,9 @@ public class DeleteCommandTest {
     @Test
     public void execute_deleteAllActivities_netOwedMapIsEmpty() throws PayPalsException {
         DeleteCommand command = new DeleteCommand("i/1");
-        command.execute(activityManager,false);
+        command.execute(activityManager, false);
         DeleteCommand command2 = new DeleteCommand("i/1");
-        command2.execute(activityManager,false);
+        command2.execute(activityManager, false);
         assertTrue(netOwedMap.isEmpty(), "Expected empty netOwedMap");
     }
 
