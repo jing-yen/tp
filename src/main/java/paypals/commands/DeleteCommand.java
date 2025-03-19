@@ -33,8 +33,18 @@ public class DeleteCommand extends Command {
         int id = getID(identifier, activityManager.getSize());
         assert id == Integer.parseInt(identifier) - 1 : "ID should match the identifier - 1";
         Activity deletedActivity = activityManager.getActivity(id);
-        updateNetOwedMap(netOwedMap, deletedActivity);
-        removeActivityFromPersonActivityMap(activityManager, deletedActivity);
+        Collection<Person> owed = deletedActivity.getAllFriends();
+        boolean hasPaid = false;
+        for (Person person : owed) {
+            if (person.hasPaid()) {
+                hasPaid = true;
+                break;
+            }
+        }
+        if (!hasPaid) {
+            updateNetOwedMap(netOwedMap, deletedActivity);
+            removeActivityFromPersonActivityMap(activityManager, deletedActivity);
+        }
         ui.print("Expense removed successfully!");
         activityManager.deleteActivity(id);
         Logging.logInfo("Activity with id " + id + " has been deleted from ActivityManager.");
