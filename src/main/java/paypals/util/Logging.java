@@ -12,7 +12,7 @@ import java.util.logging.SimpleFormatter;
 public class Logging {
     private static final String loggerDir = "./log";
     private static final String loggerFile = "./log/PayPals.log";
-    private static Logger paypalsLogger = Logger.getLogger("PayPals");
+    private static final Logger paypalsLogger = Logger.getLogger("PayPals");
 
     public Logging() {
         try {
