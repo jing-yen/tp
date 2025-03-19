@@ -5,6 +5,7 @@ import paypals.ActivityManager;
 import paypals.Person;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
+import paypals.util.Logging;
 import paypals.util.UI;
 
 import java.util.ArrayList;
@@ -13,15 +14,10 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class AddCommand extends Command {
 
     private static final String WRONG_ADD_FORMAT =
             "Format: add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_OWED_1 f/FRIEND2 a/AMOUNT_OWED_2...";
-
-    private static final Logger logger = Logger.getLogger(AddCommand.class.getName());
 
     public AddCommand(String command) {
         super(command);
@@ -35,7 +31,7 @@ public class AddCommand extends Command {
         if (matcher.find()) {
             return matcher.group(1).trim();
         } else {
-            logger.log(Level.WARNING, "Invalid input format detected: {0}", command);
+            Logging.logWarning("Invalid input format detected");
             System.out.println(WRONG_ADD_FORMAT);
             throw new PayPalsException(exceptionMessage);
         }
@@ -47,11 +43,11 @@ public class AddCommand extends Command {
         assert owedMap != null : "Owed map should not be null";
 
         if (payer.equals(oweName)) {
-            logger.log(Level.WARNING, "Payer {0} tried to owe themselves.", payer);
+            Logging.logWarning("Payer tried to owe themselves.");
             throw new PayPalsException(ExceptionMessage.PAYER_OWES);
         }
         if (owedMap.containsKey(oweName)) {
-            logger.log(Level.WARNING, "Duplicate friend entry detected: {0} already exists.", oweName);
+            Logging.logWarning("Duplicate friend entry detected: {0} already exists.");
             System.out.println(WRONG_ADD_FORMAT);
             throw new PayPalsException(ExceptionMessage.DUPLICATE_FRIEND);
         }
@@ -72,8 +68,6 @@ public class AddCommand extends Command {
         assert !description.isEmpty() : "Description should not be null or empty";
         assert !name.isEmpty() : "Payer name should not be null or empty";
 
-        logger.log(Level.INFO, "Description: {0}, Payer: {1}", new Object[]{description, name});
-
         // Step 2: Capture all (f/... a/...) pairs
         double totalOwed = 0;
         String[] pairs = command.split("\\s+f/");
@@ -85,7 +79,7 @@ public class AddCommand extends Command {
                 try {
                     oweAmount = Double.parseDouble(parameters[1]);
                 } catch (Exception e) {
-                    logger.log(Level.SEVERE, "Invalid amount entered for friend: {0}", oweName);
+                    Logging.logWarning("Invalid amount entered for friend");
                     throw new PayPalsException(ExceptionMessage.INVALID_AMOUNT);
                 }
                 validateFriend(name, oweName, owed);
@@ -93,9 +87,9 @@ public class AddCommand extends Command {
                 netOwedMap.put(oweName, netOwedMap.getOrDefault(oweName,0.0) - oweAmount);
                 totalOwed += oweAmount;
 
-                logger.log(Level.INFO, "Friend {0} added with amount {1}", new Object[]{oweName, oweAmount});
+                Logging.logInfo("Friend added successfully");
             } else {
-                logger.log(Level.WARNING, "Incorrect number of parameters detected: {0}", pairs[i]);
+                Logging.logWarning("Incorrect number of parameters detected: {0}");
                 throw new PayPalsException(parameters.length < 2
                         ? ExceptionMessage.NO_AMOUNT_ENTERED: ExceptionMessage.MULTIPLE_AMOUNTS_ENTERED);
             }
@@ -122,6 +116,6 @@ public class AddCommand extends Command {
         ArrayList<Activity> activitiesList = personActivitesMap.computeIfAbsent(name, k -> new ArrayList<>());
         activitiesList.add(newActivity);
 
-        logger.log(Level.INFO, "Activity added successfully: {0}", description);
+        Logging.logInfo("Activity added successfully");
     }
 }
