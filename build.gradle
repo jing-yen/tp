@@ -29,12 +29,11 @@ test {
 }
 
 application {
-    mainClass.set("seedu.duke.Duke")
+    mainClass.set("paypals.PayPals")
 }
 
 shadowJar {
-    archiveBaseName.set("duke")
-    archiveClassifier.set("")
+    archiveFileName = 'paypals.jar'
 }
 
 checkstyle {
