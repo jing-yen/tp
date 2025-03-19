@@ -12,7 +12,7 @@ public class ExitCommand extends Command {
     @Override
     public void execute(ActivityManager activityManager, boolean enablePrint) {
         assert isExit() : "isExit should be true";
-        System.out.println("Thank you for using Paypals!");
+        System.out.print("Thank you for using Paypals!");
     }
 
     @Override

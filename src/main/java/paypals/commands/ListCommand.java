@@ -5,16 +5,24 @@ import paypals.ActivityManager;
 import paypals.Person;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
+import paypals.util.UI;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ListCommand extends Command {
+    private final UI ui;
+
+    private final Logger logger = Logger.getLogger(ListCommand.class.getName());
+
     public ListCommand(String command) {
         super(command);
+        this.ui = new UI(true);
     }
 
     @Override
@@ -27,13 +35,14 @@ public class ListCommand extends Command {
     }
 
     public void printAllActivities(ActivityManager activityManager) {
+        UI ui = new UI(true);
         if (activityManager.getSize()==0) {
-            System.out.println("You currently have no activities.");
+            ui.print("You currently have no activities.");
         }
         for (int i = 0; i < activityManager.getSize(); i++) {
             Activity activity = activityManager.getActivity(i);
             int index = i + 1;
-            System.out.println(index + ". " + activity.toString());
+            ui.print(index + ".  " + activity.toString());
         }
     }
 
@@ -47,34 +56,38 @@ public class ListCommand extends Command {
         String name = matcher.group(1);
         ArrayList<Activity> activities = personActivitiesMap.get(name);
         if (activities == null) {
+            logger.log(Level.WARNING, "Payer {0} could not be found", name);
             throw new PayPalsException(ExceptionMessage.NO_PAYER);
         }
-        System.out.println(getListString(name,activities));
+        ui.print(getListString(name,activities));
     }
 
     public String getListString(String name, ArrayList<Activity> activities) {
+        String spacing = "    ";
         String outputString = name + ":\n";
         for (int i = 0; i < activities.size(); i++) {
             Activity activity = activities.get(i);
             int index = i + 1;
             Person friend = activity.getFriend(name);
 
-            outputString += index + ". ";
+            outputString += index + ".  ";
             //name entered is the payer for the activity
             if (friend == null) {
                 outputString += getPayerString(activity) + "\n";
             } else {
-                outputString += activity.getDescription() + ", Payer: " +
-                        activity.getPayer().getName() + ", Amount: "
-                        + friend.toString(true) + "\n";
+                outputString += "Desc: " + activity.getDescription() + "\n"
+                        + spacing + "Payer: " + activity.getPayer().getName() + "\n"
+                        + spacing + "Amount: " + friend.toString(true) + "\n";
             }
         }
         return outputString;
     }
 
     public String getPayerString(Activity activity) {
+        String spacing = "    ";
         Collection<Person> friendsCollection = activity.getAllFriends();
-        String outputString = "[PAYER] " + activity.getDescription() + ", Owed by: ";
+        String outputString = "[PAYER] Desc: " + activity.getDescription() + "\n"
+                + spacing + "Owed by: ";
         for (Person friend : friendsCollection) {
             outputString += friend.toString(false) + " ";
         }

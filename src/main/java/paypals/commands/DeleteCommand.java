@@ -66,10 +66,10 @@ public class DeleteCommand extends Command {
             throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER);
         }
 
-        boolean IDisTooLarge = id >= size;
-        boolean IDisTooSmall = id < 0;
+        boolean idIsTooLarge = id >= size;
+        boolean idIsTooSmall = id < 0;
 
-        if (IDisTooLarge | IDisTooSmall) {
+        if (idIsTooLarge | idIsTooSmall) {
             Logging.logWarning("Identifier out of bounds: id=" + id + ", size=" + size);
             throw new PayPalsException(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
         }

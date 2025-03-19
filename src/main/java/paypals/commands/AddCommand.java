@@ -96,8 +96,8 @@ public class AddCommand extends Command {
                 logger.log(Level.INFO, "Friend {0} added with amount {1}", new Object[]{oweName, oweAmount});
             } else {
                 logger.log(Level.WARNING, "Incorrect number of parameters detected: {0}", pairs[i]);
-                throw new PayPalsException(parameters.length < 2 ?
-                        ExceptionMessage.NO_AMOUNT_ENTERED: ExceptionMessage.MULTIPLE_AMOUNTS_ENTERED);
+                throw new PayPalsException(parameters.length < 2
+                        ? ExceptionMessage.NO_AMOUNT_ENTERED: ExceptionMessage.MULTIPLE_AMOUNTS_ENTERED);
             }
         }
 
