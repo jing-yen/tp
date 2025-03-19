@@ -23,12 +23,25 @@ public class DeleteCommand extends Command {
         super(command);
     }
 
+
     @Override
     public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
         Logging.logInfo("Executing DeleteCommand with command: " + command);
         UI ui = new UI(enablePrint);
-        String identifier;
         HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
+        String identifier = getIdentifier();
+        int id = getID(identifier, activityManager.getSize());
+        assert id == Integer.parseInt(identifier) - 1 : "ID should match the identifier - 1";
+        Activity deletedActivity = activityManager.getActivity(id);
+        updateNetOwedMap(netOwedMap, deletedActivity);
+        removeActivityFromPersonActivityMap(activityManager, deletedActivity);
+        ui.print("Expense removed successfully!");
+        activityManager.deleteActivity(id);
+        Logging.logInfo("Activity with id " + id + " has been deleted from ActivityManager.");
+    }
+
+    private String getIdentifier() throws PayPalsException {
+        String identifier;
         // Step 1: Process the description and name
         String descRegex = "(?<=i/)(\\d+)";
         Pattern descPattern = Pattern.compile(descRegex);
@@ -41,7 +54,10 @@ public class DeleteCommand extends Command {
             Logging.logWarning("No identifier found in command: " + command);
             throw new PayPalsException(ExceptionMessage.NO_IDENTIFIER);
         }
+        return identifier;
+    }
 
+    private int getID(String identifier, int size) throws PayPalsException {
         int id;
         try {
             id = Integer.parseInt(identifier) - 1;
@@ -50,20 +66,19 @@ public class DeleteCommand extends Command {
             throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER);
         }
 
-        boolean IDisTooLarge = id >= activityManager.getSize();
+        boolean IDisTooLarge = id >= size;
         boolean IDisTooSmall = id < 0;
 
         if (IDisTooLarge | IDisTooSmall) {
-            Logging.logWarning("Identifier out of bounds: id=" + id + ", size=" + activityManager.getSize());
+            Logging.logWarning("Identifier out of bounds: id=" + id + ", size=" + size);
             throw new PayPalsException(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
         }
+        return id;
+    }
 
-        assert id == Integer.parseInt(identifier) - 1 : "ID should match the identifier - 1";
-
-        Activity deletedActivity = activityManager.getActivity(id);
-        Person payer = deletedActivity.getPayer();
+    private static void updateNetOwedMap(HashMap<String, Double> netOwedMap, Activity deletedActivity) {
         Collection<Person> owed = deletedActivity.getAllFriends();
-        double totalOwed = 0;
+        double totalOwed = 0.0;
 
         for (Person owedPerson : owed) {
             String personName = owedPerson.getName();
@@ -79,6 +94,7 @@ public class DeleteCommand extends Command {
             }
         }
 
+        Person payer = deletedActivity.getPayer();
         String payerName = payer.getName();
         Double updatedAmount = netOwedMap.get(payerName) - totalOwed;
         if (updatedAmount == 0.0){
@@ -87,11 +103,12 @@ public class DeleteCommand extends Command {
         } else {
             netOwedMap.put(payerName, updatedAmount);
         }
-
         Logging.logInfo("Updated payer " + payerName + ", new balance=" + netOwedMap.get(payerName));
+    }
+
+    private static void removeActivityFromPersonActivityMap(ActivityManager activityManager, Activity deletedActivity) {
         HashMap<String, ArrayList<Activity>> personActivitiesMap = activityManager.getPersonActivitiesMap();
         ArrayList<String> personToRemove = new ArrayList<>();
-
         for (Map.Entry<String, ArrayList<Activity>> entry : personActivitiesMap.entrySet()) {
             ArrayList<Activity> activitiesList = entry.getValue();
             activitiesList.remove(deletedActivity);
@@ -105,10 +122,7 @@ public class DeleteCommand extends Command {
             personActivitiesMap.remove(personName);
             Logging.logInfo("Removed " + personName + " from personActivitiesMap.");
         }
-
-
-        ui.print("Expense removed successfully!");
-        activityManager.deleteActivity(id);
-        Logging.logInfo("Activity with id " + id + " has been deleted from ActivityManager.");
     }
+
+
 }
