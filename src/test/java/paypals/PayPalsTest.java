@@ -27,7 +27,7 @@ public class PayPalsTest {
 
     protected void callCommand(Command command) {
         try {
-            command.execute(activityManager, false);
+            command.execute(activityManager, true);
         } catch (PayPalsException e) {
             System.out.println(e.getMessage());
         }
