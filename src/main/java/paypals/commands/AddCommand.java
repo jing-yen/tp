@@ -44,12 +44,12 @@ public class AddCommand extends Command {
 
         if (payer.equals(oweName)) {
             Logging.logWarning("Payer tried to owe themselves.");
-            throw new PayPalsException(ExceptionMessage.PAYER_OWES);
+            throw new PayPalsException(ExceptionMessage.PAYER_OWES, oweName);
         }
         if (owedMap.containsKey(oweName)) {
             Logging.logWarning("Duplicate friend entry detected: {0} already exists.");
             System.out.println(WRONG_ADD_FORMAT);
-            throw new PayPalsException(ExceptionMessage.DUPLICATE_FRIEND);
+            throw new PayPalsException(ExceptionMessage.DUPLICATE_FRIEND, oweName);
         }
     }
 

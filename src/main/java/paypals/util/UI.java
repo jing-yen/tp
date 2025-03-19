@@ -26,6 +26,6 @@ public class UI {
     }
 
     public void sayHello(){
-        System.out.println("Welcome to PayPals");
+        print("\n\nWelcome to PayPals!");
     }
 }

@@ -15,16 +15,18 @@ import java.util.regex.Pattern;
 
 public class PaidCommand extends Command {
 
+    private static final String WRONG_PAID_FORMAT = "paid n/NAME i/IDENTIFIER";
+
     public PaidCommand(String command) {
         super(command);
     }
 
     @Override
     public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
-        try {
-            UI ui = new UI(enablePrint);
-            Matcher matcher = parseCommand();
+        UI ui = new UI(enablePrint);
+        Matcher matcher = parseCommand();
 
+        try {
             String friendName = matcher.group(1).trim();
             int activityIndex = Integer.parseInt(matcher.group(2)) - 1;
 
@@ -37,7 +39,7 @@ public class PaidCommand extends Command {
 
             ui.print("Marked as paid!");
         } catch (NumberFormatException e) {
-            throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER);
+            throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER, matcher.group(2));
         }
     }
 
@@ -46,7 +48,7 @@ public class PaidCommand extends Command {
         Matcher matcher = pattern.matcher(command);
 
         if (!matcher.matches() || matcher.groupCount() != 2) {
-            throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
+            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_PAID_FORMAT);
         }
 
         assert matcher.group(1) != null : "Friend name should not be null";
@@ -61,11 +63,11 @@ public class PaidCommand extends Command {
         ArrayList<Activity> activities = personActivitiesMap.get(friendName);
 
         if (activities == null) {
-            throw new PayPalsException(ExceptionMessage.INVALID_FRIEND);
+            throw new PayPalsException(ExceptionMessage.INVALID_FRIEND, friendName);
         }
 
         if (index < 0 || index >= activities.size()) {
-            throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER);
+            throw new PayPalsException(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER, Integer.toString(index+1));
         }
         return activities.get(index);
     }

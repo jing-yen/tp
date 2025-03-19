@@ -1,26 +1,19 @@
 package paypals.commands;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import paypals.Activity;
-import paypals.ActivityManager;
+import paypals.PayPalsTest;
 import paypals.Person;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
 import java.util.ArrayList;
 
-public class AddCommandTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-    private ActivityManager activityManager;
-
-    @BeforeEach
-    public void setUp() {
-        activityManager = new ActivityManager();
-    }
+public class AddCommandTest extends PayPalsTest {
 
     @Test
     public void execute_validMultipleFriends_correctlyUpdatesNetOwedMap() throws PayPalsException {
@@ -71,7 +64,7 @@ public class AddCommandTest {
             addCommand.execute(activityManager, false);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.NO_DESCRIPTION.getMessage(), e.getMessage());
+            assertException(e, ExceptionMessage.NO_DESCRIPTION);
         }
     }
 
@@ -84,7 +77,7 @@ public class AddCommandTest {
             addCommand.execute(activityManager, false);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.NO_PAYER.getMessage(), e.getMessage());
+            assertException(e, ExceptionMessage.NO_PAYER);
         }
     }
 
@@ -97,7 +90,7 @@ public class AddCommandTest {
             addCommand.execute(activityManager, false);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.NO_AMOUNT_ENTERED.getMessage(), e.getMessage());
+            assertException(e, ExceptionMessage.NO_AMOUNT_ENTERED);
         }
     }
 
@@ -110,7 +103,7 @@ public class AddCommandTest {
             addCommand.execute(activityManager, false);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.MULTIPLE_AMOUNTS_ENTERED.getMessage(), e.getMessage());
+            assertException(e, ExceptionMessage.MULTIPLE_AMOUNTS_ENTERED);
         }
     }
 
@@ -123,7 +116,7 @@ public class AddCommandTest {
             addCommand.execute(activityManager, false);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.PAYER_OWES.getMessage(), e.getMessage());
+            assertException(e, ExceptionMessage.PAYER_OWES);
         }
     }
 
@@ -136,7 +129,7 @@ public class AddCommandTest {
             addCommand.execute(activityManager, false);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.DUPLICATE_FRIEND.getMessage(), e.getMessage());
+            assertException(e, ExceptionMessage.DUPLICATE_FRIEND);
         }
     }
 }
