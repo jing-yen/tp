@@ -3,6 +3,7 @@ package paypals.commands;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import paypals.ActivityManager;
+import paypals.PayPalsTest;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
@@ -13,12 +14,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class DeleteCommandTest {
-    private ActivityManager activityManager = new ActivityManager();
+public class DeleteCommandTest extends PayPalsTest {
+
     HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
 
     @BeforeEach
-    public void setUp() throws PayPalsException {
+    public void setUpDelete() throws PayPalsException {
         AddCommand c1 = new AddCommand("d/lunch n/john f/jane a/30 f/jake a/20");
         c1.execute(activityManager, false);
         AddCommand c2 = new AddCommand("d/dinner n/jane f/john a/20 f/jake a/20");
@@ -69,7 +70,7 @@ public class DeleteCommandTest {
             command.execute(activityManager, false);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER.getMessage(), e.getMessage());
+            assertException(e, ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
         }
     }
 
@@ -80,7 +81,7 @@ public class DeleteCommandTest {
             command.execute(activityManager, false);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.NO_IDENTIFIER.getMessage(), e.getMessage());
+            assertException(e, ExceptionMessage.NO_IDENTIFIER);
         }
     }
 
@@ -91,7 +92,7 @@ public class DeleteCommandTest {
             command.execute(activityManager, false);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.INVALID_IDENTIFIER.getMessage(), e.getMessage());
+            assertException(e, ExceptionMessage.INVALID_IDENTIFIER);
         }
     }
 

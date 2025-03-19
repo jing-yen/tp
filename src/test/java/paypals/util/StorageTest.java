@@ -11,9 +11,10 @@ import java.util.ArrayList;
 
 import paypals.Activity;
 import paypals.ActivityManager;
+import paypals.PayPalsTest;
 import paypals.commands.AddCommand;
 
-public class StorageTest {
+public class StorageTest extends PayPalsTest {
     @Test
     public void storageConstructor_fileCreationSuccess() {
         try {

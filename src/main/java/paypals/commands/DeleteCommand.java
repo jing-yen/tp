@@ -73,7 +73,7 @@ public class DeleteCommand extends Command {
             id = Integer.parseInt(identifier) - 1;
         } catch (NumberFormatException e) {
             Logging.logWarning("Invalid identifier format: " + identifier);
-            throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER);
+            throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER, identifier);
         }
 
         boolean idIsTooLarge = id >= size;
@@ -81,7 +81,7 @@ public class DeleteCommand extends Command {
 
         if (idIsTooLarge | idIsTooSmall) {
             Logging.logWarning("Identifier out of bounds: id=" + id + ", size=" + size);
-            throw new PayPalsException(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
+            throw new PayPalsException(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER, Integer.toString(id+1));
         }
         return id;
     }

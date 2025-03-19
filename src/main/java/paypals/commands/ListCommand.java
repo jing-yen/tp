@@ -15,6 +15,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ListCommand extends Command {
+
+    private static final String WRONG_LIST_FORMAT = "list n/NAME";
+
     private final UI ui;
 
     public ListCommand(String command) {
@@ -35,7 +38,9 @@ public class ListCommand extends Command {
         UI ui = new UI(true);
         if (activityManager.getSize()==0) {
             ui.print("You currently have no activities.");
+            return;
         }
+        ui.print("You have " + activityManager.getSize() + " activities:");
         for (int i = 0; i < activityManager.getSize(); i++) {
             Activity activity = activityManager.getActivity(i);
             int index = i + 1;
@@ -48,7 +53,7 @@ public class ListCommand extends Command {
         Pattern pattern = Pattern.compile("^n/([^/]+)$");
         Matcher matcher = pattern.matcher(command);
         if (!matcher.matches()) {
-            throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER);
+            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_LIST_FORMAT);
         }
         String name = matcher.group(1);
         ArrayList<Activity> activities = personActivitiesMap.get(name);
