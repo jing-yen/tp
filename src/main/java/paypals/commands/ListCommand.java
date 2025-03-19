@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class ListCommand extends Command {
     private final UI ui;
 
-    private static final Logger logger = Logger.getLogger(ListCommand.class.getName());
+    private final Logger logger = Logger.getLogger(ListCommand.class.getName());
 
     public ListCommand(String command) {
         super(command);
