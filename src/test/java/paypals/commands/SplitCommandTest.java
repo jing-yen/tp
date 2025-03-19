@@ -1,9 +1,7 @@
 package paypals.commands;
 
 import org.junit.jupiter.api.Test;
-import paypals.ActivityManager;
 import paypals.PayPalsTest;
-import paypals.exception.PayPalsException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -11,14 +9,6 @@ import java.io.PrintStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SplitCommandTest extends PayPalsTest {
-
-    void callCommand(Command command) {
-        try {
-            command.execute(activityManager, true);
-        } catch (PayPalsException e) {
-            System.out.println(e.getMessage());
-        }
-    }
 
     @Test
     void testSplitCommand_nullInput_twoSystemPrintLines() {

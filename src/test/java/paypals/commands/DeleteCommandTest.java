@@ -2,12 +2,9 @@ package paypals.commands;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import paypals.ActivityManager;
 import paypals.PayPalsTest;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
-
-import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -15,8 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class DeleteCommandTest extends PayPalsTest {
-
-    HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
 
     @BeforeEach
     public void setUpDelete() throws PayPalsException {
@@ -64,7 +59,7 @@ public class DeleteCommandTest extends PayPalsTest {
     }
 
     @Test
-    public void execute_outOfBoundsIdentifier_exceptionThrown() throws PayPalsException {
+    public void execute_outOfBoundsIdentifier_exceptionThrown() {
         DeleteCommand command = new DeleteCommand("i/5");
         try {
             command.execute(activityManager, false);
@@ -75,7 +70,7 @@ public class DeleteCommandTest extends PayPalsTest {
     }
 
     @Test
-    public void execute_noIdentifier_exceptionThrown() throws PayPalsException {
+    public void execute_noIdentifier_exceptionThrown() {
         DeleteCommand command = new DeleteCommand("");
         try {
             command.execute(activityManager, false);
