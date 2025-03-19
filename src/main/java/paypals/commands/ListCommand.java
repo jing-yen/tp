@@ -10,11 +10,16 @@ import paypals.util.UI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ListCommand extends Command {
-    private UI ui;
+    private final UI ui;
+
+    private static final Logger logger = Logger.getLogger(ListCommand.class.getName());
+
     public ListCommand(String command) {
         super(command);
         this.ui = new UI(true);
@@ -51,6 +56,7 @@ public class ListCommand extends Command {
         String name = matcher.group(1);
         ArrayList<Activity> activities = personActivitiesMap.get(name);
         if (activities == null) {
+            logger.log(Level.WARNING, "Payer {0} could not be found", name);
             throw new PayPalsException(ExceptionMessage.NO_PAYER);
         }
         ui.print(getListString(name,activities));

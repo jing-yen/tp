@@ -93,7 +93,7 @@ public class AddCommand extends Command {
                 netOwedMap.put(oweName, netOwedMap.getOrDefault(oweName,0.0) - oweAmount);
                 totalOwed += oweAmount;
 
-                logger.log(Level.INFO, "Friend {0} added with amount {1}", new Object[]{oweName, oweAmount});
+               logger.log(Level.INFO, "Friend {0} added with amount {1}", new Object[]{oweName, oweAmount});
             } else {
                 logger.log(Level.WARNING, "Incorrect number of parameters detected: {0}", pairs[i]);
                 throw new PayPalsException(parameters.length < 2 ?
