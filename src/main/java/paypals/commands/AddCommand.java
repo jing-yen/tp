@@ -36,6 +36,10 @@ public class AddCommand extends Command {
     }
 
     private void validateFriend(String payer, String oweName, HashMap<String, Double> owedMap) throws PayPalsException {
+        assert payer != null : "Payer name should not be null";
+        assert oweName != null : "OweName should not be null";
+        assert owedMap != null : "Owed map should not be null";
+
         if (payer.equals(oweName)) {
             throw new PayPalsException(ExceptionMessage.PAYER_OWES);
         }
@@ -46,6 +50,8 @@ public class AddCommand extends Command {
     }
 
     public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
+        assert activityManager != null : "ActivityManager should not be null";
+
         UI ui = new UI(enablePrint);
         HashMap<String, Double> owed = new HashMap<String, Double>();
         HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
@@ -54,6 +60,9 @@ public class AddCommand extends Command {
         // Step 1: Extract description and payer name
         String description = extractValue("d/", ExceptionMessage.NO_DESCRIPTION);
         String name = extractValue("n/", ExceptionMessage.NO_PAYER);
+
+        assert !description.isEmpty() : "Description should not be null or empty";
+        assert !name.isEmpty() : "Payer name should not be null or empty";
 
         // Step 2: Capture all (f/... a/...) pairs
         double totalOwed = 0;
@@ -79,6 +88,8 @@ public class AddCommand extends Command {
         }
 
         netOwedMap.put(name, netOwedMap.getOrDefault(name,0.0) + totalOwed);
+
+        assert totalOwed >= 0 : "Total owed amount should not be negative";
 
         ui.print("Desc: "+description);
         ui.print("Name of payer: "+name);
