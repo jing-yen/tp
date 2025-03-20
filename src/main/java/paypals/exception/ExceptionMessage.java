@@ -1,15 +1,17 @@
 package paypals.exception;
 
 public enum ExceptionMessage {
-    INVALID_COMMAND("INPUT ERROR: Invalid command entered"),
+    INVALID_COMMAND("INPUT ERROR: Invalid command entered" +
+            "\nTry these commands: add | delete | list | split | paid | exit"),
     NO_DESCRIPTION("INPUT ERROR: No activity description"),
     NO_IDENTIFIER("INPUT ERROR: No identifier entered"),
-    INVALID_IDENTIFIER("INPUT ERROR: Invalid identifier entered"),
-    OUTOFBOUNDS_IDENTIFIER("INPUT ERROR: Identifier entered is out of bounds"),
+    INVALID_FORMAT("INPUT ERROR: Correct format should be: "),
+    INVALID_IDENTIFIER("INPUT ERROR: Invalid identifier entered: "),
+    OUTOFBOUNDS_IDENTIFIER("INPUT ERROR: Identifier entered is out of bounds: "),
     NO_PAYER("INPUT ERROR: No name of payer"),
-    PAYER_OWES("LOGIC ERROR: Payer owes himself or herself"),
-    DUPLICATE_FRIEND("LOGIC ERROR: Friend is mentioned twice in an activity"),
-    INVALID_FRIEND("INPUT ERROR: Invalid friend entered"),
+    PAYER_OWES("LOGIC ERROR: Payer owes himself or herself: "),
+    DUPLICATE_FRIEND("LOGIC ERROR: Friend is mentioned twice in an activity: "),
+    INVALID_FRIEND("INPUT ERROR: Invalid friend entered: "),
     INVALID_AMOUNT("INPUT ERROR: Amount owed is not a number"),
     NO_AMOUNT_ENTERED("INPUT ERROR: Amount owed is not entered for 1 or more friends"),
     MULTIPLE_AMOUNTS_ENTERED("INPUT ERROR: Multiple amounts entered for 1 or more friends"),

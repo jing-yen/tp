@@ -1,24 +1,14 @@
 package paypals.commands;
 
 import org.junit.jupiter.api.Test;
-import paypals.ActivityManager;
-import paypals.exception.PayPalsException;
+import paypals.PayPalsTest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class SplitCommandTest {
-    ActivityManager activityManager = new ActivityManager();
-
-    void callCommand(Command command) {
-        try {
-            command.execute(activityManager, true);
-        } catch (PayPalsException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+class SplitCommandTest extends PayPalsTest {
 
     @Test
     void testSplitCommand_nullInput_twoSystemPrintLines() {

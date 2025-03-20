@@ -2,23 +2,19 @@ package paypals.commands;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import paypals.ActivityManager;
+import paypals.PayPalsTest;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
-
-import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class DeleteCommandTest {
-    private ActivityManager activityManager = new ActivityManager();
-    HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
+public class DeleteCommandTest extends PayPalsTest {
 
     @BeforeEach
-    public void setUp() throws PayPalsException {
+    public void setUpDelete() throws PayPalsException {
         AddCommand c1 = new AddCommand("d/lunch n/john f/jane a/30 f/jake a/20");
         c1.execute(activityManager, false);
         AddCommand c2 = new AddCommand("d/dinner n/jane f/john a/20 f/jake a/20");
@@ -63,24 +59,24 @@ public class DeleteCommandTest {
     }
 
     @Test
-    public void execute_outOfBoundsIdentifier_exceptionThrown() throws PayPalsException {
+    public void execute_outOfBoundsIdentifier_exceptionThrown() {
         DeleteCommand command = new DeleteCommand("i/5");
         try {
             command.execute(activityManager, false);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER.getMessage(), e.getMessage());
+            assertException(e, ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
         }
     }
 
     @Test
-    public void execute_noIdentifier_exceptionThrown() throws PayPalsException {
+    public void execute_noIdentifier_exceptionThrown() {
         DeleteCommand command = new DeleteCommand("");
         try {
             command.execute(activityManager, false);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.NO_IDENTIFIER.getMessage(), e.getMessage());
+            assertException(e, ExceptionMessage.NO_IDENTIFIER);
         }
     }
 
@@ -91,7 +87,7 @@ public class DeleteCommandTest {
             command.execute(activityManager, false);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.INVALID_IDENTIFIER.getMessage(), e.getMessage());
+            assertException(e, ExceptionMessage.INVALID_IDENTIFIER);
         }
     }
 

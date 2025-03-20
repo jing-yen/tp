@@ -47,8 +47,10 @@ public class Activity {
 
     @Override
     public String toString() {
-        String outputString = description + ", Payer: " + payer.getName() +
-                ", Owed by: ";
+        String spacing = "    ";
+        String outputString = "Desc: " + description + "\n"
+                + spacing + "Payer: " + payer.getName() + "\n"
+                + spacing + "Owed by: ";
         int personCount = 0;
         for (String name : owed.keySet()) {
             outputString += name;

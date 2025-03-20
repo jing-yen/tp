@@ -33,9 +33,19 @@ public class DeleteCommand extends Command {
         int id = getID(identifier, activityManager.getSize());
         assert id == Integer.parseInt(identifier) - 1 : "ID should match the identifier - 1";
         Activity deletedActivity = activityManager.getActivity(id);
-        updateNetOwedMap(netOwedMap, deletedActivity);
-        removeActivityFromPersonActivityMap(activityManager, deletedActivity);
+        Collection<Person> owed = deletedActivity.getAllFriends();
+        boolean hasPaid = false;
+        for (Person person : owed) {
+            if (person.hasPaid()) {
+                hasPaid = true;
+                break;
+            }
+        }
+        if (!hasPaid) {
+            updateNetOwedMap(netOwedMap, deletedActivity);
+        }
         ui.print("Expense removed successfully!");
+        removeActivityFromPersonActivityMap(activityManager, deletedActivity);
         activityManager.deleteActivity(id);
         Logging.logInfo("Activity with id " + id + " has been deleted from ActivityManager.");
     }
@@ -63,15 +73,15 @@ public class DeleteCommand extends Command {
             id = Integer.parseInt(identifier) - 1;
         } catch (NumberFormatException e) {
             Logging.logWarning("Invalid identifier format: " + identifier);
-            throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER);
+            throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER, identifier);
         }
 
-        boolean IDisTooLarge = id >= size;
-        boolean IDisTooSmall = id < 0;
+        boolean idIsTooLarge = id >= size;
+        boolean idIsTooSmall = id < 0;
 
-        if (IDisTooLarge | IDisTooSmall) {
+        if (idIsTooLarge | idIsTooSmall) {
             Logging.logWarning("Identifier out of bounds: id=" + id + ", size=" + size);
-            throw new PayPalsException(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
+            throw new PayPalsException(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER, Integer.toString(id+1));
         }
         return id;
     }
@@ -81,6 +91,9 @@ public class DeleteCommand extends Command {
         double totalOwed = 0.0;
 
         for (Person owedPerson : owed) {
+            if (owedPerson.hasPaid()){
+                continue;
+            }
             String personName = owedPerson.getName();
             totalOwed += owedPerson.getAmount();
             Double updatedAmount = netOwedMap.get(personName) + owedPerson.getAmount();
@@ -96,7 +109,7 @@ public class DeleteCommand extends Command {
 
         Person payer = deletedActivity.getPayer();
         String payerName = payer.getName();
-        Double updatedAmount = netOwedMap.get(payerName) - totalOwed;
+        Double updatedAmount = netOwedMap.getOrDefault(payerName,0.0) - totalOwed;
         if (updatedAmount == 0.0){
             netOwedMap.remove(payerName);
             Logging.logInfo("Removed " + payerName + " from netOwedMap due to zero balance.");
