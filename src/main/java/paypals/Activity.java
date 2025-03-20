@@ -1,5 +1,7 @@
 package paypals;
 
+import paypals.util.Logging;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,24 +15,33 @@ public class Activity {
         this.description = description;
         this.payer = payer;
         this.owed = new HashMap<>();
+
+        Logging.logInfo("Creating Activity: " + description + " paid by " + payer.getName());
+
+
         for (Map.Entry<String, Double> entry : owedMap.entrySet()) {
             this.owed.put(entry.getKey(), new Person(entry.getKey(), entry.getValue(), false));
+            Logging.logInfo("Added owed person: " + entry.getKey() + " with amount " + entry.getValue());
         }
     }
 
     public String getDescription(){
+        Logging.logInfo("Retrieving description: " + description);
         return description;
     }
 
     public Person getPayer() {
+        Logging.logInfo("Retrieving payer: " + payer.getName());
         return payer;
     }
 
     public Person getFriend(String name) {
+        Logging.logInfo("Looking for friend: " + name);
         return owed.get(name);
     }
 
     public Collection<Person> getAllFriends() {
+        Logging.logInfo("Retrieving all friends who owe money");
         return owed.values();
     }
 
@@ -45,6 +56,7 @@ public class Activity {
                 outputString += ", ";
             }
         }
+        Logging.logInfo("Generated string representation of Activity: " + description);
         return outputString;
     }
 
@@ -55,10 +67,12 @@ public class Activity {
             Person person = entry.getValue();
             data += person.getName() + separator + person.getAmount() + separator + person.hasPaid() + separator;
         }
+        Logging.logInfo("Converted Activity to storage format: " + description);
         return data;
     }
 
     public void setOwed(HashMap<String, Person> owed) {
+        Logging.logInfo("Updating owed list for activity: " + description);
         this.owed = owed;
     }
 
