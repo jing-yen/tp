@@ -117,5 +117,6 @@ public class AddCommand extends Command {
         activitiesList.add(newActivity);
 
         Logging.logInfo("Activity added successfully");
+
     }
 }
