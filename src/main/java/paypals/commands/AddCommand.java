@@ -123,5 +123,6 @@ public class AddCommand extends Command {
         activitiesList.add(newActivity);
 
         logger.log(Level.INFO, "Activity added successfully: {0}", description);
+
     }
 }
