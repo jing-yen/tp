@@ -26,6 +26,8 @@ public class DeleteCommand extends Command {
 
     @Override
     public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
+        assert activityManager != null : "ActivityManager should not be null";
+
         Logging.logInfo("Executing DeleteCommand with command: " + command);
         UI ui = new UI(enablePrint);
         HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
