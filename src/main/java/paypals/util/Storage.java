@@ -154,7 +154,8 @@ public class Storage {
      * @param activityManager the activity manager to operate on
      * @param activityIdentifier a unique identifier for the activity
      */
-    private void executePaidCommands(ArrayList<String> hasPaidNames, ActivityManager activityManager, int activityIdentifier) {
+    private void executePaidCommands(ArrayList<String> hasPaidNames, ActivityManager activityManager,
+                                     int activityIdentifier) {
         try {
             for (String name : hasPaidNames) {
                 String paidInput = "n/" + name + " i/" + activityIdentifier;
