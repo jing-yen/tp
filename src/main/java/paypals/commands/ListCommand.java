@@ -10,9 +10,10 @@ import paypals.util.UI;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static paypals.commands.PaidCommand.getActivities;
 
 public class ListCommand extends Command {
 
@@ -20,6 +21,7 @@ public class ListCommand extends Command {
 
     private final UI ui;
 
+    private final String spacing = "    ";
     public ListCommand(String command) {
         super(command);
         this.ui = new UI(true);
@@ -49,7 +51,6 @@ public class ListCommand extends Command {
     }
 
     public void printPersonActivities(ActivityManager activityManager) throws PayPalsException{
-        HashMap<String, ArrayList<Activity>> personActivitiesMap = activityManager.getPersonActivitiesMap();
         Pattern pattern = Pattern.compile("^n/([^/]+)$");
         Matcher matcher = pattern.matcher(command);
         if (!matcher.matches()) {
@@ -57,43 +58,48 @@ public class ListCommand extends Command {
             throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_LIST_FORMAT);
         }
         String name = matcher.group(1);
-        ArrayList<Activity> activities = personActivitiesMap.get(name);
-        if (activities == null) {
+        ArrayList<Activity> personActivities = getPersonActivities(name,activityManager.getActivityList());
+
+        if (personActivities.isEmpty()) {
             Logging.logWarning("Payer could not be found");
             throw new PayPalsException(ExceptionMessage.NO_PAYER);
         }
-        ui.print(getListString(name,activities));
+        ui.print(getListString(name,personActivities));
     }
 
     public String getListString(String name, ArrayList<Activity> activities) {
-        String spacing = "    ";
-        String outputString = name + ":\n";
+        StringBuilder outputString = new StringBuilder(name + ":\n");
         for (int i = 0; i < activities.size(); i++) {
             Activity activity = activities.get(i);
             int index = i + 1;
             Person friend = activity.getFriend(name);
 
-            outputString += index + ".  ";
+            outputString.append(index).append(".  ");
             //name entered is the payer for the activity
             if (friend == null) {
-                outputString += getPayerString(activity) + "\n";
+                outputString.append(getPayerString(activity)).append("\n");
             } else {
-                outputString += "Desc: " + activity.getDescription() + "\n"
-                        + spacing + "Payer: " + activity.getPayer().getName() + "\n"
-                        + spacing + "Amount: " + friend.toString(true) + "\n";
+                outputString.append("Desc: ")
+                        .append(activity.getDescription()).append("\n")
+                        .append(spacing).append("Payer: ").append(activity.getPayer().getName())
+                        .append("\n").append(spacing).append("Amount: ").append(friend.toString(true))
+                        .append("\n");
             }
         }
-        return outputString;
+        return outputString.toString();
     }
 
     public String getPayerString(Activity activity) {
-        String spacing = "    ";
         Collection<Person> friendsCollection = activity.getAllFriends();
-        String outputString = "[PAYER] Desc: " + activity.getDescription() + "\n"
-                + spacing + "Owed by: ";
+        StringBuilder outputString = new StringBuilder("[PAYER] Desc: " + activity.getDescription() + "\n"
+                + spacing + "Owed by: ");
         for (Person friend : friendsCollection) {
-            outputString += friend.toString(false) + " ";
+            outputString.append(friend.toString(false)).append(" ");
         }
-        return outputString;
+        return outputString.toString();
+    }
+
+    public ArrayList<Activity> getPersonActivities(String name, ArrayList<Activity> allActivities) {
+        return getActivities(name, allActivities);
     }
 }

@@ -1,9 +1,11 @@
 package paypals.commands;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import paypals.Activity;
 import paypals.ActivityManager;
 import paypals.Person;
 import paypals.util.UI;
@@ -17,9 +19,12 @@ public class SplitCommand extends Command {
 
     public void execute(ActivityManager activityManager, boolean enablePrint) {
         UI ui = new UI(enablePrint);
-        HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
+        HashMap<String, Double> netOwedMap = getNetOwedMap(activityManager);
         ArrayList<Person> persons = new ArrayList<>();
         for (Map.Entry<String, Double> entry : netOwedMap.entrySet()) {
+            if (entry.getValue() == 0.0){
+                continue;
+            }
             persons.add(new Person(entry.getKey(), entry.getValue(),false));
         }
         ArrayList<String> transactions = new ArrayList<>();
@@ -76,65 +81,24 @@ public class SplitCommand extends Command {
         }
         return minIndex;
     }
-}
 
-
-
-/*public void execute(ActivityManager activityManager) {
-    HashMap<String,Double> netOwedMap = activityManager.getNetOwedMap();
-    ArrayList<Person> netOwedArray = new ArrayList<>();
-    for (Map.Entry<String, Double> entry : netOwedMap.entrySet()) {
-        String key = entry.getKey();
-        Double value = entry.getValue();
-        netOwedArray.add(new Person(key,value,false));
-    }
-    netOwedArray.sort(Comparator.comparingDouble(Person::getAmount).reversed());
-
-    System.out.println("Best way to settle debts:");
-
-    int leftIndex = 0;
-    int rightIndex = netOwedArray.size() - 1;
-
-    while (leftIndex < rightIndex) {
-        Person leftPerson = netOwedArray.get(leftIndex);  // Creditor
-        Person rightPerson = netOwedArray.get(rightIndex); // Debtor
-
-        double leftAmount = leftPerson.getAmount();
-        double rightAmount = Math.abs(rightPerson.getAmount());
-
-        if (leftAmount > rightAmount) { // Creditor has more than debtor can pay
-            leftPerson.addAmount(leftAmount - rightAmount);
-            rightPerson.addAmount(0);
-            System.out.println(rightPerson.getName() + " pays " + leftPerson.getName() + " $" + rightAmount);
-            rightIndex--; // Move to next debtor
-        } else if (leftAmount < rightAmount) { // Debtor still owes after paying
-            rightPerson.addAmount(-(rightAmount - leftAmount)); // Keep it negative
-            leftPerson.addAmount(0);
-            System.out.println(rightPerson.getName() + " pays " + leftPerson.getName() + " $" + leftAmount);
-            leftIndex++; // Move to next creditor
-        } else { // Exact match
-            rightPerson.addAmount(0);
-            leftPerson.addAmount(0);
-            System.out.println(rightPerson.getName() + " pays " + leftPerson.getName() + " $" + rightAmount);
-            leftIndex++;
-            rightIndex--;
-            if (leftAmount > rightAmount) { // Creditor has more than debtor can pay
-                leftPerson.addAmount(leftAmount - rightAmount);
-                rightPerson.addAmount(0);
-                System.out.println(rightPerson.getName() + " pays " + leftPerson.getName() + " $" + rightAmount);
-                rightIndex--; // Move to next debtor
-            } else if (leftAmount < rightAmount) { // Debtor still owes after paying
-                rightPerson.addAmount(-(rightAmount - leftAmount)); // Keep it negative
-                leftPerson.addAmount(0);
-                System.out.println(rightPerson.getName() + " pays " + leftPerson.getName() + " $" + leftAmount);
-                leftIndex++; // Move to next creditor
-            } else { // Exact match
-                rightPerson.addAmount(0);
-                leftPerson.addAmount(0);
-                System.out.println(rightPerson.getName() + " pays " + leftPerson.getName() + " $" + rightAmount);
-                leftIndex++;
-                rightIndex--;
+    public HashMap<String, Double> getNetOwedMap(ActivityManager activityManager) {
+        HashMap<String, Double> netOwedMap = new HashMap<>();
+        int activitiesSize = activityManager.getSize();
+        for (int i = 0; i < activitiesSize; i++) {
+            Activity activity = activityManager.getActivity(i);
+            String payerName = activity.getPayer().getName();
+            Collection<Person> allFriends = activity.getAllFriends();
+            for (Person friend : allFriends) {
+                if (friend.hasPaid()){
+                    continue;
+                }
+                String friendName = friend.getName();
+                Double amountOwed = friend.getAmount();
+                netOwedMap.put(friendName, netOwedMap.getOrDefault(friendName,0.0) - amountOwed);
+                netOwedMap.put(payerName, netOwedMap.getOrDefault(payerName,0.0) + amountOwed);
             }
         }
+        return netOwedMap;
     }
-}*/
+}

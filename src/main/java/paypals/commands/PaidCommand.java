@@ -59,10 +59,9 @@ public class PaidCommand extends Command {
 
     public Activity getValidActivity(ActivityManager activityManager, String friendName, int index)
             throws PayPalsException {
-        HashMap<String, ArrayList<Activity>> personActivitiesMap = activityManager.getPersonActivitiesMap();
-        ArrayList<Activity> activities = personActivitiesMap.get(friendName);
+        ArrayList<Activity> activities = getPersonActivities(friendName,activityManager.getActivityList());
 
-        if (activities == null) {
+        if (activities.isEmpty()) {
             throw new PayPalsException(ExceptionMessage.INVALID_FRIEND, friendName);
         }
 
@@ -89,7 +88,6 @@ public class PaidCommand extends Command {
     public void markAsPaid(Activity activity, String friendName, ActivityManager activityManager) {
         Person friend = activity.getFriend(friendName);
         friend.markAsPaid();
-        updateNetOwedMap(activityManager, activity, friendName);
     }
 
     public void markAllAsPaid(Activity activity, ActivityManager activityManager) {
@@ -101,26 +99,23 @@ public class PaidCommand extends Command {
             markAsPaid(activity, friend.getName(), activityManager);
         }
     }
-    //updates netOwedMap
-    public void updateNetOwedMap(ActivityManager activityManager, Activity activity, String friendName) {
-        HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
-        String payerName = activity.getPayer().getName();
-        Person friend = activity.getFriend(friendName);
-        double amount = friend.getAmount();
 
-        updateNetAmount(netOwedMap, friendName, amount);
-        updateNetAmount(netOwedMap, payerName, -amount);
+    public ArrayList<Activity> getPersonActivities(String name, ArrayList<Activity> allActivities) {
+        return getActivities(name, allActivities);
     }
 
-    //updates netOwedMap for a specific person
-    public void updateNetAmount(HashMap<String, Double> netOwedMap, String name, double amount) {
-        double updatedAmount = netOwedMap.getOrDefault(name, 0.0) + amount;
-
-        if (updatedAmount == 0.0) {
-            netOwedMap.remove(name);
-        } else {
-            netOwedMap.put(name, updatedAmount);
+    static ArrayList<Activity> getActivities(String name, ArrayList<Activity> allActivities) {
+        ArrayList<Activity> personActivities = new ArrayList<>();
+        for (Activity activity : allActivities) {
+            if (activity.getPayer().getName().equals(name)) {
+                personActivities.add(activity);
+            } else {
+                HashMap<String, Person> owed = activity.getOwed();
+                if (owed.containsKey(name)) {
+                    personActivities.add(activity);
+                }
+            }
         }
+        return personActivities;
     }
-
 }

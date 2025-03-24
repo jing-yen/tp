@@ -45,6 +45,10 @@ public class Activity {
         return owed.values();
     }
 
+    public HashMap<String, Person> getOwed() {
+        return owed;
+    }
+
     @Override
     public String toString() {
         String spacing = "    ";

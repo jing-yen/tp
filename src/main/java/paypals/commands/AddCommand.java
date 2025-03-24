@@ -8,9 +8,7 @@ import paypals.exception.PayPalsException;
 import paypals.util.Logging;
 import paypals.util.UI;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,8 +56,6 @@ public class AddCommand extends Command {
 
         UI ui = new UI(enablePrint);
         HashMap<String, Double> owed = new HashMap<String, Double>();
-        HashMap<String, Double> netOwedMap = activityManager.getNetOwedMap();
-        HashMap<String, ArrayList<Activity>> personActivitesMap = activityManager.getPersonActivitiesMap();
 
         // Step 1: Extract description and payer name
         String description = extractValue("d/", ExceptionMessage.NO_DESCRIPTION);
@@ -69,13 +65,13 @@ public class AddCommand extends Command {
         assert !name.isEmpty() : "Payer name should not be null or empty";
 
         // Step 2: Capture all (f/... a/...) pairs
-        double totalOwed = 0;
         String[] pairs = command.split("\\s+f/");
+        double totalOwed = 0.0;
         for (int i = 1; i< pairs.length; i++) {
             String[] parameters = pairs[i].split("\\s+a/");
             if (parameters.length==2) {
                 String oweName = parameters[0].trim();
-                Double oweAmount;
+                double oweAmount;
                 try {
                     oweAmount = Double.parseDouble(parameters[1]);
                 } catch (Exception e) {
@@ -84,7 +80,6 @@ public class AddCommand extends Command {
                 }
                 validateFriend(name, oweName, owed);
                 owed.put(oweName, oweAmount);
-                netOwedMap.put(oweName, netOwedMap.getOrDefault(oweName,0.0) - oweAmount);
                 totalOwed += oweAmount;
 
                 Logging.logInfo("Friend added successfully");
@@ -95,8 +90,6 @@ public class AddCommand extends Command {
             }
         }
 
-        netOwedMap.put(name, netOwedMap.getOrDefault(name,0.0) + totalOwed);
-
         assert totalOwed >= 0 : "Total owed amount should not be negative";
 
         ui.print("Desc: "+description);
@@ -105,18 +98,6 @@ public class AddCommand extends Command {
         Activity newActivity = new Activity(description, new Person(name, -totalOwed, false), owed);
         activityManager.addActivity(newActivity);
 
-        //Map each friend to the activity
-        for (Map.Entry<String, Double> entry : owed.entrySet()){
-            ArrayList<Activity> activitiesList =
-                    personActivitesMap.computeIfAbsent(entry.getKey(), k -> new ArrayList<>());
-
-            activitiesList.add(newActivity);
-        }
-        //Map the payer to the activity
-        ArrayList<Activity> activitiesList = personActivitesMap.computeIfAbsent(name, k -> new ArrayList<>());
-        activitiesList.add(newActivity);
-
         Logging.logInfo("Activity added successfully");
-
     }
 }
