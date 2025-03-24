@@ -3,9 +3,9 @@ package paypals;
 public class Person {
     private String name;
     private double amount;
-    private Boolean hasPaid;
+    private boolean hasPaid;
 
-    public Person(String name, double amount, Boolean hasPaid) {
+    public Person(String name, double amount, boolean hasPaid) {
         this.name = name;
         this.amount = amount;
         this.hasPaid = hasPaid;
@@ -31,11 +31,11 @@ public class Person {
         this.hasPaid = true;
     }
 
-    public Boolean hasPaid() {
+    public boolean hasPaid() {
         return hasPaid;
     }
 
-    public String toString(Boolean printAmount) {
+    public String toString(boolean printAmount) {
         return printAmount ? "$" + String.format("%.2f", amount) + " " + printPaidStatus() :
                 name + " " + printPaidStatus();
     }
