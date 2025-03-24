@@ -15,25 +15,33 @@ import java.util.Map;
 
 public class Parser {
 
-    final Map<String, String> COMMAND_EXAMPLE =
+    private static final Map<String, String> COMMAND_EXAMPLE =
             Map.of("add", "add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_OWED_1 f/FRIEND2 a/AMOUNT_OWED_2...",
                     "delete", "delete i/IDENTIFIER",
                     "paid", "paid n/NAME i/IDENTIFIER");
 
-    public Command decodeCommand(String command) throws PayPalsException {
-        String[] tokens = command.split(" ", 2);
+    public Command decodeCommand(String input) throws PayPalsException {
+        String[] tokens = input.split(" ", 2);
+        if (tokens.length != 2 && tokens.length != 1) {
+            throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
+        }
+        String command = tokens[0].trim();
+        String parameters = "";
+        if (tokens.length == 2) {
+            parameters = tokens[1].trim();
+        }
         try {
-            switch (tokens[0]) {
+            switch (command) {
             case "add":
-                return new AddCommand(tokens[1]);
+                return new AddCommand(parameters);
             case "delete":
-                return new DeleteCommand(tokens[1]);
+                return new DeleteCommand(parameters);
             case "list":
-                return tokens.length == 1 ? new ListCommand("") : new ListCommand(tokens[1]);
+                return new ListCommand(parameters);
             case "split":
                 return new SplitCommand("");
             case "paid":
-                return new PaidCommand(tokens[1]);
+                return new PaidCommand(parameters);
             case "exit":
                 return new ExitCommand("");
             case "help":
@@ -42,7 +50,7 @@ public class Parser {
                 throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, COMMAND_EXAMPLE.get(tokens[0]));
+            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, COMMAND_EXAMPLE.get(command));
         }
     }
 }

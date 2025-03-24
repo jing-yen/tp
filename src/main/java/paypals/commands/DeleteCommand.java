@@ -81,7 +81,7 @@ public class DeleteCommand extends Command {
         boolean idIsTooLarge = id >= size;
         boolean idIsTooSmall = id < 0;
 
-        if (idIsTooLarge | idIsTooSmall) {
+        if (idIsTooLarge || idIsTooSmall) {
             Logging.logWarning("Identifier out of bounds: id=" + id + ", size=" + size);
             throw new PayPalsException(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER, Integer.toString(id+1));
         }
