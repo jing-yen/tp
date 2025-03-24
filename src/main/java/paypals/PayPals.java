@@ -32,7 +32,7 @@ public class PayPals {
         Logging.logInfo("Entering main program body. Begin accepting user commands");
         while (!isExit) {
             try {
-                System.out.print("💵> ");
+                System.out.print("> ");
                 String fullCommand = ui.readLine();
                 Command c = parser.decodeCommand(fullCommand);
                 c.execute(activityManager, true);
