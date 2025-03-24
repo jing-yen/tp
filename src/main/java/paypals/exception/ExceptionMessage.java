@@ -2,7 +2,7 @@ package paypals.exception;
 
 public enum ExceptionMessage {
     INVALID_COMMAND("INPUT ERROR: Invalid command entered" +
-            "\nTry these commands: add | delete | list | split | paid | exit"),
+            "\nTry these commands: add | delete | list | split | paid | exit | help"),
     NO_DESCRIPTION("INPUT ERROR: No activity description"),
     NO_IDENTIFIER("INPUT ERROR: No identifier entered"),
     INVALID_FORMAT("INPUT ERROR: Correct format should be: "),

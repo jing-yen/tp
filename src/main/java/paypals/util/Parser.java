@@ -7,6 +7,7 @@ import paypals.commands.ExitCommand;
 import paypals.commands.ListCommand;
 import paypals.commands.PaidCommand;
 import paypals.commands.SplitCommand;
+import paypals.commands.HelpCommand;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
@@ -35,6 +36,8 @@ public class Parser {
                 return new PaidCommand(tokens[1]);
             case "exit":
                 return new ExitCommand("");
+            case "help":
+                return new HelpCommand("");
             default:
                 throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
             }

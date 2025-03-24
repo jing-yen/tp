@@ -53,6 +53,7 @@ public class ListCommand extends Command {
         Pattern pattern = Pattern.compile("^n/([^/]+)$");
         Matcher matcher = pattern.matcher(command);
         if (!matcher.matches()) {
+            Logging.logWarning("Invalid input format");
             throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_LIST_FORMAT);
         }
         String name = matcher.group(1);
