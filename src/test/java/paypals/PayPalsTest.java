@@ -8,17 +8,13 @@ import paypals.commands.Command;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
-import java.util.HashMap;
-
 public class PayPalsTest {
 
     protected ActivityManager activityManager;
-    protected HashMap<String, Double> netOwedMap;
 
     @BeforeEach
     public void setUp() {
         activityManager = new ActivityManager();
-        netOwedMap = activityManager.getNetOwedMap();
     }
 
     protected void assertException(Exception e, ExceptionMessage em) {
