@@ -39,6 +39,9 @@ A quick reference table for all commands is presented below.
   - [Command Reference](#command-reference)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
+    - [Expense Tracking](#expense-tracking)
+    - [Debt Settlement](#debt-settlement)
+    - [Storage](#storage)
   - [Command Format](#command-format)
     - [Adding an expense with details: `add`](#adding-an-expense-with-details-add)
     - [Delete an expense: `delete`](#delete-an-expense-delete)
@@ -51,10 +54,24 @@ A quick reference table for all commands is presented below.
 ## Features 
 
 Notes about the command format:
-- Words in UPPER_CASE are the parameters to be supplied by the user. e.g. in add n/NAME, NAME is a parameter which can be used as add n/John Doe.
+- Words in UPPER_CASE are the parameters to be supplied by the user. e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John`.
   - Parameters are case-insensitive and cannot contain the symbol `/`.
-- Items in square brackets are optional. e.g n/NAME [t/TAG] can be used as n/John Doe t/friend or as n/John Doe.
-- Items with ... after them can be used multiple times including zero times. e.g. [t/TAG]... can be used as (i.e. 0 times), t/friend, t/friend t/family etc.
+- Items in square brackets are optional. e.g `n/NAME [t/TAG]` can be used as `n/John t/friend` or as `n/John`.
+- Items with ... after them can be used multiple times including zero times. e.g. `[t/TAG]`... can be used as (i.e. 0 times), `t/friend, t/friend t/family` etc.
+
+### Expense Tracking
+
+Our app lets users effortlessly record shared expenses, ensuring everyone’s contributions are accurately tracked.
+
+### Debt Settlement
+
+When it’s time to split the total bill, the app simplifies the process by calculating net balances for each member. It then recommends the fewest necessary transactions to clear debts, helping you streamline payments and reduce the hassle of back-and-forth settlements.
+
+### Storage
+
+PayPals data is saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+The file is also created automatically if it does not exist.
+Note: Do not edit any of the data files manually as it will result in corrupted files.
 
 ## Command Format
 
