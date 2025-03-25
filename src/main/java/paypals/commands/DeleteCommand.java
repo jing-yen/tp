@@ -31,10 +31,10 @@ public class DeleteCommand extends Command {
         int id = getID(identifier, activityManager.getSize());
         assert id == Integer.parseInt(identifier) - 1 : "ID should match the identifier - 1";
         Activity deletedActivity = activityManager.getActivity(id);
-        Collection<Person> owed = deletedActivity.getAllFriends();
-        boolean hasPaid = false;
-        ui.print("Expense removed successfully!");
+        //Collection<Person> owed = deletedActivity.getAllFriends();
+        //boolean hasPaid = false;
         activityManager.deleteActivity(id);
+        ui.print("Expense removed successfully!");
         Logging.logInfo("Activity with id " + id + " has been deleted from ActivityManager.");
     }
 
