@@ -2,13 +2,11 @@ package paypals.commands;
 
 import paypals.Activity;
 import paypals.ActivityManager;
-import paypals.Person;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 import paypals.util.Logging;
 import paypals.util.UI;
 
-import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
