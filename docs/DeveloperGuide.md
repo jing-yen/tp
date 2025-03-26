@@ -1,22 +1,26 @@
 # Developer Guide
 ## Table of Contents
+- [Developer Guide](#developer-guide)
+- [Table of Contents](#table-of-contents)
 - [Acknowledgements](#acknowledgements)
-- [Design](#design)
+- [Design \& Implementation](#design--implementation)
   - [Architecture](#architecture)
-  - [UI component]()
-  - [Logic component]()
-  - [Model component]()
-  - [Storage component]()
-  - [Common classes]()
-- [Implementation](#implementation)
+  - [UI Component](#ui-component)
+  - [Parser Component](#parser-component)
+  - [Command Component](#command-component)
+  - [Activity Component](#activity-component)
+  - [Storage Component](#storage-component)
+  - [Common Classes](#common-classes)
 - [Documentation, logging, testing, configuration, dev-ops]()
 - [Appendix: Requirements](#appendix-requirements)
   - [Product scope](#product-scope)
-  - [User stories](#user-stories)
+  - [Target user profile](#target-user-profile)
+  - [Value proposition](#value-propposition)
+  - [User Stories](#user-stories)
   - [Use cases](#use-cases)
   - [Non-functional Requirements](#non-functional-requirements)
   - [Glossary](#glossary)
-- [Appendix: Instructions for Testing](#instructions-for-testing)
+- [Appendix: Instructions for Testing](#appendix-instructions-for-testing)
   - [Deleting a person]()
   - [Saving data]()
 
@@ -27,7 +31,8 @@ PayPals uses the following tools for development and testing:
 1. [JUnit 5](https://junit.org/junit5/) - Used for software testing.
 2. [Gradle](https://gradle.org) - Used for build automation.
 
-## Design
+## Design & Implementation
+
 ### Architecture
 
 (edit in docs/diagram/MainArchitecture.puml)
@@ -50,25 +55,35 @@ The bulk of the app's work is down by the following five components:
 **How the architecture components interact with each other**  
 The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command ``  
   
-  
-### UI component
+### UI Component
 
-### Parser component
+### Parser Component
 
-### Command component
+### Command Component
 
-### Activity component
+<ins>Overview</ins>
 
-### Storage component
+The abstract `Command` class has been implemented to introduce an additional layer of abstraction between I/O and command execution, allowing for separation of handling command keywords and executing commands.
 
-## Implementation
+The `Command` class has been subdivided into further packages for similar commands, such as `AddCommand` and `EditCommand`.
+
+<ins>Implementation Details</ins>
+
+The following diagram is an inheritance diagram for `Command` and its children classes. This has been heavily simplified to show just the high level overview.
+
+![Command Inheritance Diagram](diagrams/CommandInheritance.png)
+
+### Activity Component
+
+### Storage Component
 
 ## Appendix: Requirements
-## Product scope
+
+### Product scope
+
 ### Target user profile:
 - has a need to manage expenses when travelling with friends
 - prefer desktop apps over other types
-- can type fast
 - prefers typing to mouse interactions
 - is reasonably comfortable with CLI apps
 
@@ -78,7 +93,7 @@ This product is for university students who frequently travel with friends.
 
 The product aims to provide assistance in simplifying payments by minimising the number of transactions needed to balance expenses.
 
-## User Stories
+### User Stories
 
 | Version | As a ...                          | I can ...                                                         | So that I ...                                               |
 |---------|-----------------------------------|-------------------------------------------------------------------|-------------------------------------------------------------|
@@ -90,7 +105,7 @@ The product aims to provide assistance in simplifying payments by minimising the
 | v1.0    | user                              | save current expenses when I exit the application                 | can view them again when I run the application another time |
 | v2.0    | new user                          | use a command to display all the common commands and their syntax | know how to use the app                                     |
 
-## Use cases
+### Use cases
 (For all use cases below, the **System** is `Paypals` and the **Actor** is the `user`, unless specified otherwise)
 ### Use case: Delete an expense  
   
@@ -109,13 +124,13 @@ The product aims to provide assistance in simplifying payments by minimising the
   - 3a1. Paypals shows an error message.  
     Use case resumes at step 2.
 
-## Non-Functional Requirements
+### Non-Functional Requirements
 1. Should work on any mainstream OS as long as it has Java `17` or above installed.
 2. Should be able to hold up to 1000(?) expenses without a noticeable sluggishness in performance for typical usage
 3. A user with above average typing speed for regular English test (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 4. (add more)
 
-## Glossary
+### Glossary
 
 * *Mainstream OS* - Windows, Linux, Unix, macOS
 * Payer - The person that has paid for a specific activity for the group.
