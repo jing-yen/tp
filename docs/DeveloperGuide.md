@@ -57,7 +57,11 @@ The *Sequence Diagram* below shows how the components interact with each other f
   
 ### UI Component
 
+{Add details of UI here}
+
 ### Parser Component
+
+{Add details of Parser here}
 
 ### Command Component
 
@@ -65,7 +69,7 @@ The *Sequence Diagram* below shows how the components interact with each other f
 
 The abstract `Command` class has been implemented to introduce an additional layer of abstraction between I/O and command execution, allowing for separation of handling command keywords and executing commands.
 
-The `Command` class has been subdivided into further packages for similar commands, such as `AddCommand` and `EditCommand`.
+The `Command` class has been subdivided into further packages for similar commands, such as `AddCommand` and `DeleteCommand`.
 
 <ins>Implementation Details</ins>
 
@@ -75,7 +79,11 @@ The following diagram is an inheritance diagram for `Command` and its children c
 
 ### Activity Component
 
+{Activity Component}
+
 ### Storage Component
+
+{Storage Component}
 
 ## Appendix: Requirements
 
