@@ -116,10 +116,11 @@ The `Storage` class is responsible for managing the loading and saving of data o
 ```
 DESCRIPTION|PAYER|AMOUNT|HASPAID|FRIEND|AMOUNT|HASPAID...
 ```
+![Sample save file](diagrams/savefile.png)
 
 The following is the sequence diagram for loading data from the save file into the `ActivityManager`.
 
-![Load Storage](diagram/StorageLoad.png)
+![Load Storage](diagrams/StorageLoad.png)
 
 <ins>Attributes</ins>
 
