@@ -15,7 +15,7 @@ rectangle {
 file Files #lightyellow
 
 ' Define relationships between components
-User -[#black,dashed]down-> Ui
+User -[#black,dashed]right-> Ui
 Paypals --> Ui
 Paypals --> Storage
 Storage -[LOGIC_COLOR_P]-> Activity
@@ -23,6 +23,7 @@ Storage -[LOGIC_COLOR_P,dashed]-> Files
 Paypals --> Command
 Command -[LOGIC_COLOR_G]-> Activity
 Paypals --> Parser
+Parser -[dashed]-> Command
 
 @enduml
 
