@@ -1,0 +1,34 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide circle
+
+class "{abstract}\nCommand" {
+    -command: String
+    +execute(enablePrint: boolean)
+}
+
+class ActivityManager {
+
+}
+
+"{abstract}\nCommand" -> "1" ActivityManager
+
+together {
+    class AddCommand
+    class ExitCommand
+    class ListCommand
+    class DeleteCommand
+    class HelpCommand
+    class PaidCommand
+    class SplitCommand
+}
+
+AddCommand -up-|> "{abstract}\nCommand"
+ExitCommand-up-|> "{abstract}\nCommand"
+ListCommand -up-|> "{abstract}\nCommand"
+DeleteCommand -up-|> "{abstract}\nCommand"
+HelpCommand -up-|> "{abstract}\nCommand"
+PaidCommand -up-|> "{abstract}\nCommand"
+SplitCommand -up-|> "{abstract}\nCommand"
+
+@enduml
