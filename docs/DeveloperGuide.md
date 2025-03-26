@@ -14,8 +14,8 @@
 - [Documentation, logging, testing, configuration, dev-ops]()
 - [Appendix: Requirements](#appendix-requirements)
   - [Product scope](#product-scope)
-  - [Target user profile](#target-user-profile)
-  - [Value proposition](#value-propposition)
+    - [Target user profile](#target-user-profile)
+    - [Value proposition](#value-propposition)
   - [User Stories](#user-stories)
   - [Use cases](#use-cases)
   - [Non-functional Requirements](#non-functional-requirements)
@@ -77,6 +77,19 @@ The following diagram is an inheritance diagram for `Command` and its children c
 
 ![Command Inheritance Diagram](diagrams/CommandInheritance.png)
 
+<ins>Attributes</ins>
+
+The abstract class `Command` have the following attributes:
+
+* *command*: String containing the command that was input by the user.
+
+<ins>Methods</ins>
+
+The abstract class `Command` have the following methods:
+
+* *Command*: Constructor that updates the `command` attribute based on its input argument.
+* *execute*: Method that is overridden by its child classes to fit their functionalities.
+
 ### Activity Component
 
 {Activity Component}
@@ -89,7 +102,7 @@ The following diagram is an inheritance diagram for `Command` and its children c
 
 ### Product scope
 
-### Target user profile:
+#### Target user profile:
 - has a need to manage expenses when travelling with friends
 - prefer desktop apps over other types
 - prefers typing to mouse interactions
@@ -97,7 +110,7 @@ The following diagram is an inheritance diagram for `Command` and its children c
 
 This product is for university students who frequently travel with friends.
 
-### Value proposition
+#### Value proposition
 
 The product aims to provide assistance in simplifying payments by minimising the number of transactions needed to balance expenses.
 
