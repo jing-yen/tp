@@ -96,7 +96,40 @@ The abstract class `Command` have the following methods:
 
 ### Storage Component
 
-{Storage Component}
+<ins>Overview</ins>
+
+The `Storage` class is responsible for managing the loading and saving of data of transactions and activities from and onto the local machine. `PayPals` will load the saved data from a save file right after starting the application, and saves all the data back into the save file when the application is exited.
+
+<ins>Implementation Details</ins>
+
+`Storage` will create `savefile.txt` and store in under the directory `./data`. The file format is as follows, with samples provided.
+
+```
+DESCRIPTION|PAYER|AMOUNT|HASPAID|FRIEND|AMOUNT|HASPAID...
+```
+
+The following is the sequence diagram for loading data from the save file into the `ActivityManager`.
+
+![Load Storage](diagram/StorageLoad.png)
+
+<ins>Attributes</ins>
+
+* *SEPARATOR*: String containing the ASCII character 31 which is an untypable character and used as the separator when storing data in the save file.
+* *SAVE_FILE_STRING*: String representing the name of the save file.
+* *storageFolderPath*: String representing the path of the `data` directory which contains the save file.
+* *activityFile*: A File object representing the `savefile.txt` file.
+* *scanner*: A Scanner object used for reading the data from the save file.
+
+<ins>Methods</ins>
+
+* *Storage*: Creates the relavant storage directory and file if it does not exist, while initializing the attributes of the object.
+* *save*: Goes through each `Activity` in `ActivityManager` and saves its data in the save file.
+* *load*: Reads the save file line by line with the `Scanner` object and load the data into `ActivityManager`.
+* *processLine*: Processes a single line of the save file to be loaded.
+* *buildInput*: Builds the command input string from the parts obtained in the save file, while also recording each `Person` that `hasPaid` is `true`.
+* *executeAddCommand*: Creates and executes the add command to load the data from a specific `Activity` into `ActivityManager` based on the input string.
+* *executePaidCommand*: Creates and executes the paid command for each name in a specific `Activity`
+* *deleteDir*: Recursively delete a directory and all its contents.
 
 ## Appendix: Requirements
 
