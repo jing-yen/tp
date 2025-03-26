@@ -1,0 +1,8 @@
+@startuml
+'https://plantuml.com/deployment-diagram
+!define LOGIC_COLOR_R #red
+!define LOGIC_COLOR_Y #yellow
+!define LOGIC_COLOR_G #palegreen
+!define LOGIC_COLOR_B #deepskyblue
+!define LOGIC_COLOR_P #violet
+@enduml
