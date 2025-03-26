@@ -91,8 +91,17 @@ The abstract class `Command` have the following methods:
 * *execute*: Method that is overridden by its child classes to fit their functionalities.
 
 ### Activity Component
+<ins>Overview</ins>
 
-{Activity Component}
+The Activity component models shared expenses in PayPals. It stores the activity description, the payer, and a list of people who owe money. 
+
+The ActivityManager class manages a list of these activities, while the Person class represents individuals involved.
+
+<ins>Implementation Details</ins>
+
+The following diagram shows the key classes in the Activity component and their relationships. This has been simplified to highlight the core data model:
+
+![Activity Class Diagram](diagrams/ActivityRelationships.png)
 
 ### Storage Component
 

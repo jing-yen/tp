@@ -1,0 +1,55 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide circle
+
+class Activity {
+    - description: String
+    - payer: Person
+    - owed: HashMap<String, Person>
+    + Activity(description: String, payer: Person, owedMap: HashMap<String, Double>)
+    + getDescription(): String
+    + getPayer(): Person
+    + getFriend(name: String): Person
+    + getAllFriends(): Collection<Person>
+    + getOwed(): HashMap<String, Person>
+    + setOwed(owed: HashMap<String, Person>): void
+    + toString(): String
+    + toStorageString(separator: String): String
+}
+
+class ActivityManager {
+    - activities: ArrayList<Activity>
+    + ActivityManager()
+    + addActivity(activity: Activity): void
+    + getSize(): int
+    + getActivity(id: int): Activity
+    + deleteActivity(id: int): void
+    + getActivityList(): ArrayList<Activity>
+}
+
+class Person {
+    - name: String
+    - amount: double
+    - hasPaid: boolean
+    + Person(name: String, amount: double, hasPaid: boolean)
+    + getName(): String
+    + setName(name: String): void
+    + getAmount(): double
+    + addAmount(amount: double): void
+    + markAsPaid(): void
+    + hasPaid(): boolean
+    + toString(printAmount: boolean): String
+    + printPaidStatus(): String
+}
+
+class Logging {
+    + logInfo(message: String): void
+}
+
+ActivityManager "1" *-- "*" Activity
+Activity --> "1" Person : payer
+Activity --> "*" Person : owedFriends
+Person --> "*" Activity : paysFor
+Person --> "*" Activity : owesIn
+Activity --> Logging : uses
+@enduml
