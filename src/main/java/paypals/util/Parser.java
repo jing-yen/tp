@@ -11,7 +11,6 @@ import paypals.commands.ExitCommand;
 import paypals.commands.HelpCommand;
 import paypals.commands.EditCommand;
 import paypals.commands.UnpaidCommand;
-import paypals.commands.Command;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
