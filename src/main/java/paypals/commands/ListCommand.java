@@ -9,24 +9,40 @@ import paypals.util.Logging;
 import paypals.util.UI;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static paypals.commands.PaidCommand.getActivities;
+import static paypals.ActivityManager.getActivities;
 
+/**
+ * Handles the "list" command in PayPals, used to list all activities
+ * or activities related to a specific person.
+ */
 public class ListCommand extends Command {
 
     private static final String WRONG_LIST_FORMAT = "list n/NAME";
+    private static final Pattern NAME_PATTERN = Pattern.compile("^n/([^/]+)$");
+    private static final String INDENT = "    ";
 
     private final UI ui;
 
-    private final String spacing = "    ";
+    /**
+     * Constructs a ListCommand with the specified command string.
+     *
+     * @param command the command string, e.g., "" or "n/NAME"
+     */
     public ListCommand(String command) {
         super(command);
         this.ui = new UI(true);
     }
 
+    /**
+     * Executes the list command based on whether a name is provided.
+     *
+     * @param activityManager the manager holding all activities
+     * @param enablePrint     whether to enable printing
+     * @throws PayPalsException if the command format is invalid or the person is not found
+     */
     @Override
     public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
         if (command.isEmpty()) {
@@ -36,70 +52,112 @@ public class ListCommand extends Command {
         }
     }
 
-    public void printAllActivities(ActivityManager activityManager) {
-        UI ui = new UI(true);
-        if (activityManager.getSize()==0) {
+    /**
+     * Prints all activities
+     *
+     * @param activityManager the manager containing all activities
+     */
+    private void printAllActivities(ActivityManager activityManager) {
+        if (activityManager.getSize() == 0) {
             ui.print("You currently have no activities.");
             return;
         }
+
         ui.print("You have " + activityManager.getSize() + " activities:");
-        for (int i = 0; i < activityManager.getSize(); i++) {
-            Activity activity = activityManager.getActivity(i);
-            int index = i + 1;
-            ui.print(index + ".  " + activity.toString());
-        }
+
+        ArrayList<Activity> allActivities = activityManager.getActivityList();
+        printActivities(allActivities);
     }
 
-    public void printPersonActivities(ActivityManager activityManager) throws PayPalsException{
-        Pattern pattern = Pattern.compile("^n/([^/]+)$");
-        Matcher matcher = pattern.matcher(command);
+    /**
+     * Prints activities related to a specific person, split into paid and unpaid categories.
+     *
+     * @param activityManager the manager containing all activities
+     * @throws PayPalsException if the command format is invalid or the person is not found
+     */
+    private void printPersonActivities(ActivityManager activityManager) throws PayPalsException {
+        Matcher matcher = NAME_PATTERN.matcher(command);
         if (!matcher.matches()) {
             Logging.logWarning("Invalid input format");
             throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_LIST_FORMAT);
         }
+
         String name = matcher.group(1);
-        ArrayList<Activity> personActivities = getPersonActivities(name,activityManager.getActivityList());
+        ArrayList<Activity> personActivities = getActivities(name, activityManager.getActivityList());
 
         if (personActivities.isEmpty()) {
             Logging.logWarning("Payer could not be found");
             throw new PayPalsException(ExceptionMessage.NO_PAYER);
         }
-        ui.print(getListString(name,personActivities));
-    }
 
-    public String getListString(String name, ArrayList<Activity> activities) {
-        StringBuilder outputString = new StringBuilder(name + ":\n");
-        for (int i = 0; i < activities.size(); i++) {
-            Activity activity = activities.get(i);
-            int index = i + 1;
-            Person friend = activity.getFriend(name);
+        ArrayList<Activity> paid = new ArrayList<>();
+        ArrayList<Activity> unpaid = new ArrayList<>();
 
-            outputString.append(index).append(".  ");
-            //name entered is the payer for the activity
-            if (friend == null) {
-                outputString.append(getPayerString(activity)).append("\n");
+        for (Activity activity : personActivities) {
+            if (activity.isActivityFullyPaid(name, false)) {
+                paid.add(activity);
             } else {
-                outputString.append("Desc: ")
-                        .append(activity.getDescription()).append("\n")
-                        .append(spacing).append("Payer: ").append(activity.getPayer().getName())
-                        .append("\n").append(spacing).append("Amount: ").append(friend.toString(true))
-                        .append("\n");
+                unpaid.add(activity);
             }
         }
-        return outputString.toString();
+
+        ui.print("Activities which have been fully paid for " + name + ":");
+        ui.print(formatActivitiesList(paid, name));
+
+        ui.print("Activities which have not been fully paid for " + name + ":");
+        ui.print(formatActivitiesList(unpaid, name));
     }
 
-    public String getPayerString(Activity activity) {
-        Collection<Person> friendsCollection = activity.getAllFriends();
-        StringBuilder outputString = new StringBuilder("[PAYER] Desc: " + activity.getDescription() + "\n"
-                + spacing + "Owed by: ");
-        for (Person friend : friendsCollection) {
-            outputString.append(friend.toString(false)).append(" ");
+    /**
+     * Prints a list of activities, each preceded by an index number.
+     *
+     * @param activities the list of activities to print
+     */
+    private void printActivities(ArrayList<Activity> activities) {
+        for (int i = 0; i < activities.size(); i++) {
+            ui.print((i + 1) + ".  " + activities.get(i));
         }
-        return outputString.toString();
+        ui.print("");
     }
 
-    public ArrayList<Activity> getPersonActivities(String name, ArrayList<Activity> allActivities) {
-        return getActivities(name, allActivities);
+    /**
+     * Formats a list of activities related to a person for printing.
+     *
+     * @param activities the list of activities
+     * @param name       the name of the person
+     * @return the formatted string of activities
+     */
+    private String formatActivitiesList(ArrayList<Activity> activities, String name) {
+        StringBuilder output = new StringBuilder();
+        for (int i = 0; i < activities.size(); i++) {
+            Activity activity = activities.get(i);
+            Person friend = activity.getFriend(name);
+
+            output.append(i + 1).append(".  ");
+            if (friend == null) {
+                output.append(formatPayerActivity(activity)).append("\n");
+            } else {
+                output.append("Desc: ").append(activity.getDescription()).append("\n")
+                        .append(INDENT).append("Payer: ").append(activity.getPayer().getName()).append("\n")
+                        .append(INDENT).append("Amount: ").append(friend.toString(true)).append("\n");
+            }
+        }
+        return output.toString();
+    }
+
+    /**
+     * Formats the activity string for a payer.
+     *
+     * @param activity the activity to format
+     * @return the formatted string
+     */
+    private String formatPayerActivity(Activity activity) {
+        StringBuilder result = new StringBuilder("[PAYER] Desc: ")
+                .append(activity.getDescription()).append("\n")
+                .append(INDENT).append("Owed by: ");
+        for (Person friend : activity.getAllFriends()) {
+            result.append(friend.toString(false)).append(" ");
+        }
+        return result.toString().trim();
     }
 }

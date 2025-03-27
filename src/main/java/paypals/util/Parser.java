@@ -4,12 +4,14 @@ import paypals.commands.AddCommand;
 import paypals.commands.AddEqualCommand;
 import paypals.commands.Command;
 import paypals.commands.DeleteCommand;
-import paypals.commands.EditCommand;
-import paypals.commands.ExitCommand;
 import paypals.commands.ListCommand;
-import paypals.commands.PaidCommand;
 import paypals.commands.SplitCommand;
+import paypals.commands.PaidCommand;
+import paypals.commands.ExitCommand;
 import paypals.commands.HelpCommand;
+import paypals.commands.EditCommand;
+import paypals.commands.UnpaidCommand;
+import paypals.commands.Command;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
@@ -52,6 +54,8 @@ public class Parser {
                 return new HelpCommand("");
             case "edit":
                 return new EditCommand(parameters);
+            case "unpaid":
+                return new UnpaidCommand(parameters);
             default:
                 throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
             }
