@@ -82,4 +82,24 @@ public class Activity {
         this.owed = owed;
     }
 
+    public void editDesc(String newDesc) {
+        this.description = newDesc;
+    }
+
+    public void editPayer(String newPayer) {
+        this.payer.editName(newPayer);
+    }
+
+    public void editOwedName(String name, String newName) {
+        Person newPerson = this.owed.remove(name);
+        if (newPerson != null) {
+            newPerson.editName(newName);
+            this.owed.put(newName, newPerson);
+        }
+    }
+
+    public void editOwedAmount(String name, double newAmount) {
+        this.owed.get(name).editAmount(newAmount);
+    }
+
 }

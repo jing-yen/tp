@@ -15,8 +15,12 @@ public class Person {
         return name;
     }
 
-    public void setName(String name) {
+    public void editName(String name) {
         this.name = name;
+    }
+
+    public void editAmount(double amount) {
+        this.amount = amount;
     }
 
     public double getAmount() {

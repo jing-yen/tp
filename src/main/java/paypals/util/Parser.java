@@ -3,6 +3,7 @@ package paypals.util;
 import paypals.commands.AddCommand;
 import paypals.commands.Command;
 import paypals.commands.DeleteCommand;
+import paypals.commands.EditCommand;
 import paypals.commands.ExitCommand;
 import paypals.commands.ListCommand;
 import paypals.commands.PaidCommand;
@@ -46,6 +47,8 @@ public class Parser {
                 return new ExitCommand("");
             case "help":
                 return new HelpCommand("");
+            case "edit":
+                return new EditCommand(parameters);
             default:
                 throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
             }

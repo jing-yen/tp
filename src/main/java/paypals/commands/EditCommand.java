@@ -1,0 +1,86 @@
+package paypals.commands;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import paypals.ActivityManager;
+import paypals.exception.ExceptionMessage;
+import paypals.exception.PayPalsException;
+import paypals.util.UI;
+
+public class EditCommand extends Command {
+
+    private static final Pattern COMMAND_PATTERN = Pattern.compile("([idnfao])/\\s*([^/]+?)(?=\\s+[idnfao]/|$)");
+
+    public EditCommand(String command) {
+        super(command);
+    }
+
+    @Override
+    public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
+        UI ui = new UI(enablePrint);
+        Map<String, String> parameters = parseCommand();
+
+        String id = parameters.getOrDefault("i", "");
+        if (id.isEmpty()) {
+            throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
+        }
+
+        int activityId = parseActivityId(id, activityManager.getSize() - 1);
+        applyEdit(activityManager, ui, activityId, parameters);
+    }
+
+    private Map<String, String> parseCommand() {
+        Map<String, String> parameters = new HashMap<>();
+        Matcher matcher = COMMAND_PATTERN.matcher(command);
+
+        while (matcher.find()) {
+            parameters.put(matcher.group(1), matcher.group(2).trim());
+        }
+        return parameters;
+    }
+
+    private int parseActivityId(String id, int size) throws PayPalsException {
+        try {
+            int activityId = Integer.parseInt(id) - 1;
+            if (activityId > size || activityId < 0) {
+                throw new PayPalsException(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
+            }
+            return activityId;
+        } catch (NumberFormatException e) {
+            throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER);
+        }
+    }
+
+    private void applyEdit(ActivityManager activityManager, UI ui, int activityId, Map<String, String> parameters)
+            throws PayPalsException {
+        if (parameters.get("d") != null) {
+            String description = parameters.get("d");
+            activityManager.editActivityDesc(activityId, description);
+            ui.print("Description has been changed to " + description);
+        } else if (parameters.get("n") != null) {
+            String payerName = parameters.get("n");
+            activityManager.editActivityPayer(activityId, payerName);
+            ui.print("Payer's name has been modified to " + payerName);
+        } else if (parameters.get("f") != null && parameters.get("o") != null) {
+            String friend = parameters.get("f");
+            String oldName = parameters.get("o");
+            activityManager.editActivityOwedName(activityId, oldName, friend);
+            ui.print(oldName + "'s name has been changed to " + friend);
+        } else if (parameters.get("a") != null && parameters.get("o") != null) {
+            try {
+                String amount = parameters.get("a");
+                String oldName = parameters.get("o");
+                double parseAmt = Double.parseDouble(amount);
+                activityManager.editActivityOwedAmount(activityId, oldName, parseAmt);
+                ui.print(oldName + "'s amount owed has been changed to " + amount);
+            } catch (NumberFormatException e) {
+                throw new PayPalsException(ExceptionMessage.INVALID_AMOUNT);
+            }
+        } else {
+            throw new PayPalsException(ExceptionMessage.EDIT_FORMAT_ERROR);
+        }
+    }
+}

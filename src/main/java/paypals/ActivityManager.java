@@ -17,7 +17,6 @@ public class ActivityManager {
         return activities.size();
     }
 
-
     public Activity getActivity(int id) {
         return activities.get(id);
     }
@@ -28,5 +27,21 @@ public class ActivityManager {
 
     public ArrayList<Activity> getActivityList() {
         return this.activities;
+    }
+
+    public void editActivityDesc(int activityId, String newDesc) {
+        activities.get(activityId).editDesc(newDesc);
+    }
+
+    public void editActivityPayer(int activityId, String newPayer) {
+        activities.get(activityId).editPayer(newPayer);
+    }
+
+    public void editActivityOwedName(int activityId, String name, String newName) {
+        activities.get(activityId).editOwedName(name, newName);
+    }
+
+    public void editActivityOwedAmount(int activityId, String name, double newAmount) {
+        activities.get(activityId).editOwedAmount(name, newAmount);
     }
 }
