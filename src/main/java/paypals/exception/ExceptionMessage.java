@@ -28,7 +28,9 @@ public enum ExceptionMessage {
             "\n Edit description: edit i/ID d/DESC" +
             "\n Edit payer name: edit i/ID n/NEWNAME" +
             "\n Edit friend name: edit i/ID f/NEWNAME o/OLDNAME" +
-            "\n Edit friend amount owed: edit i/ID a/NEWAMOUNT o/NAME");
+            "\n Edit friend amount owed: edit i/ID a/NEWAMOUNT o/NAME"),
+    NEGATIVE_AMOUNT("ERROR: Negative amount entered"),
+    NO_FRIENDS("ERROR: No friends were entered");
     private final String message;
 
     ExceptionMessage(String message) {
