@@ -1,6 +1,7 @@
 package paypals;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ActivityManager {
     private ArrayList<Activity> activities;
@@ -44,4 +45,34 @@ public class ActivityManager {
     public void editActivityOwedAmount(int activityId, String name, double newAmount) {
         activities.get(activityId).editOwedAmount(name, newAmount);
     }
+
+    public static ArrayList<Activity> getActivities(String name, ArrayList<Activity> allActivities) {
+        ArrayList<Activity> personActivities = new ArrayList<>();
+        for (Activity activity : allActivities) {
+            if (activity.getPayer().getName().equals(name)) {
+                personActivities.add(activity);
+            } else {
+                HashMap<String, Person> owed = activity.getOwed();
+                if (owed.containsKey(name)) {
+                    personActivities.add(activity);
+                }
+            }
+        }
+        return personActivities;
+    }
+
+    public int getIdentifierFromUnpaidList(Activity activity, String name) {
+        ArrayList<Activity> personActivities = getActivities(name, activities);
+        int identifier = 1;
+        for (Activity personActivity : activities) {
+            if (!personActivity.isActivityFullyPaid(name, false)) {
+                if (personActivity.equals(activity)) {
+                    return identifier;
+                }
+                identifier++;
+            }
+        }
+        return -1;
+    }
+
 }

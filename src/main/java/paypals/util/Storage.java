@@ -63,12 +63,10 @@ public class Storage {
     }
 
     public void load(ActivityManager activityManager) throws PayPalsException {
-        int activityIdentifier = 1;
         while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
             try {
-                processLine(data, activityManager, activityIdentifier);
-                activityIdentifier++;
+                processLine(data, activityManager);
             } catch (PayPalsException e) {
                 throw new PayPalsException(ExceptionMessage.LOAD_ERROR);
             }
@@ -82,10 +80,9 @@ public class Storage {
      *
      * @param data the line of data read from the file
      * @param activityManager the activity manager to operate on
-     * @param activityIdentifier a unique identifier for this activity
      * @throws PayPalsException if the data format is invalid
      */
-    private void processLine(String data, ActivityManager activityManager, int activityIdentifier)
+    private void processLine(String data, ActivityManager activityManager)
             throws PayPalsException {
         ArrayList<String> hasPaidNames = new ArrayList<>();
         String[] parts = data.split(SEPARATOR);
@@ -101,7 +98,7 @@ public class Storage {
         executeAddCommand(input, activityManager);
 
         // Execute additional commands for persons who have paid
-        executePaidCommands(hasPaidNames, activityManager, activityIdentifier);
+        executePaidCommands(hasPaidNames, activityManager);
     }
 
     /**
@@ -152,12 +149,12 @@ public class Storage {
      *
      * @param hasPaidNames the list of names for which the hasPaid flag is true
      * @param activityManager the activity manager to operate on
-     * @param activityIdentifier a unique identifier for the activity
      */
-    private void executePaidCommands(ArrayList<String> hasPaidNames, ActivityManager activityManager,
-                                     int activityIdentifier) {
+    private void executePaidCommands(ArrayList<String> hasPaidNames, ActivityManager activityManager) {
         try {
             for (String name : hasPaidNames) {
+                Activity activity = activityManager.getActivity(activityManager.getSize()-1);
+                int activityIdentifier = activityManager.getIdentifierFromUnpaidList(activity,name);
                 String paidInput = "n/" + name + " i/" + activityIdentifier;
                 Command paidCommand = new PaidCommand(paidInput);
                 paidCommand.execute(activityManager, false);
