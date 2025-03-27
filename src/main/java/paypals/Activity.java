@@ -102,4 +102,16 @@ public class Activity {
         this.owed.get(name).editAmount(newAmount);
     }
 
+    public boolean isActivityFullyPaid(String name, boolean checkAllPayer) {
+        if (checkAllPayer || payer.getName().equals(name)) {
+            for (Person friend : owed.values()) {
+                if (!friend.hasPaid()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return getFriend(name).hasPaid();
+    }
+
 }

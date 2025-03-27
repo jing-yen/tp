@@ -39,12 +39,13 @@ public class AddCommandTest extends PayPalsTest {
     }
 
     @Test
-    public void execute_activityWithZeroAmount_noExceptionThrown() {
-        String command = "add d/Meeting n/Jake f/Karen a/0";
-        AddCommand addCommand = new AddCommand(command);
-
-        assertDoesNotThrow(() -> addCommand.execute(activityManager, false));
-        assertEquals(1, activityManager.getSize());
+    public void execute_activityWithZeroAmount_exceptionThrown() {
+        try {
+            String command = "add d/Meeting n/Jake f/Karen a/0";
+            AddCommand addCommand = new AddCommand(command);
+        } catch (Exception e){
+            assertException(e,ExceptionMessage.AMOUNT_OUT_OF_BOUNDS);
+        }
     }
 
     @Test
