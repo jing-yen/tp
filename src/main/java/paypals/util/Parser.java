@@ -1,6 +1,7 @@
 package paypals.util;
 
 import paypals.commands.AddCommand;
+import paypals.commands.AddEqualCommand;
 import paypals.commands.Command;
 import paypals.commands.DeleteCommand;
 import paypals.commands.EditCommand;
@@ -35,6 +36,8 @@ public class Parser {
             switch (command) {
             case "add":
                 return new AddCommand(parameters);
+            case "addequal":
+                return new AddEqualCommand(parameters);
             case "delete":
                 return new DeleteCommand(parameters);
             case "list":

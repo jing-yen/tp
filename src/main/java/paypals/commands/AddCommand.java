@@ -21,7 +21,7 @@ public class AddCommand extends Command {
         super(command);
     }
 
-    private String extractValue(String key, ExceptionMessage exceptionMessage) throws PayPalsException {
+    String extractValue(String key, ExceptionMessage exceptionMessage) throws PayPalsException {
         String regex = key + "\\s*([^/]+?)(?=\\s+[a-zA-Z]/|$)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(command);
@@ -35,7 +35,7 @@ public class AddCommand extends Command {
         }
     }
 
-    private void validateFriend(String payer, String oweName, HashMap<String, Double> owedMap) throws PayPalsException {
+    void validateFriend(String payer, String oweName, HashMap<String, Double> owedMap) throws PayPalsException {
         assert payer != null : "Payer name should not be null";
         assert oweName != null : "OweName should not be null";
         assert owedMap != null : "Owed map should not be null";
