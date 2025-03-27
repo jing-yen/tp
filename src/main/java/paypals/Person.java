@@ -35,6 +35,10 @@ public class Person {
         this.hasPaid = true;
     }
 
+    public void markAsUnpaid() {
+        this.hasPaid = false;
+    }
+
     public boolean hasPaid() {
         return hasPaid;
     }

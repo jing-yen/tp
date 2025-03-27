@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class SplitCommandTest extends PayPalsTest {
 
     @Test
-    void testSplitCommand_nullInput_twoSystemPrintLines() {
+    public void testSplitCommand_oneActivityOneFriend_twoSystemPrintLines() {
         callCommand(new AddCommand("d/lunch n/John f/Jane a/28.0"));
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -27,7 +27,7 @@ class SplitCommandTest extends PayPalsTest {
     }
 
     @Test
-    void testSplitCommand_oneActivityTwoFriends_threeSystemPrintLines() {
+    public void testSplitCommand_oneActivityTwoFriends_threeSystemPrintLines() {
         callCommand(new AddCommand("d/lunch n/John f/Jane a/28.0 f/Jeremy a/10.0"));
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -44,7 +44,7 @@ class SplitCommandTest extends PayPalsTest {
     }
 
     @Test
-    void testSplitCommand_twoActivities_threeSystemPrintLines() {
+    public void testSplitCommand_twoActivities_threeSystemPrintLines() {
         callCommand(new AddCommand("d/lunch n/John f/Jane a/28.0 f/Jeremy a/10.0"));
         callCommand(new AddCommand("d/lunch n/John f/Jane a/18.0"));
 

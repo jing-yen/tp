@@ -21,6 +21,7 @@ public class HelpCommand extends Command{
                               1. add    -> add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_1 f/FRIEND2 a/AMOUNT_2...
                               2. delete -> delete i/IDENTIFIER
                               3. paid   -> paid n/NAME i/IDENTIFIER
+                              4. unpaid -> unpaid n/NAME i/IDENTIFIER
                             
                             Commands without format:
                               1. list

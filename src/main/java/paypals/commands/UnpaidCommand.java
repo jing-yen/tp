@@ -15,29 +15,29 @@ import java.util.regex.Pattern;
 import static paypals.ActivityManager.getActivities;
 
 /**
- * Represents the "paid" command, used to mark an activity as paid for a specific person
+ * Handles the "unpaid" command to mark an activity as unpaid for a specific person,
  * or everyone if the requester is the payer.
  */
-public class PaidCommand extends Command {
+public class UnpaidCommand extends Command {
 
-    private static final String WRONG_PAID_FORMAT = "paid n/NAME i/IDENTIFIER";
+    private static final String WRONG_PAID_FORMAT = "unpaid n/NAME i/IDENTIFIER";
 
     /**
-     * Constructs a PaidCommand with the specified command string.
+     * Constructs an UnpaidCommand with the given command string.
      *
-     * @param command the command string in the form "n/NAME i/IDENTIFIER"
+     * @param command the input command in the format "n/NAME i/IDENTIFIER"
      */
-    public PaidCommand(String command) {
+    public UnpaidCommand(String command) {
         super(command);
     }
 
     /**
-     * Executes the paid command: marks the activity as paid for the friend
-     * or for all friends if the friend is the payer.
+     * Executes the unpaid command, marking an activity as unpaid either for a friend
+     * or all friends if the friend is the payer.
      *
      * @param activityManager the activity manager containing all activities
-     * @param enablePrint     whether to print output to the UI
-     * @throws PayPalsException if the input is invalid or the activity is not found
+     * @param enablePrint     whether to enable printing to UI
+     * @throws PayPalsException if parsing fails or payment state is already unpaid
      */
     @Override
     public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
@@ -50,22 +50,22 @@ public class PaidCommand extends Command {
 
             Activity activity = getValidActivity(activityManager, friendName, activityIndex);
             if (validatePayment(activity, friendName)) {
-                markAllAsPaid(activity, activityManager);
+                markAllAsUnpaid(activity, activityManager);
             } else {
-                markAsPaid(activity, friendName, activityManager);
+                markAsUnpaid(activity, friendName, activityManager);
             }
 
-            ui.print("Marked as paid!");
+            ui.print("Marked as unpaid!");
         } catch (NumberFormatException e) {
             throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER, matcher.group(2));
         }
     }
 
     /**
-     * Parses the command string using regex and extracts the name and identifier.
+     * Parses the command and extracts the name and activity index using regex.
      *
-     * @return a Matcher object with extracted groups
-     * @throws PayPalsException if the command format is invalid
+     * @return the matcher containing the parsed groups
+     * @throws PayPalsException if format is invalid
      */
     public Matcher parseCommand() throws PayPalsException {
         Pattern pattern = Pattern.compile("^n/([^\\s]+)\\s+i/(\\S+)$");
@@ -82,30 +82,30 @@ public class PaidCommand extends Command {
     }
 
     /**
-     * Filters a list of activities to only include those that are not fully paid by the person.
+     * Gets a list of activities that are fully paid by the given person.
      *
-     * @param activities the list of activities
-     * @param name       the person's name
-     * @return a list of unpaid activities for the person
+     * @param activities the list of activities to check
+     * @param name       the name of the person
+     * @return a list of activities marked as paid by that person
      */
-    public ArrayList<Activity> getUnpaidArray(ArrayList<Activity> activities, String name) {
-        ArrayList<Activity> unpaid = new ArrayList<>();
+    public ArrayList<Activity> getPaidArray(ArrayList<Activity> activities, String name) {
+        ArrayList<Activity> paid = new ArrayList<>();
         for (Activity activity : activities) {
-            if (!activity.isActivityFullyPaid(name, false)) {
-                unpaid.add(activity);
+            if (activity.isActivityFullyPaid(name, false)) {
+                paid.add(activity);
             }
         }
-        return unpaid;
+        return paid;
     }
 
     /**
-     * Retrieves a valid activity object based on the person's name and activity index.
+     * Validates and retrieves an activity at the given index from the person's paid activities.
      *
      * @param activityManager the activity manager
-     * @param friendName      the name of the friend
-     * @param index           the index of the unpaid activity
-     * @return the activity object
-     * @throws PayPalsException if no activities exist or index is out of bounds
+     * @param friendName      the person's name
+     * @param index           the index of the activity in their paid list
+     * @return the selected activity
+     * @throws PayPalsException if friend not found or index is out of bounds
      */
     public Activity getValidActivity(ActivityManager activityManager, String friendName, int index)
             throws PayPalsException {
@@ -114,21 +114,21 @@ public class PaidCommand extends Command {
             throw new PayPalsException(ExceptionMessage.INVALID_FRIEND, friendName);
         }
 
-        ArrayList<Activity> unpaid = getUnpaidArray(activities, friendName);
+        ArrayList<Activity> paid = getPaidArray(activities, friendName);
 
-        if (index < 0 || index >= unpaid.size()) {
+        if (index < 0 || index >= paid.size()) {
             throw new PayPalsException(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER, Integer.toString(index + 1));
         }
-        return unpaid.get(index);
+        return paid.get(index);
     }
 
     /**
-     * Validates whether the payment can be made for the given activity.
+     * Validates whether the person can be marked as unpaid.
      *
-     * @param activity   the activity to validate
-     * @param friendName the name of the friend making the payment
-     * @return true if the payer is the friend, false if the payee is the friend
-     * @throws PayPalsException if the friend has already paid
+     * @param activity   the activity in question
+     * @param friendName the name of the friend
+     * @return true if the friend is the payer, otherwise false
+     * @throws PayPalsException if already unpaid
      */
     public boolean validatePayment(Activity activity, String friendName) throws PayPalsException {
         String payerName = activity.getPayer().getName();
@@ -138,49 +138,48 @@ public class PaidCommand extends Command {
             return true;
         }
 
-        if (friend.hasPaid()) {
-            throw new PayPalsException(ExceptionMessage.ALREADY_PAID);
+        if (!friend.hasPaid()) {
+            throw new PayPalsException(ExceptionMessage.ALREADY_UNPAID);
         }
         return false;
     }
 
     /**
-     * Marks the activity as paid for a specific friend.
+     * Marks the given friend as unpaid in the specified activity.
      *
-     * @param activity        the activity to mark
-     * @param friendName      the name of the friend
+     * @param activity        the activity to update
+     * @param friendName      the name of the friend to mark as unpaid
      * @param activityManager the activity manager
      */
-    public void markAsPaid(Activity activity, String friendName, ActivityManager activityManager) {
+    public void markAsUnpaid(Activity activity, String friendName, ActivityManager activityManager) {
         Person friend = activity.getFriend(friendName);
-        friend.markAsPaid();
+        friend.markAsUnpaid();
     }
 
     /**
-     * Marks all friends in the activity as paid (when the payer calls the command).
+     * Marks all friends as unpaid in the specified activity (when the payer makes the command).
      *
      * @param activity        the activity to update
      * @param activityManager the activity manager
      */
-    public void markAllAsPaid(Activity activity, ActivityManager activityManager) {
+    public void markAllAsUnpaid(Activity activity, ActivityManager activityManager) {
         Collection<Person> personCollection = activity.getAllFriends();
         for (Person friend : personCollection) {
-            if (friend.hasPaid()) {
+            if (!friend.hasPaid()) {
                 continue;
             }
-            markAsPaid(activity, friend.getName(), activityManager);
+            markAsUnpaid(activity, friend.getName(), activityManager);
         }
     }
 
     /**
-     * Retrieves all activities associated with a specific person.
+     * Retrieves all activities involving the specified person.
      *
-     * @param name          the name of the person
-     * @param allActivities the list of all activities
+     * @param name          the person's name
+     * @param allActivities all available activities
      * @return the list of activities involving the person
      */
     public ArrayList<Activity> getPersonActivities(String name, ArrayList<Activity> allActivities) {
         return getActivities(name, allActivities);
     }
-
 }

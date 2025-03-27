@@ -78,6 +78,11 @@ public class AddCommand extends Command {
                     Logging.logWarning("Invalid amount entered for friend");
                     throw new PayPalsException(ExceptionMessage.INVALID_AMOUNT);
                 }
+
+                if (oweAmount <= 0.0){
+                    Logging.logWarning("Amount entered for friend out of bounds");
+                    throw new PayPalsException(ExceptionMessage.AMOUNT_OUT_OF_BOUNDS);
+                }
                 validateFriend(name, oweName, owed);
                 owed.put(oweName, oweAmount);
                 totalOwed += oweAmount;
