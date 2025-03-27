@@ -1,6 +1,11 @@
 package paypals;
 
-import paypals.commands.*;
+import paypals.commands.AddCommand;
+import paypals.commands.Command;
+import paypals.commands.DeleteCommand;
+import paypals.commands.EditCommand;
+import paypals.commands.PaidCommand;
+import paypals.commands.UnpaidCommand;
 import paypals.exception.PayPalsException;
 import paypals.util.Logging;
 import paypals.util.Parser;
@@ -38,7 +43,7 @@ public class PayPals {
                 c.execute(activityManager, true);
                 isExit = c.isExit();
                 if (c instanceof AddCommand || c instanceof EditCommand || c instanceof DeleteCommand
-                || c instanceof PaidCommand || c instanceof UnpaidCommand) {
+                        || c instanceof PaidCommand || c instanceof UnpaidCommand) {
                     storage.save(activityManager);
                 }
             } catch (PayPalsException e) {
