@@ -2,12 +2,12 @@ package paypals.exception;
 
 public enum ExceptionMessage {
     INVALID_COMMAND("INPUT ERROR: Invalid command entered" +
-            "\nTry these commands: add | delete | list | split | paid | exit | help"),
+            "\nTry these commands: add | delete | edit | list | split | paid | exit | help"),
     NO_DESCRIPTION("INPUT ERROR: No activity description"),
     NO_IDENTIFIER("INPUT ERROR: No identifier entered"),
     INVALID_FORMAT("INPUT ERROR: Correct format should be: "),
-    INVALID_IDENTIFIER("INPUT ERROR: Invalid identifier entered: "),
-    OUTOFBOUNDS_IDENTIFIER("INPUT ERROR: Identifier entered is out of bounds: "),
+    INVALID_IDENTIFIER("INPUT ERROR: Invalid identifier entered"),
+    OUTOFBOUNDS_IDENTIFIER("INPUT ERROR: Identifier entered is out of bounds"),
     NO_PAYER("INPUT ERROR: No name of payer"),
     PAYER_OWES("LOGIC ERROR: Payer owes himself or herself: "),
     DUPLICATE_FRIEND("LOGIC ERROR: Friend is mentioned twice in an activity: "),
@@ -20,7 +20,13 @@ public enum ExceptionMessage {
     STORAGE_FILE_NOT_CREATED("ERROR: An error has occurred, storage file not created"),
     STORAGE_FILE_NOT_FOUND("ERROR: An error has occurred, storage file not found"),
     SAVE_NOT_WRITTEN("ERROR: An error has occurred, storage file not written"),
-    LOAD_ERROR("ERROR: An error has occurred, save file not loaded");
+    LOAD_ERROR("ERROR: An error has occurred, save file not loaded"),
+    EDIT_ERROR("ERROR: An error has occurred, something went wrong with the edit"),
+    EDIT_FORMAT_ERROR("ERROR: Invalid edit format. The format should be one of the following:" +
+            "\n Edit description: edit i/ID d/DESC" +
+            "\n Edit payer name: edit i/ID n/NEWNAME" +
+            "\n Edit friend name: edit i/ID f/NEWNAME o/OLDNAME" +
+            "\n Edit friend amount owed: edit i/ID a/NEWAMOUNT o/NAME");
     private final String message;
 
     ExceptionMessage(String message) {
