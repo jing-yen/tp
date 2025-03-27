@@ -190,7 +190,7 @@ The product aims to provide assistance in simplifying payments by minimising the
 
 ### Use case: Mark an expense as paid
 
-***MSS***
+**MSS**
 1. User requests to list expenses
 2. Paypals shows a list of expenses
 3. User request to mark a specific expenese as paid in the list
@@ -202,7 +202,7 @@ The product aims to provide assistance in simplifying payments by minimising the
 - 2a. The list is empty.
     Use case ends.
 - 3a. The given index is invalid.
-  - 3a1. Paypals shows an error message
+  - 3a1. Paypals shows an error message.
     Use case resumes at step 2.
     
 ### Non-Functional Requirements
