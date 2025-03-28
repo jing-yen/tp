@@ -24,6 +24,7 @@ public enum ExceptionMessage {
     SAVE_NOT_WRITTEN("ERROR: An error has occurred, storage file not written"),
     LOAD_ERROR("ERROR: An error has occurred, save file not loaded"),
     EDIT_ERROR("ERROR: An error has occurred, something went wrong with the edit"),
+    EDIT_AMOUNT_WHEN_PAID("ERROR: Unable to edit amount owed if it has been paid"),
     EDIT_FORMAT_ERROR("ERROR: Invalid edit format. The format should be one of the following:" +
             "\n Edit description: edit i/ID d/DESC" +
             "\n Edit payer name: edit i/ID n/NEWNAME" +
