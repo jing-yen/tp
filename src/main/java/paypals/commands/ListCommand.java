@@ -117,7 +117,6 @@ public class ListCommand extends Command {
         for (int i = 0; i < activities.size(); i++) {
             ui.print((i + 1) + ".  " + activities.get(i));
         }
-        ui.print("");
     }
 
     /**

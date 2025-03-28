@@ -21,11 +21,20 @@ public class UI {
         }
     }
 
+    public void printPrompt() {
+        System.out.print("> ");
+    }
+
     public void printLine() {
         System.out.println("____________________________________________________________");
     }
 
     public void sayHello(){
         print("\n\nWelcome to PayPals!");
+    }
+
+    public void sayGoodbye() {
+        print("Thank you for using PayPals!");
+        print("Hope you have enjoyed your trip and see you again soon!");
     }
 }
