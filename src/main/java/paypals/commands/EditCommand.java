@@ -57,10 +57,18 @@ public class EditCommand extends Command {
     private boolean checkValidParameters(Map<String, String> parameters) {
         //Count how many valid command conditions have been fulfilled
         int editCount = 0;
-        if (parameters.get("d") != null) editCount++;
-        if (parameters.get("n") != null) editCount++;
-        if (parameters.get("f") != null && parameters.get("o") != null) editCount++; // Name change for owed person
-        if (parameters.get("a") != null && parameters.get("o") != null) editCount++; // Amount change for owed person
+        if (parameters.get("d") != null) {
+            editCount++;
+        }
+        if (parameters.get("n") != null) {
+            editCount++;
+        }
+        if (parameters.get("f") != null && parameters.get("o") != null) {
+            editCount++; // Name change for owed person
+        }
+        if (parameters.get("a") != null && parameters.get("o") != null) {
+            editCount++; // Amount change for owed person
+        }
 
         // If exactly one condition is attempted, return true, else return false.
         return (editCount == 1);
