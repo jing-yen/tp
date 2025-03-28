@@ -54,8 +54,31 @@ public class EditCommand extends Command {
         }
     }
 
+    private boolean checkValidParameters(Map<String, String> parameters) {
+        //Count how many valid command conditions have been fulfilled
+        int editCount = 0;
+        if (parameters.get("d") != null) {
+            editCount++;
+        }
+        if (parameters.get("n") != null) {
+            editCount++;
+        }
+        if (parameters.get("f") != null && parameters.get("o") != null) {
+            editCount++; // Name change for owed person
+        }
+        if (parameters.get("a") != null && parameters.get("o") != null) {
+            editCount++; // Amount change for owed person
+        }
+
+        // If exactly one condition is attempted, return true, else return false.
+        return (editCount == 1);
+    }
+
     private void applyEdit(ActivityManager activityManager, UI ui, int activityId, Map<String, String> parameters)
             throws PayPalsException {
+        if (!checkValidParameters(parameters)) {
+            throw new PayPalsException(ExceptionMessage.EDIT_FORMAT_ERROR);
+        }
         if (parameters.get("d") != null) {
             String description = parameters.get("d");
             activityManager.editActivityDesc(activityId, description);
@@ -72,10 +95,13 @@ public class EditCommand extends Command {
         } else if (parameters.get("a") != null && parameters.get("o") != null) {
             try {
                 String amount = parameters.get("a");
-                String oldName = parameters.get("o");
+                String name = parameters.get("o");
                 double parseAmt = Double.parseDouble(amount);
-                activityManager.editActivityOwedAmount(activityId, oldName, parseAmt);
-                ui.print(oldName + "'s amount owed has been changed to " + amount);
+                if (activityManager.getActivity(activityId).getFriend(name).hasPaid()) {
+                    throw new PayPalsException(ExceptionMessage.EDIT_AMOUNT_WHEN_PAID);
+                }
+                activityManager.editActivityOwedAmount(activityId, name, parseAmt);
+                ui.print(name + "'s amount owed has been changed to " + amount);
             } catch (NumberFormatException e) {
                 throw new PayPalsException(ExceptionMessage.INVALID_AMOUNT);
             }
