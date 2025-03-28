@@ -54,6 +54,7 @@ public class PayPals {
         }
         ui.sayGoodbye();
         ui.printLine();
+        ui.print("");
     }
 
     public static void main(String[] args) {
