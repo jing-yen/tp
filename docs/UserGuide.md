@@ -1,5 +1,31 @@
 # PayPals User Guide
 
+## Table of Contents
+- [PayPals User Guide](#paypals-user-guide)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Quick Start](#quick-start)
+  - [Command Reference](#command-reference)
+  - [Features](#features)
+    - [Expense Tracking](#expense-tracking)
+    - [Debt Settlement](#debt-settlement)
+    - [Storage](#storage)
+  - [Command Format](#command-format)
+    - [Viewing help: `help`](#viewing-help-help)
+    - [Adding an expense with details: `add`](#adding-an-expense-with-details-add)
+    - [Delete an expense: `delete`](#delete-an-expense-delete)
+    - [List all past expenses: `list`](#list-all-past-expenses-list)
+    - [Generate a simplified debt settlement plan: `split`](#generate-a-simplified-debt-settlement-plan-split)
+    - [Mark as "paid" when settled: `paid`](#mark-as-paid-when-settled-paid)
+    - [Edit description of an activity: `edit`](#edit-description-of-an-activity-edit)
+    - [Edit payer name of an activity: `edit`](#edit-payer-name-of-an-activity-edit)
+    - [Edit name of a friend that owes: `edit`](#edit-name-of-a-friend-that-owes-edit)
+    - [Edit amount of a friend that owes: `edit`](#edit-amount-of-a-friend-that-owes-edit)
+    - [Exiting the application: `exit`](#exiting-the-application-exit)
+  - [FAQ](#faq)
+  - [Common Errors](#common-errors)
+  - [Known Issues](#known-issues)
+
 ## Introduction
 
 PayPals is a CLI-based application that aims to provide assistance in simplifying payments by minimising the number of transactions needed to balance expenses.
@@ -20,36 +46,22 @@ java -jar paypals.jar
 
 A quick reference table for all commands is presented below.
 
-|Task|Command Expression|
-|----|------------------|
-|Help menu|`help`|
-|Add an acitivity|`add d/DESCRIPTION n/NAME f/FRIEND1 a/AMOUNT1 f/FRIEND2 a/AMOUNT2...`|
-|Delete an activity|`delete i/IDENTIFIER`|
-|List all expenses|`list`|
-|List all expenses by a person|`list n/NAME`|
-|Split bills|`split`|
-|Mark an activity as paid for a person|`paid n/NAME i/IDENTIFIER`|
-|Mark an activity as paid for everyone|`paid n/PAYER i/IDENTIFIER`|
-|Close the application|`exit`|
-
-## Table of Contents
-- [PayPals User Guide](#paypals-user-guide)
-  - [Introduction](#introduction)
-  - [Quick Start](#quick-start)
-  - [Command Reference](#command-reference)
-  - [Table of Contents](#table-of-contents)
-  - [Features](#features)
-    - [Expense Tracking](#expense-tracking)
-    - [Debt Settlement](#debt-settlement)
-    - [Storage](#storage)
-  - [Command Format](#command-format)
-    - [Adding an expense with details: `add`](#adding-an-expense-with-details-add)
-    - [Delete an expense: `delete`](#delete-an-expense-delete)
-    - [List all past expenses: `list`](#list-all-past-expenses-list)
-    - [Generate a simplified debt settlement plan: `split`](#generate-a-simplified-debt-settlement-plan-split)
-    - [Mark as "paid" when settled: `paid`](#mark-as-paid-when-settled-paid)
-    - [Exiting the application: `exit`](#exiting-the-application-exit)
-  - [FAQ](#faq)
+| Task                                        | Command Expression                                                    |
+|---------------------------------------------|-----------------------------------------------------------------------|
+| Help menu                                   | `help`                                                                |
+| Add an activity                             | `add d/DESCRIPTION n/NAME f/FRIEND1 a/AMOUNT1 f/FRIEND2 a/AMOUNT2...` |
+| Delete an activity                          | `delete i/IDENTIFIER`                                                 |
+| List all expenses                           | `list`                                                                |
+| List all expenses by a person               | `list n/NAME`                                                         |
+| Split bills                                 | `split`                                                               |
+| Mark an activity as paid for a person       | `paid n/NAME i/IDENTIFIER`                                            |
+| Mark an activity as unpaid for a person     | `unpaid n/NAME i/IDENTIFIER`                                          |
+| Mark an activity as paid for everyone       | `paid n/PAYER i/IDENTIFIER`                                           |
+| Edit the description of an activity         | `edit i/IDENTIFIER d/DESCRIPTION`                                     |
+| Edit the payer name of an activity          | `edit i/IDENTIFIER n/NEWNAME`                                         |
+| Edit the name of a friend that owes money   | `edit i/IDENTIFIER f/NEWNAME o/OLDNAME`                               |
+| Edit the amount of a friend that owes money | `edit i/IDENTIFIER a/NEWAMOUNT o/FRIENDNAME`                          |
+| Close the application                       | `exit`                                                                |
 
 ## Features 
 
@@ -75,6 +87,40 @@ Note: Do not edit any of the data files manually as it will result in corrupted 
 
 ## Command Format
 
+### Viewing help: `help`
+
+Shows a help message containing all the commands available in PayPals.
+
+Format: `help`
+
+Example of usage:
+
+```
+> help
+____________________________________________________________
+Help - Available Commands:
+
+Commands with format:
+  1. add    -> add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_1 f/FRIEND2 a/AMOUNT_2...
+  2. delete -> delete i/IDENTIFIER
+  3. paid   -> paid n/NAME i/IDENTIFIER
+  4. unpaid -> unpaid n/NAME i/IDENTIFIER
+  5. edit   -> (Description) edit i/IDENTIFIER d/NEWDESCRIPTION
+            -> (Payer name) edit i/IDENTIFIER n/NEWNAME
+            -> (Friend name) edit i/IDENTIFIER f/NEWNAME o/OLDNAME
+            -> (Friend amount) edit i/IDENTIFIER a/NEWAMOUNT o/FRIENDNAME
+
+Commands without format:
+  1. list
+  2. split
+  3. help
+  4. exit
+
+For more details, please refer to the User Guide of PayPals.
+
+____________________________________________________________
+```
+
 ### Adding an expense with details: `add`
 Adds an expense.
 
@@ -83,17 +129,21 @@ Format: `add d/DESCRIPTION n/NAME f/FRIEND1 a/AMOUNT1 f/FRIEND2 a/AMOUNT2...`
 Example of usage: 
 
 ```
-add d/lunch n/Jane f/John a/28
-    Desc: lunch
-    Name of payer: Jane
-    Number of friends who owe Jane: 1
+> add d/lunch n/Jane f/John a/28
+____________________________________________________________
+Desc: lunch
+Name of payer: Jane
+Number of friends who owe Jane: 1
+____________________________________________________________
 ```
 
 ```
-add d/tickets n/John f/Betty a/23.53 f/Jane a/20.21 f/Bob a/38.10
-    Desc: tickets
-    Name of payer: John
-    Number of friends who owe John: 3
+> add d/tickets n/John f/Betty a/23.53 f/Jane a/20.21 f/Bob a/38.10
+____________________________________________________________
+Desc: tickets
+Name of payer: John
+Number of friends who owe John: 3
+____________________________________________________________
 ```
 ### Delete an expense: `delete`
 Deletes an expense.
@@ -103,8 +153,21 @@ Format: `delete i/IDENTIFIER`
 Example of usage: 
 
 ```
-delete i/2
-    Expense removed successfully!
+> list
+____________________________________________________________
+You have 1 activities:
+1.  Desc: lunch
+    Payer: Jane
+    Owed by: John
+____________________________________________________________
+> delete i/1
+____________________________________________________________
+Expense removed successfully!
+____________________________________________________________
+> list
+____________________________________________________________
+You currently have no activities.
+____________________________________________________________
 ```
 ### List all past expenses: `list`
 Displays all past expenses for everyone or a single person.
@@ -116,22 +179,30 @@ Format: `list [n/NAME]`
 Example of usage: 
 
 ```
-list
- 1. Desc: tickets
-    Payer: John
-    Owed by: Bob, Betty, Jane
-    Desc: lunch
+> list
+____________________________________________________________
+You have 2 activities:
+1.  Desc: lunch
     Payer: Jane
     Owed by: John
+2.  Desc: tickets
+    Payer: John
+    Owed by: Bob, Betty, Jane
+____________________________________________________________
 ```
 ```
-list n/Sean
-    Sean: 
-      1.  [PAYER] Desc: tickets
-          Owed by: Bob [Paid] Betty [Paid] Jane [Paid]
-      2.  Desc: lunch
-          Payer: Jane
-          Amount: $28.00 [Unpaid]
+> list n/John
+____________________________________________________________
+Activities which have been fully paid for John:
+
+Activities which have not been fully paid for John:
+1.  Desc: lunch
+    Payer: Jane
+    Amount: $28.00 [Unpaid]
+2.  [PAYER] Desc: tickets
+    Owed by: Bob [Unpaid] Betty [Unpaid] Jane [Unpaid]
+
+____________________________________________________________
 ```
 ### Generate a simplified debt settlement plan: `split`
 Generates and displays the debt settlement plan that uses the least number of transactions for everyone.
@@ -141,22 +212,216 @@ Format: `split`
 Example of usage: 
 
 ```
-Split
-    Best way to settle debts:
-    Bob pays Sean $2.0
-    Bob pays Brandon $2.0
+> split
+____________________________________________________________
+Best way to settle debts:
+Bob pays John $38.10
+Betty pays John $15.74
+Betty pays Jane $7.79
+____________________________________________________________
 ```
 ### Mark as "paid" when settled: `paid`
+
 Marks an expense as paid for a specific person.
 
 Format: `paid n/NAME i/IDENTIFIER`
 
+* Note: The `IDENTIFIER` used in the command is with respect to that person specified in the command.
+  In other words, the `IDENTIFIER` is the number labelled on the activity when you execute `paid n/NAME`.
+
 Example of usage: 
 
 ```
-paid n/John Doe i/2
-    Marked as paid!
+> list n/John
+____________________________________________________________
+Activities which have been fully paid for John:
+
+Activities which have not been fully paid for John:
+1.  Desc: lunch
+    Payer: Jane
+    Amount: $28.00 [Unpaid]
+2.  [PAYER] Desc: tickets
+    Owed by: Bob [Unpaid] Betty [Unpaid] Jane [Unpaid]
+
+____________________________________________________________
+> paid n/John i/1
+____________________________________________________________
+Marked as paid!
+____________________________________________________________
+> list n/John
+____________________________________________________________
+Activities which have been fully paid for John:
+1.  Desc: lunch
+    Payer: Jane
+    Amount: $28.00 [Paid]
+
+Activities which have not been fully paid for John:
+1.  [PAYER] Desc: tickets
+    Owed by: Bob [Unpaid] Betty [Unpaid] Jane [Unpaid]
+
+____________________________________________________________
 ```
+
+### Unmark as "paid": `unpaid`
+
+Unmarks an expense as unpaid for a specific person.
+
+Format: `unpaid n/NAME i/IDENTIFIER`
+
+* Note: The `IDENTIFIER` used in the command is with respect to that person specified in the command.
+  In other words, the `IDENTIFIER` is the number labelled on the activity when you execute `paid n/NAME`.
+
+Example of usage: 
+
+```
+> list n/Bobby
+____________________________________________________________
+Activities which have been fully paid for Bobby:
+1.  Desc: tickets
+    Payer: Johnny
+    Amount: $15.00 [Paid]
+
+Activities which have not been fully paid for Bobby:
+
+____________________________________________________________
+> unpaid n/Bobby i/1
+____________________________________________________________
+Marked as unpaid!
+____________________________________________________________
+> list n/Bobby
+____________________________________________________________
+Activities which have been fully paid for Bobby:
+
+Activities which have not been fully paid for Bobby:
+1.  Desc: tickets
+    Payer: Johnny
+    Amount: $15.00 [Unpaid]
+
+____________________________________________________________
+```
+
+### Edit description of an activity: `edit`
+
+Edit the description of an existing activity.
+
+Format: `edit i/IDENTIFIER d/NEWDESCRIPTION`
+
+Example of usage:
+
+```
+> list
+____________________________________________________________
+You have 2 activities:
+1.  Desc: lunch
+    Payer: Jane
+    Owed by: John
+2.  Desc: tickets
+    Payer: John
+    Owed by: Bob, Betty, Jane
+____________________________________________________________
+> edit i/1 d/dinner
+____________________________________________________________
+Description has been changed to dinner
+____________________________________________________________
+> list
+____________________________________________________________
+You have 2 activities:
+1.  Desc: dinner
+    Payer: Jane
+    Owed by: John
+2.  Desc: tickets
+    Payer: John
+    Owed by: Bob, Betty, Jane
+____________________________________________________________
+```
+
+### Edit payer name of an activity: `edit`
+
+Edit the name of a payer for an existing activity.
+
+Format: `edit i/IDENTIFIER n/NEWNAME`
+
+```
+> list
+____________________________________________________________
+You have 1 activities:
+1.  Desc: tickets
+    Payer: John
+    Owed by: Bob, Betty, Jane
+____________________________________________________________
+> edit i/1 n/Johnny
+____________________________________________________________
+Payer's name has been modified to Johnny
+____________________________________________________________
+> list
+____________________________________________________________
+You have 1 activities:
+1.  Desc: tickets
+    Payer: Johnny
+    Owed by: Bob, Betty, Jane
+____________________________________________________________
+```
+
+### Edit name of a friend that owes: `edit`
+
+Edit the name of a friend that owes money for an existing activity.
+
+Format: `edit i/IDENTIFIER f/NEWNAME o/OLDNAME`
+
+```
+> list
+____________________________________________________________
+You have 1 activities:
+1.  Desc: tickets
+    Payer: Johnny
+    Owed by: Bob, Betty, Jane
+____________________________________________________________
+> edit i/1 f/Bobby o/Bob
+____________________________________________________________
+Bob's name has been changed to Bobby
+____________________________________________________________
+> list
+____________________________________________________________
+You have 1 activities:
+1.  Desc: tickets
+    Payer: Johnny
+    Owed by: Betty, Bobby, Jane
+____________________________________________________________
+```
+
+### Edit amount of a friend that owes: `edit`
+
+Edit the amount of a friend that owes money for an existing activity.
+
+Format: `edit i/IDENTIFIER a/NEWAMOUNT o/FRIENDNAME`
+
+```
+> list n/Bobby
+____________________________________________________________
+Activities which have been fully paid for Bobby:
+
+Activities which have not been fully paid for Bobby:
+1.  Desc: tickets
+    Payer: Johnny
+    Amount: $38.10 [Unpaid]
+
+____________________________________________________________
+> edit i/1 a/15 o/Bobby
+____________________________________________________________
+Bobby's amount owed has been changed to 15
+____________________________________________________________
+> list n/Bobby
+____________________________________________________________
+Activities which have been fully paid for Bobby:
+
+Activities which have not been fully paid for Bobby:
+1.  Desc: tickets
+    Payer: Johnny
+    Amount: $15.00 [Unpaid]
+
+____________________________________________________________
+```
+
 ### Exiting the application: `exit`
 Exits the application.
 
@@ -165,8 +430,11 @@ Format: `exit`
 Example of usage: 
 
 ```
-exit
-    Goodbye! Hope you have enjoyed your trip and see you again soon!
+> exit
+____________________________________________________________
+Thank you for using PayPals!
+Hope you have enjoyed your trip and see you again soon!
+____________________________________________________________
 ```
 
 ## FAQ
@@ -174,3 +442,7 @@ exit
 **Q**: How do I transfer my data to another computer? 
 
 **A**: Install PayPals on the other computer and replace the save file in data directory with the save file containing you data.
+
+## Common Errors
+
+## Known Issues

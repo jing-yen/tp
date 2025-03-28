@@ -57,11 +57,46 @@ The *Sequence Diagram* below shows how the components interact with each other f
   
 ### UI Component
 
-{Add details of UI here}
+<ins>Overview</ins>
+
+The UI functionalities acts as the interface between the user and the application. It is managed by the `UI` class
+which handles the reading of the user input and displaying messages to the user. The user input is then handed over to
+the `Parser` to decode.
+
+<ins>Attributes</ins>
+
+The `UI` class has the following attributes:
+
+* *in*: A `Scanner` object used for reading from `System.in` I/O.
+* *enablePrint*: A boolean variable to allow printing if it is set to `true`, otherwise disable any printing if it is
+set to `false`.
+
+<ins>Methods</ins>
+
+The `UI` class has the following methods:
+
+* *UI*: Constructs the `UI` object and initializes the attributes of the object.
+* *readLine*: Reads the user input from the console and return it as a String.
+* *print*: Prints the message specified in the input to the console.
+* *printLine*: Prints a horizontal line to act as a divider.
+* *sayHello*: Prints a greeting message on the console.
 
 ### Parser Component
 
-{Add details of Parser here}
+<ins>Overview</ins>
+
+The `Parser` is responsible for parsing the user input and returning the corresponding `Command` object.
+
+<ins>Attributes</ins>
+
+The `Parser` class has the following attributes:
+
+* *COMMAND_EXAMPLE*: A static final `Map` object that maps each command type to a String containing the correct input
+format of that command type.
+
+<ins>Methods</ins>
+
+* *decodeCommand*: Parses the user input and returns the corresponding `Command` object.
 
 ### Command Component
 
@@ -141,6 +176,12 @@ The following is the sequence diagram for loading data from the save file into t
 * *executePaidCommand*: Creates and executes the paid command for each name in a specific `Activity`
 * *deleteDir*: Recursively delete a directory and all its contents.
 
+<ins>Design Considerations</ins>
+
+Instead of saving all the data when the program exits, we have decided to implement saving after every command that
+involves updating data. This is because it allows any changes to still be saved in the event that the application exits
+unexpectedly.
+
 ## Appendix: Requirements
 
 ### Product scope
@@ -168,6 +209,7 @@ The product aims to provide assistance in simplifying payments by minimising the
 | v1.0    | user                              | view the expenses                                                 | know how much I owe or how much someone owes me             |
 | v1.0    | user                              | save current expenses when I exit the application                 | can view them again when I run the application another time |
 | v2.0    | new user                          | use a command to display all the common commands and their syntax | know how to use the app                                     |
+| v2.0    | user                              | edit an expense                                                   | can correct any mistakes I made when entering them          |
 
 ### Use cases
 (For all use cases below, the **System** is `Paypals` and the **Actor** is the `user`, unless specified otherwise)

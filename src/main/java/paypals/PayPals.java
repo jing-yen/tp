@@ -37,8 +37,10 @@ public class PayPals {
         Logging.logInfo("Entering main program body. Begin accepting user commands");
         while (!isExit) {
             try {
-                System.out.print("> ");
+                ui.printLine();
+                ui.printPrompt();
                 String fullCommand = ui.readLine();
+                ui.printLine();
                 Command c = parser.decodeCommand(fullCommand);
                 c.execute(activityManager, true);
                 isExit = c.isExit();
@@ -50,6 +52,7 @@ public class PayPals {
                 System.out.println(e.getMessage());
             }
         }
+        ui.sayGoodbye();
     }
 
     public static void main(String[] args) {
