@@ -15,20 +15,26 @@ class ActivityManager {
 
 together {
     class AddCommand
+    class AddEqualCommand
     class ExitCommand
+    class EditCommand
     class ListCommand
     class DeleteCommand
     class HelpCommand
     class PaidCommand
+    class UnpaidCommand
     class SplitCommand
 }
 
 AddCommand -up-|> "{abstract}\nCommand"
+AddEqualCommand -up-|> "{abstract}\nCommand"
 ExitCommand-up-|> "{abstract}\nCommand"
+EditCommand -up-|> "{abstract}\nCommand"
 ListCommand -up-|> "{abstract}\nCommand"
 DeleteCommand -up-|> "{abstract}\nCommand"
 HelpCommand -up-|> "{abstract}\nCommand"
 PaidCommand -up-|> "{abstract}\nCommand"
+UnpaidCommand -up-|> "{abstract}\nCommand"
 SplitCommand -up-|> "{abstract}\nCommand"
 
 @enduml
