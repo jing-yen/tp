@@ -20,7 +20,6 @@ public class Storage {
     private static final String MASTER_FILE_STRING = "master-savefile.txt";
     private static final String FILE_EXTENSION = ".txt";
     private static final String STORAGE_FOLDER_PATH = "./data";
-    private static final String[] ILLEGAL_CHARACTERS = { "/", "\n", "\r", "\t", "\0", "\f", "`", "?", "*", "\\", "<", ">", "|", "\"", ":" };
 
     private final File masterFile;
     private File activityFile;

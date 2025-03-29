@@ -142,12 +142,15 @@ The following diagram shows the key classes in the Activity component and their 
 
 <ins>Overview</ins>
 
-The `Storage` class is responsible for managing the loading and saving of data of transactions and activities from and onto the local machine. `PayPals` will load the saved data from a save file right after starting the application, and saves all the data back into the save file when the application is exited.
+The `Storage` class is responsible for managing the loading and saving of transaction and activity data from and onto the local machine. `PayPals` will load saved data from the appropriate group's save file right after starting the application and save all the data back into the respective save file when the application exits.
 
 <ins>Implementation Details</ins>
 
-`Storage` will create `savefile.txt` and store in under the directory `./data`. The file format is as follows, with samples provided.
+`Storage` creates a `master-savefile.txt` in the directory `./data`. This master file contains the list of all existing groups. Each group has its own save file (e.g., `Singapore Trip.txt`) stored in the same `./data` directory. 
 
+The `master-savefile.txt` contains a list of all group names, one per line.
+
+The file format for group-specific save files is as follows:
 ```
 DESCRIPTION|PAYER|AMOUNT|HASPAID|FRIEND|AMOUNT|HASPAID...
 ```
@@ -192,7 +195,7 @@ unexpectedly.
 - prefers typing to mouse interactions
 - is reasonably comfortable with CLI apps
 
-This product is for university students who frequently travel with friends.
+This product is for university students who frequently travel with friends, especially several groups of friends.
 
 #### Value proposition
 
@@ -216,36 +219,38 @@ The product aims to provide assistance in simplifying payments by minimising the
 ### Use case: Delete an expense  
   
 **MSS**
-1. User requests to list expenses
-2. Paypals shows a list of expenses
-3. User requests to delete a specific expense in the list
-4. Paypals deletes the expense
+1. User selects the trip group
+2. User requests to list expenses
+3. Paypals shows a list of expenses
+4. User requests to delete a specific expense in the list
+5. Paypals deletes the expense
   
 &ensp; &ensp; Use case ends  
   
 **Extensions**
-- 2a. The list is empty.  
+- 3a. The list is empty.  
     Use case ends.
-- 3a. The given index is invalid.
-  - 3a1. Paypals shows an error message.  
-    Use case resumes at step 2.
+- 4a. The given index is invalid.
+  - 4a1. Paypals shows an error message.  
+    Use case resumes at step 3.
 
 ### Use case: Mark an expense as paid
 
 **MSS**
-1. User requests to list expenses
-2. Paypals shows a list of expenses
-3. User request to mark a specific expenese as paid in the list
-4. Paypals marks the expense as paid
+1. User selects the trip group
+2. User requests to list expenses
+3. Paypals shows a list of expenses
+4. User request to mark a specific expenese as paid in the list
+5. Paypals marks the expense as paid
 
 &ensp; &ensp; Use case ends
 
 **Extensions**
-- 2a. The list is empty.
+- 3a. The list is empty.
     Use case ends.
-- 3a. The given index is invalid.
-  - 3a1. Paypals shows an error message.
-    Use case resumes at step 2.
+- 4a. The given index is invalid.
+  - 4a1. Paypals shows an error message.
+    Use case resumes at step 3.
     
 ### Non-Functional Requirements
 1. Should work on any mainstream OS as long as it has Java `17` or above installed.
