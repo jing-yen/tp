@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -90,7 +92,12 @@ public class Storage {
      * @return true if the file can be successfully created, false otherwise
      */
     public boolean checkIfFilenameValid(String fileName) {
-        String testFilePath = STORAGE_FOLDER_PATH + "/" + fileName + ".txt";
+        if (fileName.isBlank()) {
+            return false;
+        }
+
+        String testFileName = fileName + ".txt";
+        String testFilePath = STORAGE_FOLDER_PATH + "/" + testFileName;
         File testFile = new File(testFilePath);
         try {
             testFile.createNewFile();
@@ -98,7 +105,17 @@ public class Storage {
             return false;
         }
 
-        return true;
+        // Check if file exists with correct filename. Sometimes invalid names are truncated.
+        File folder = new File(STORAGE_FOLDER_PATH);
+        File[] listOfFiles = folder.listFiles();
+
+        for (File file : listOfFiles) {
+            if (file.getName().equals(testFileName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
