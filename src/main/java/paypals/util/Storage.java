@@ -1,14 +1,5 @@
 package paypals.util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Scanner;
-
 import paypals.Activity;
 import paypals.ActivityManager;
 import paypals.commands.AddCommand;
@@ -16,6 +7,13 @@ import paypals.commands.Command;
 import paypals.commands.PaidCommand;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Storage {
     private static final String SEPARATOR = String.valueOf(Character.toChars(31));
