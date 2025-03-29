@@ -17,14 +17,19 @@ import paypals.exception.PayPalsException;
 
 public class Storage {
     private static final String SEPARATOR = String.valueOf(Character.toChars(31));
-    private static final String SAVE_FILE_STRING = "savefile.txt";
-    private static final String storageFolderPath = "./data";
+    private static final String MASTER_FILE_STRING = "master-savefile.txt";
+    private static final String FILE_EXTENSION = ".txt";
+    private static final String STORAGE_FOLDER_PATH = "./data";
+    private static final String[] ILLEGAL_CHARACTERS = { "/", "\n", "\r", "\t", "\0", "\f", "`", "?", "*", "\\", "<", ">", "|", "\"", ":" };
 
-    private final File activityFile;
-    private final Scanner scanner;
+    private final File masterFile;
+    private File activityFile;
+    private Scanner scanner;
 
-    public Storage() throws PayPalsException{
-        File dir = new File(storageFolderPath);
+    private final ArrayList<String> groupNames;
+
+    public Storage() throws PayPalsException {
+        File dir = new File(STORAGE_FOLDER_PATH);
         if (!dir.exists()) {
             if (!dir.mkdir()) {
                 throw new PayPalsException(ExceptionMessage.STORAGE_DIR_NOT_CREATED);
@@ -32,22 +37,37 @@ public class Storage {
         }
         assert dir.exists() && dir.isDirectory() : "The storage directory exists and is a directory";
 
-        String activityFilePath = storageFolderPath + "/" + SAVE_FILE_STRING;
-        this.activityFile = new File(activityFilePath);
+        // Reads the master file, containing the names of Paypals groups
+        String masterFilePath = STORAGE_FOLDER_PATH + "/" + MASTER_FILE_STRING;
+        this.masterFile = new File(masterFilePath);
         try {
-            activityFile.createNewFile();
+            masterFile.createNewFile();
         } catch (IOException e) {
             throw new PayPalsException(ExceptionMessage.STORAGE_FILE_NOT_CREATED);
         }
-        assert activityFile.exists() && activityFile.isFile() : "The activity file exists and should be a file";
+        assert masterFile.exists() && masterFile.isFile() : "The master file exists and should be a file";
 
         try {
-            this.scanner = new Scanner(this.activityFile);
+            this.scanner = new Scanner(this.masterFile);
         } catch (FileNotFoundException e) {
             throw new PayPalsException(ExceptionMessage.STORAGE_FILE_NOT_FOUND);
         }
+
+        groupNames = new ArrayList<>();
+        while (scanner.hasNextLine()) {
+            groupNames.add(scanner.nextLine());
+        }
+        scanner.close();
     }
 
+    /**
+     * Saves the list of activities from the provided ActivityManager into a storage file.
+     * Each activity is converted to a storage-friendly string format and written to the file.
+     *
+     * @param activityManager the ActivityManager instance containing the list of activities to save
+     * @throws PayPalsException if an I/O error occurs while writing to the storage file,
+     *                          with the message {@link ExceptionMessage#SAVE_NOT_WRITTEN}
+     */
     public void save(ActivityManager activityManager) throws PayPalsException {
         ArrayList<Activity> activities = activityManager.getActivityList();
         try {
@@ -62,7 +82,80 @@ public class Storage {
         }
     }
 
-    public void load(ActivityManager activityManager) throws PayPalsException {
+    /**
+     * Checks if a given filename is valid by attempting to create a corresponding file in the storage folder.
+     * The file is created temporarily to validate the filename and then deleted.
+     *
+     * @param fileName the name of the file to validate (without the file extension)
+     * @return true if the file can be successfully created, false otherwise
+     */
+    public boolean checkIfFilenameValid(String fileName) {
+        String testFilePath = STORAGE_FOLDER_PATH + "/" + fileName + ".txt";
+        File testFile = new File(testFilePath);
+        try {
+            testFile.createNewFile();
+        } catch (IOException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Loads activity data for a specific group into the provided ActivityManager.
+     * If the group does not exist, it creates a new group with the given name or number.
+     *
+     * @param groupNumberOrName the name or number of the group to load
+     * @param activityManager   the ActivityManager instance where the loaded data will be stored
+     * @throws PayPalsException if:
+     *                          - the group number cannot be parsed as an integer and is not a valid group name
+     *                          - an I/O error occurs while appending to the master file or loading the group file
+     *                            with the messages {@link ExceptionMessage#SAVE_NOT_WRITTEN} or
+     *                            {@link ExceptionMessage#STORAGE_FILE_NOT_FOUND}
+     */
+    public void load(String groupNumberOrName, ActivityManager activityManager) throws PayPalsException {
+        String groupName;
+        try {
+            if (groupNames.contains(groupNumberOrName)) {
+                groupName = groupNumberOrName;
+            } else {
+                int groupNumber = Integer.parseInt(groupNumberOrName);
+                groupName = groupNames.get(groupNumber - 1);
+            }
+            activityManager.setGroupDetails(groupName, false);
+        } catch (NumberFormatException e) {
+            // Create a new group with the group name
+            groupName = groupNumberOrName;
+            groupNames.add(groupName);
+            try {
+                FileWriter fw = new FileWriter(this.masterFile, true);
+                fw.append(groupName + "\n");
+                fw.close();
+            } catch (IOException ee) {
+                throw new PayPalsException(ExceptionMessage.SAVE_NOT_WRITTEN);
+            }
+            activityManager.setGroupDetails(groupName, true);
+        }
+        loadFromGroupName(groupName, activityManager);
+    }
+
+    private void loadFromGroupName(String groupName, ActivityManager activityManager) throws PayPalsException {
+        // Reads the specific group file selected
+        String activityFilePath = STORAGE_FOLDER_PATH + "/" + groupName + FILE_EXTENSION;
+        this.activityFile = new File(activityFilePath);
+        try {
+            activityFile.createNewFile();
+        } catch (IOException e) {
+            throw new PayPalsException(ExceptionMessage.STORAGE_FILE_NOT_CREATED);
+        }
+        assert activityFile.exists() && activityFile.isFile() : "The activity file exists and should be a file";
+
+        try {
+            this.scanner = new Scanner(this.activityFile);
+        } catch (FileNotFoundException e) {
+            throw new PayPalsException(ExceptionMessage.STORAGE_FILE_NOT_FOUND);
+        }
+
         while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
             try {
@@ -71,6 +164,7 @@ public class Storage {
                 throw new PayPalsException(ExceptionMessage.LOAD_ERROR);
             }
         }
+        scanner.close();
         Logging.logInfo("Data has been loaded from save file");
     }
 
@@ -172,5 +266,9 @@ public class Storage {
             }
         }
         dir.delete();
+    }
+
+    public ArrayList<String> getGroupNames() {
+        return groupNames;
     }
 }

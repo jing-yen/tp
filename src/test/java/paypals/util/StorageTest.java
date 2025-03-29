@@ -21,8 +21,32 @@ public class StorageTest extends PayPalsTest {
             Storage storage = new Storage();
             File f = new File("./data");
             File g;
-            g = new File("./data/savefile.txt");
+            g = new File("./data/master-savefile.txt");
             assertTrue(g.exists());
+            storage.deleteDir(f);
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void loadData_groupCreationSuccess() {
+        try {
+            File f = new File("./data");
+            System.out.println(f.getCanonicalFile());
+            Storage storage = new Storage();
+            ActivityManager activityManager = new ActivityManager();
+            ArrayList<String> groups = new ArrayList<>();
+            groups.add("Friends");
+            groups.add("family");
+            groups.add("sing🎌 Japan");
+            groups.add("1 More group");
+            for (String group : groups) {
+                storage.load(group, activityManager);
+                File g;
+                g = new File(String.format("./data/%s.txt", group));
+                assertTrue(g.exists());
+            }
             storage.deleteDir(f);
         } catch (Exception e) {
             fail();
@@ -35,13 +59,14 @@ public class StorageTest extends PayPalsTest {
             Storage storage = new Storage();
             File f = new File("./data");
             ActivityManager activityManager = new ActivityManager();
+            storage.load("trip", activityManager);
             ActivityManager result = new ActivityManager();
             AddCommand c = new AddCommand("add d/tickets n/John f/Betty a/23.53 f/Jane a/20.21 f/Bob a/38.10");
             c.execute(activityManager, false);
             c = new AddCommand("add d/lunch n/John f/Jane a/28");
             c.execute(activityManager, false);
             storage.save(activityManager);
-            storage.load(result);
+            storage.load("trip", result);
             ArrayList<Activity> expected = activityManager.getActivityList();
             ArrayList<Activity> actual = result.getActivityList();
             assertEquals(expected.size(), actual.size(), "The number of activities should match");
