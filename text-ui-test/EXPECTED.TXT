@@ -2,6 +2,12 @@
 
 Welcome to PayPals!
 ____________________________________________________________
+Please select a group number...
+... or give your new group a name:
+> ____________________________________________________________
+You are currently in the "test" group.
+It is a new group.
+____________________________________________________________
 > ____________________________________________________________
 Thank you for using PayPals!
 Hope you have enjoyed your trip and see you again soon!

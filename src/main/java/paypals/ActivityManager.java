@@ -4,10 +4,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ActivityManager {
+    private String groupName;
+
+    private boolean isNewGroup;
+
     private ArrayList<Activity> activities;
 
     public ActivityManager() {
         activities = new ArrayList<>();
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public boolean checkIsNewGroup() {
+        return isNewGroup;
+    }
+
+    public void setGroupDetails(String name, boolean newGroup) {
+        this.groupName = name;
+        this.isNewGroup = newGroup;
     }
 
     public void addActivity(Activity activity) {

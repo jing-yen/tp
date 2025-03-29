@@ -12,6 +12,8 @@ import paypals.util.Parser;
 import paypals.util.Storage;
 import paypals.util.UI;
 
+import java.util.ArrayList;
+
 public class PayPals {
     private static Parser parser;
     private static ActivityManager activityManager;
@@ -25,16 +27,47 @@ public class PayPals {
             parser = new Parser();
             activityManager = new ActivityManager();
             storage = new Storage();
-            storage.load(activityManager);
         } catch (PayPalsException e) {
             System.out.println(e.getMessage());
         }
     }
 
     public void run() {
-        ui.sayHello();
         boolean isExit = false;
         Logging.logInfo("Entering main program body. Begin accepting user commands");
+        ui.sayHello();
+        ui.printLine();
+
+        System.out.println("Please select a group number...");
+        ArrayList<String> groupNames = storage.getGroupNames();
+        int index = 0;
+        while (index < groupNames.size()) {
+            System.out.println(String.format("(%d) %s", index+1, groupNames.get(index++)));
+        }
+        System.out.println("... or give your new group a name:");
+
+        ui.printPrompt();
+        String groupNumberOrName = ui.readLine();
+        while (!storage.checkIfFilenameValid(groupNumberOrName)) {
+            ui.print("Group name needs to be a valid filename as well. Try again:");
+            ui.printPrompt();
+            groupNumberOrName = ui.readLine();
+        }
+
+        try {
+            storage.load(groupNumberOrName, activityManager);
+        } catch (PayPalsException e) {
+            System.out.println(e.getMessage());
+        }
+
+        ui.printLine();
+        ui.print(String.format("You are currently in the \"%s\" group.", activityManager.getGroupName()));
+        if (activityManager.checkIsNewGroup()) {
+            ui.print("It is a new group.");
+        } else {
+            ui.print(String.format("There are %d transactions.", activityManager.getActivityList().size()));
+        }
+
         while (!isExit) {
             try {
                 ui.printLine();
