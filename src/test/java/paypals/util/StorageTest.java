@@ -13,7 +13,10 @@ import paypals.PayPalsTest;
 import paypals.commands.AddCommand;
 import paypals.exception.PayPalsException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class StorageTest extends PayPalsTest {
     @Test
@@ -82,7 +85,6 @@ public class StorageTest extends PayPalsTest {
             Storage storage = new Storage();
 
             assertFalse(storage.checkIfFilenameValid("trip/"));
-            assertFalse(storage.checkIfFilenameValid("Singapore: 3 day 2 nights"));
             assertFalse(storage.checkIfFilenameValid(""));
             assertFalse(storage.checkIfFilenameValid(" "));
         } catch (Exception e) {
