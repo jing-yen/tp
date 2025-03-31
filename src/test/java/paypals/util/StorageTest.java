@@ -129,23 +129,23 @@ public class StorageTest extends PayPalsTest {
 
         PayPalsException ex9 = assertThrows(PayPalsException.class,
                 () -> storage.checkIfFilenameValid("file?name.txt"));
-        assertEquals(ExceptionMessage.FILENAME_DOES_NOT_EXIST.getMessage(), ex9.getMessage());
+        assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), ex9.getMessage());
 
         PayPalsException ex10 = assertThrows(PayPalsException.class,
                 () -> storage.checkIfFilenameValid("file*name.txt"));
-        assertEquals(ExceptionMessage.FILENAME_DOES_NOT_EXIST.getMessage(), ex10.getMessage());
+        assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), ex10.getMessage());
 
         PayPalsException ex11 = assertThrows(PayPalsException.class,
                 () -> storage.checkIfFilenameValid("file\"name.txt"));
-        assertEquals(ExceptionMessage.FILENAME_DOES_NOT_EXIST.getMessage(), ex11.getMessage());
+        assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), ex11.getMessage());
 
         PayPalsException ex12 = assertThrows(PayPalsException.class,
                 () -> storage.checkIfFilenameValid("file<name.txt"));
-        assertEquals(ExceptionMessage.FILENAME_DOES_NOT_EXIST.getMessage(), ex12.getMessage());
+        assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), ex12.getMessage());
 
         PayPalsException ex13 = assertThrows(PayPalsException.class,
                 () -> storage.checkIfFilenameValid("file>name.txt"));
-        assertEquals(ExceptionMessage.FILENAME_DOES_NOT_EXIST.getMessage(), ex13.getMessage());
+        assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), ex13.getMessage());
 
         // Length exceeding MAX_PATH (260 characters)
         String longName = "a".repeat(261);
