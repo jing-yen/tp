@@ -112,11 +112,15 @@ public class Storage {
             }
 
             // Check if file exists with correct filename. Sometimes invalid names are truncated.
-            File testFolder = new File(STORAGE_FOLDER_PATH, testFileName);
-            if (!testFolder.exists()) {
-                throw new PayPalsException(ExceptionMessage.FILENAME_DOES_NOT_EXIST);
+            File folder = new File(STORAGE_FOLDER_PATH);
+            File[] listOfFiles = folder.listFiles();
+
+            for (File file : listOfFiles) {
+                if (file.getName().equals(testFileName)) {
+                    return true;
+                }
             }
-            return true;
+            throw new PayPalsException(ExceptionMessage.FILENAME_DOES_NOT_EXIST);
         }
     }
 
