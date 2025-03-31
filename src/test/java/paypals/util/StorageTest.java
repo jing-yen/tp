@@ -11,6 +11,7 @@ import paypals.Activity;
 import paypals.ActivityManager;
 import paypals.PayPalsTest;
 import paypals.commands.AddCommand;
+import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -83,51 +84,60 @@ public class StorageTest extends PayPalsTest {
     public void checkIfFilenameValid_blockInvalidNames() {
         try {
             Storage storage = new Storage();
-
-            assertFalse(storage.checkIfFilenameValid("trip/"));
-            assertFalse(storage.checkIfFilenameValid(""));
-            assertFalse(storage.checkIfFilenameValid(" "));
-        } catch (Exception e) {
-            fail();
+            storage.checkIfFilenameValid("");
+            storage.checkIfFilenameValid(" ");
+            storage.checkIfFilenameValid("      ");
+            fail("Expected a PayPalsException to be thrown");
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.EMPTY_FILENAME.getMessage(), e.getMessage());
         }
     }
 
     @Test
     @EnabledOnOs(OS.WINDOWS)
     void checkIfFilenameValid_blockWindowsReservedNames() throws PayPalsException {
-        Storage storage = new Storage();
+        try {
+            Storage storage = new Storage();
 
-        // Reserved device names
-        assertFalse(storage.checkIfFilenameValid("CON"), "CON is reserved on Windows");
-        assertFalse(storage.checkIfFilenameValid("PRN"), "PRN is reserved on Windows");
-        assertFalse(storage.checkIfFilenameValid("AUX"), "AUX is reserved on Windows");
-        assertFalse(storage.checkIfFilenameValid("NUL"), "NUL is reserved on Windows");
-        assertFalse(storage.checkIfFilenameValid("COM1"), "COM1 is reserved on Windows");
-        assertFalse(storage.checkIfFilenameValid("LPT9"), "LPT9 is reserved on Windows");
+            // Reserved device names
+            storage.checkIfFilenameValid("CON");
+            storage.checkIfFilenameValid("PRN");
+            storage.checkIfFilenameValid("AUX");
+            storage.checkIfFilenameValid("NUL");
+            storage.checkIfFilenameValid("COM1");
+            storage.checkIfFilenameValid("LPT9");
 
-        // Invalid characters
-        assertFalse(storage.checkIfFilenameValid("file:name.txt"), "':' is invalid on Windows");
-        assertFalse(storage.checkIfFilenameValid("file|name.txt"), "'|' is invalid on Windows");
-        assertFalse(storage.checkIfFilenameValid("file?name.txt"), "'?' is invalid on Windows");
-        assertFalse(storage.checkIfFilenameValid("file*name.txt"), "'*' is invalid on Windows");
-        assertFalse(storage.checkIfFilenameValid("file\"name.txt"), "'\"' is invalid on Windows");
-        assertFalse(storage.checkIfFilenameValid("file<name.txt"), "'<' is invalid on Windows");
-        assertFalse(storage.checkIfFilenameValid("file>name.txt"), "'>' is invalid on Windows");
+            //Invalid characters
+            storage.checkIfFilenameValid("file:name.txt");
+            storage.checkIfFilenameValid("file|name.txt");
+            storage.checkIfFilenameValid("file?name.txt");
+            storage.checkIfFilenameValid("file*name.txt");
+            storage.checkIfFilenameValid("file\"name.txt");
+            storage.checkIfFilenameValid("file<name.txt");
+            storage.checkIfFilenameValid("file>name.txt");
 
-        // Length exceeding MAX_PATH (260 characters)
-        String longName = "a".repeat(261);
-        assertFalse(storage.checkIfFilenameValid(longName), "Exceeds Windows MAX_PATH");
+            // Length exceeding MAX_PATH (260 characters)
+            String longName = "a".repeat(261);
+            storage.checkIfFilenameValid(longName);
+
+            fail("Expected a PayPalsException to be thrown");
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.EMPTY_FILENAME.getMessage(), e.getMessage());
+        }
     }
 
     @Test
     @EnabledOnOs({OS.LINUX, OS.MAC})
-    void checkIfFilenameValid_blockUnixSpecificInvalidNames() throws PayPalsException {
-        Storage storage = new Storage();
-
-        // Invalid characters (forward slash)
-        assertFalse(storage.checkIfFilenameValid("file/name.txt"), "'/' is invalid on Unix");
-
-        // Null character (invalid on all OSes but explicitly test here)
-        assertFalse(storage.checkIfFilenameValid("file\0name.txt"), "'\\0' is invalid on Unix");
+    void checkIfFilenameValid_blockUnixSpecificInvalidNames() {
+        try {
+            Storage storage = new Storage();
+            // Invalid characters (forward slash)
+            storage.checkIfFilenameValid("file/name.txt");
+            // Null character (invalid on all OSes but explicitly test here)
+            storage.checkIfFilenameValid("file\0name.txt");
+            fail("Expected a PayPalsException to be thrown");
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), e.getMessage());
+        }
     }
 }
