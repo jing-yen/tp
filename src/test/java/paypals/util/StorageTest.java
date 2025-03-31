@@ -121,7 +121,7 @@ public class StorageTest extends PayPalsTest {
 
             fail("Expected a PayPalsException to be thrown");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.EMPTY_FILENAME.getMessage(), e.getMessage());
+            assertEquals(ExceptionMessage.FILENAME_DOES_NOT_EXIST.getMessage(), e.getMessage());
         }
     }
 
