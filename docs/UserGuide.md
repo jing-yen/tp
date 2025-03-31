@@ -13,6 +13,7 @@
   - [Command Format](#command-format)
     - [Viewing help: `help`](#viewing-help-help)
     - [Adding an expense with details: `add`](#adding-an-expense-with-details-add)
+    - [Adding an expense with equal portions of spending: `addequal`]()
     - [Delete an expense: `delete`](#delete-an-expense-delete)
     - [List all past expenses: `list`](#list-all-past-expenses-list)
     - [Generate a simplified debt settlement plan: `split`](#generate-a-simplified-debt-settlement-plan-split)
@@ -46,22 +47,23 @@ java -jar paypals.jar
 
 A quick reference table for all commands is presented below.
 
-| Task                                        | Command Expression                                                    |
-|---------------------------------------------|-----------------------------------------------------------------------|
-| Help menu                                   | `help`                                                                |
-| Add an activity                             | `add d/DESCRIPTION n/NAME f/FRIEND1 a/AMOUNT1 f/FRIEND2 a/AMOUNT2...` |
-| Delete an activity                          | `delete i/IDENTIFIER`                                                 |
-| List all expenses                           | `list`                                                                |
-| List all expenses by a person               | `list n/NAME`                                                         |
-| Split bills                                 | `split`                                                               |
-| Mark an activity as paid for a person       | `paid n/NAME i/IDENTIFIER`                                            |
-| Mark an activity as unpaid for a person     | `unpaid n/NAME i/IDENTIFIER`                                          |
-| Mark an activity as paid for everyone       | `paid n/PAYER i/IDENTIFIER`                                           |
-| Edit the description of an activity         | `edit i/IDENTIFIER d/DESCRIPTION`                                     |
-| Edit the payer name of an activity          | `edit i/IDENTIFIER n/NEWNAME`                                         |
-| Edit the name of a friend that owes money   | `edit i/IDENTIFIER f/NEWNAME o/OLDNAME`                               |
-| Edit the amount of a friend that owes money | `edit i/IDENTIFIER a/NEWAMOUNT o/FRIENDNAME`                          |
-| Close the application                       | `exit`                                                                |
+| Task                                            | Command Expression                                                    |
+|-------------------------------------------------|-----------------------------------------------------------------------|
+| Help menu                                       | `help`                                                                |
+| Add an activity                                 | `add d/DESCRIPTION n/NAME f/FRIEND1 a/AMOUNT1 f/FRIEND2 a/AMOUNT2...` |
+| Add an activity with equal portions of spending | `add d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`            |
+| Delete an activity                              | `delete i/IDENTIFIER`                                                 |
+| List all expenses                               | `list`                                                                |
+| List all expenses by a person                   | `list n/NAME`                                                         |
+| Split bills                                     | `split`                                                               |
+| Mark an activity as paid for a person           | `paid n/NAME i/IDENTIFIER`                                            |
+| Mark an activity as unpaid for a person         | `unpaid n/NAME i/IDENTIFIER`                                          |
+| Mark an activity as paid for everyone           | `paid n/PAYER i/IDENTIFIER`                                           |
+| Edit the description of an activity             | `edit i/IDENTIFIER d/DESCRIPTION`                                     |
+| Edit the payer name of an activity              | `edit i/IDENTIFIER n/NEWNAME`                                         |
+| Edit the name of a friend that owes money       | `edit i/IDENTIFIER f/NEWNAME o/OLDNAME`                               |
+| Edit the amount of a friend that owes money     | `edit i/IDENTIFIER a/NEWAMOUNT o/FRIENDNAME`                          |
+| Close the application                           | `exit`                                                                |
 
 ## Features 
 
@@ -102,13 +104,14 @@ Help - Available Commands:
 
 Commands with format:
   1. add    -> add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_1 f/FRIEND2 a/AMOUNT_2...
-  2. delete -> delete i/IDENTIFIER
-  3. paid   -> paid n/NAME i/IDENTIFIER
-  4. unpaid -> unpaid n/NAME i/IDENTIFIER
-  5. edit   -> (Description) edit i/IDENTIFIER d/NEWDESCRIPTION
-            -> (Payer name) edit i/IDENTIFIER n/NEWNAME
-            -> (Friend name) edit i/IDENTIFIER f/NEWNAME o/OLDNAME
-            -> (Friend amount) edit i/IDENTIFIER a/NEWAMOUNT o/FRIENDNAME
+  2. addequal   -> addequal d/DESCRIPTION n/PAYER f/FRIEND1 f/FRIEND2 ... a/AMOUNT
+  3. delete     -> delete i/IDENTIFIER
+  4. paid       -> paid n/NAME i/IDENTIFIER
+  5. unpaid     -> unpaid n/NAME i/IDENTIFIER
+  6. edit       -> (Description) edit i/IDENTIFIER d/NEWDESCRIPTION
+                -> (Payer name) edit i/IDENTIFIER n/NEWNAME
+                -> (Friend name) edit i/IDENTIFIER f/NEWNAME o/OLDNAME
+                -> (Friend amount) edit i/IDENTIFIER a/NEWAMOUNT o/FRIENDNAME
 
 Commands without format:
   1. list
@@ -139,6 +142,31 @@ ____________________________________________________________
 
 ```
 > add d/tickets n/John f/Betty a/23.53 f/Jane a/20.21 f/Bob a/38.10
+____________________________________________________________
+Desc: tickets
+Name of payer: John
+Number of friends who owe John: 3
+____________________________________________________________
+```
+
+### Add an expense with equal portions of spending  
+Adds an expense with amount split equally among everyone.
+
+Format: `add d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`
+
+Example of usage:
+
+```
+> add d/lunch n/Jane f/John a/28
+____________________________________________________________
+Desc: lunch
+Name of payer: Jane
+Number of friends who owe Jane: 1
+____________________________________________________________
+```
+
+```
+> add d/tickets n/John f/Betty f/Jane f/Bob a/30.40
 ____________________________________________________________
 Desc: tickets
 Name of payer: John
