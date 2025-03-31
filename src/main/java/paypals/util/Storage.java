@@ -86,33 +86,38 @@ public class Storage {
      * The file is created temporarily to validate the filename and then deleted.
      *
      * @param fileName the name of the file to validate (without the file extension)
-     * @return true if the file can be successfully created, false otherwise
+     * @return true if the file can be successfully created.
      */
-    public boolean checkIfFilenameValid(String fileName) {
+    public boolean checkIfFilenameValid(String fileName) throws PayPalsException {
         if (fileName.isBlank()) {
-            return false;
+            throw new PayPalsException(ExceptionMessage.EMPTY_FILENAME);
         }
-
-        String testFileName = fileName + ".txt";
-        String testFilePath = STORAGE_FOLDER_PATH + "/" + testFileName;
-        File testFile = new File(testFilePath);
+        if (fileName.contains("/")) {
+            throw new PayPalsException(ExceptionMessage.INVALID_FILENAME);
+        }
         try {
-            testFile.createNewFile();
-        } catch (IOException e) {
-            return false;
-        }
-
-        // Check if file exists with correct filename. Sometimes invalid names are truncated.
-        File folder = new File(STORAGE_FOLDER_PATH);
-        File[] listOfFiles = folder.listFiles();
-
-        for (File file : listOfFiles) {
-            if (file.getName().equals(testFileName)) {
-                return true;
+            int testNumber = Integer.parseInt(fileName);
+            if (testNumber <= 0 || testNumber > groupNames.size()) {
+                throw new PayPalsException(ExceptionMessage.INVALID_GROUP_NUMBER);
             }
-        }
+            return true;
+        } catch (NumberFormatException e) {
+            String testFileName = fileName + ".txt";
+            String testFilePath = STORAGE_FOLDER_PATH + "/" + testFileName;
+            File testFile = new File(testFilePath);
+            try {
+                testFile.createNewFile();
+            } catch (IOException error) {
+                throw new PayPalsException(ExceptionMessage.INVALID_FILENAME);
+            }
 
-        return false;
+            // Check if file exists with correct filename. Sometimes invalid names are truncated.
+            File testFolder = new File(STORAGE_FOLDER_PATH, testFileName);
+            if (!testFolder.exists()) {
+                throw new PayPalsException(ExceptionMessage.FILENAME_DOES_NOT_EXIST);
+            }
+            return true;
+        }
     }
 
     /**
