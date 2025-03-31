@@ -35,7 +35,8 @@ PayPals uses the following tools for development and testing:
 
 ### Architecture
 
-(edit in docs/diagram/MainArchitecture.puml)
+![Architecture Diagram](diagrams/MainArchitecture.png)  
+
 The **Architecture Diagram** given above explains the high-level design of the App.  
   
 Given below is a quick overview of the main components and how they interact with each other.  
@@ -43,7 +44,7 @@ Given below is a quick overview of the main components and how they interact wit
 **Main components of the architecture**  
 ` Paypals` is in charge of the app launch and shut down.  
 - At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
-- At shut down, it shuts down the other components and invokes cleanup methods where necessary (?)
+- At shut down, it shuts down all components.
   
 The bulk of the app's work is down by the following five components:
 * `Ui`: The UI of the App.
@@ -210,6 +211,7 @@ The product aims to provide assistance in simplifying payments by minimising the
 | v1.0    | user                              | save current expenses when I exit the application                 | can view them again when I run the application another time |
 | v2.0    | new user                          | use a command to display all the common commands and their syntax | know how to use the app                                     |
 | v2.0    | user                              | edit an expense                                                   | can correct any mistakes I made when entering them          |
+| v2.0    | user                              | add an expense and split the cost equally among multiple people   | manually calculate individual shares.                       |
 
 ### Use cases
 (For all use cases below, the **System** is `Paypals` and the **Actor** is the `user`, unless specified otherwise)
