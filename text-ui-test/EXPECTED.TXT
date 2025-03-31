@@ -3,11 +3,11 @@
 Welcome to PayPals!
 ____________________________________________________________
 Please select a group number from the following...
-(1) test
+(You currently have no available groups to load)
 ... or give your new group a name:
 > ____________________________________________________________
 You are currently in the "test" group.
-There are 0 transactions.
+It is a new group.
 ____________________________________________________________
 > ____________________________________________________________
 Thank you for using PayPals!
