@@ -74,7 +74,7 @@ public class EditCommandTest extends PayPalsTest {
     }
 
     @Test
-    public void execute_editFriendAmount_whenPaid_exceptionThrown() {
+    public void execute_editFriendAmountWhenPaid_exceptionThrown() {
         // Mark friend "John" as having paid.
         String paidCommand = "n/John i/1";
         PaidCommand pc = new PaidCommand(paidCommand);
