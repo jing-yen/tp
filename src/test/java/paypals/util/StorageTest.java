@@ -125,7 +125,7 @@ public class StorageTest extends PayPalsTest {
 
         PayPalsException ex8 = assertThrows(PayPalsException.class,
                 () -> storage.checkIfFilenameValid("file|name.txt"));
-        assertEquals(ExceptionMessage.FILENAME_DOES_NOT_EXIST.getMessage(), ex8.getMessage());
+        assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), ex8.getMessage());
 
         PayPalsException ex9 = assertThrows(PayPalsException.class,
                 () -> storage.checkIfFilenameValid("file?name.txt"));
