@@ -150,7 +150,7 @@ public class StorageTest extends PayPalsTest {
         // Length exceeding MAX_PATH (260 characters)
         String longName = "a".repeat(261);
         PayPalsException ex14 = assertThrows(PayPalsException.class, () -> storage.checkIfFilenameValid(longName));
-        assertEquals(ExceptionMessage.FILENAME_DOES_NOT_EXIST.getMessage(), ex14.getMessage());
+        assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), ex14.getMessage());
     }
 
     @Test
