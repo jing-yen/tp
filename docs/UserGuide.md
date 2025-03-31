@@ -25,6 +25,8 @@
     - [Exiting the application: `exit`](#exiting-the-application-exit)
   - [FAQ](#faq)
   - [Common Errors](#common-errors)
+    - [Failure to adhere to command format](#failure-to-adhere-to-command-format)
+    - [Invalid Requests](#invalid-requests)
   - [Known Issues](#known-issues)
 
 ## Introduction
@@ -40,8 +42,9 @@ PayPals is a CLI-based application that aims to provide assistance in simplifyin
 ```
 java -jar paypals.jar
 ```
-5. Type the command in the command box and press Enter to execute it. e.g. typing help and pressing Enter will open the help window.
-6. You can now start using PayPals!
+5. Select a group by entering the number of the group displayed on the console, or create a new group by entering the name of the new group. Press enter to confirm your group.
+6. Type the command in the command box and press Enter to execute it. e.g. typing help and pressing Enter will open the help window.
+7. You can now start using PayPals!
 
 ## Command Reference
 
@@ -86,6 +89,32 @@ When it’s time to split the total bill, the app simplifies the process by calc
 PayPals data is saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 The file is also created automatically if it does not exist.
 Note: Do not edit any of the data files manually as it will result in corrupted files.
+
+### Groups
+
+When the application starts up, PayPals will first ask the user to either select one of the existing groups, or create a new group. If an existing group is selected, 
+the data specifically for that group will be loaded. Otherwise, a new group would be created with no data and the user can have a fresh start. 
+If there are no existing groups, it will be displayed on the console to the user and the user would have to create a new group to proceed with using the app.
+This feature allows users to separate their trips to individual groups to better manage their expense tracking. 
+
+The following is an example of what the user would see when the program starts, with both cases of having existing groups and without:
+```
+Welcome to PayPals!
+____________________________________________________________
+Please select a group number from the following...
+(1) JB trip
+(2) karaoke
+... or give your new group a name:
+> 
+```
+```
+Welcome to PayPals!
+____________________________________________________________
+Please select a group number from the following...
+(You currently have no available groups to load)
+... or give your new group a name:
+> 
+```
 
 ## Command Format
 
@@ -472,5 +501,79 @@ ____________________________________________________________
 **A**: Install PayPals on the other computer and replace the save file in data directory with the save file containing you data.
 
 ## Common Errors
+
+### Failure to adhere to command format
+
+PayPals will output the error messages in the event that the user input does not match the corresponding format for the desired operation.
+For example:
+```
+> lsit
+____________________________________________________________
+INPUT ERROR: Invalid command entered
+Try these commands: add | delete | edit | list | split | paid | unpaid | exit | help
+____________________________________________________________
+```
+
+Or
+
+```
+> add d/Dinner f/Bob a/10
+____________________________________________________________
+Format: add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_OWED_1 f/FRIEND2 a/AMOUNT_OWED_2...
+INPUT ERROR: No name of payer
+____________________________________________________________
+```
+
+This could be potentially caused by 
+* Misspelled commands (e.g. lsit instead of list)
+* Absence of required parameters for the command
+* Absence of parameter prefixes (e.g. n/)
+* User input does not follow command format
+
+### Invalid Requests
+
+As PayPals is designed to specifically target real-life transactions, illogical requests going against real-life standards
+may also trigger error messages. For example:
+
+```
+> list n/John
+____________________________________________________________
+Activities which have been fully paid for John:
+1.  Desc: lunch
+    Payer: Jane
+    Amount: $28.00 [Paid]
+
+Activities which have not been fully paid for John:
+
+____________________________________________________________
+> edit i/1 a/10 o/John
+____________________________________________________________
+ERROR: Unable to edit amount owed if it has been paid
+____________________________________________________________
+```
+
+Or
+
+```
+> add d/lunch n/Jane f/John a/18.274517
+____________________________________________________________
+INPUT ERROR: Please enter amounts up to 2 decimal places.
+____________________________________________________________
+> 
+```
+
+Or
+
+```
+> add d/lunch n/Jane f/John a/999999
+____________________________________________________________
+INPUT ERROR: Too large amount entered exceeding limit
+____________________________________________________________
+> 
+```
+
+This could potentially be caused by
+* Invalid parameters (Monetary value more than 2 decimal places)
+* Illogical parameters (Changing the amount owed after it has been paid, or owing tens of thousands of dollars)
 
 ## Known Issues
