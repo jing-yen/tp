@@ -2,7 +2,8 @@
 
 Welcome to PayPals!
 ____________________________________________________________
-Please select a group number...
+Please select a group number from the following...
+(You currently have no available groups to load)
 ... or give your new group a name:
 > ____________________________________________________________
 You are currently in the "test" group.

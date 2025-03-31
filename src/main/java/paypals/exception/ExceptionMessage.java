@@ -31,7 +31,11 @@ public enum ExceptionMessage {
             "\n Edit friend name: edit i/ID f/NEWNAME o/OLDNAME" +
             "\n Edit friend amount owed: edit i/ID a/NEWAMOUNT o/NAME"),
     NEGATIVE_AMOUNT("ERROR: Negative amount entered"),
-    NO_FRIENDS("ERROR: No friends were entered");
+    NO_FRIENDS("ERROR: No friends were entered"),
+    INVALID_GROUP_NUMBER("ERROR: That group number is invalid or it does not exist, please enter a valid group number"),
+    EMPTY_FILENAME("ERROR: Input should not be empty. Please try again."),
+    INVALID_FILENAME("ERROR: Filename specified must be a valid filename. Please try again."),
+    FILENAME_DOES_NOT_EXIST("ERROR: Filename does not exist. Please try again.");
     private final String message;
 
     ExceptionMessage(String message) {

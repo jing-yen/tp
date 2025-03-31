@@ -38,20 +38,27 @@ public class PayPals {
         ui.sayHello();
         ui.printLine();
 
-        System.out.println("Please select a group number...");
+        ui.print("Please select a group number from the following...");
         ArrayList<String> groupNames = storage.getGroupNames();
         int index = 0;
         while (index < groupNames.size()) {
-            System.out.println(String.format("(%d) %s", index+1, groupNames.get(index++)));
+            ui.print(String.format("(%d) %s", index+1, groupNames.get(index++)));
         }
-        System.out.println("... or give your new group a name:");
+        if (groupNames.isEmpty()) {
+            ui.print("(You currently have no available groups to load)");
+        }
+        ui.print("... or give your new group a name:");
 
-        ui.printPrompt();
-        String groupNumberOrName = ui.readLine();
-        while (!storage.checkIfFilenameValid(groupNumberOrName)) {
-            ui.print("Group name needs to be a valid filename as well. Try again:");
-            ui.printPrompt();
-            groupNumberOrName = ui.readLine();
+        String groupNumberOrName = "";
+        boolean validInput = false;
+        while (!validInput) {
+            try {
+                ui.printPrompt();
+                groupNumberOrName = ui.readLine();
+                validInput = storage.checkIfFilenameValid(groupNumberOrName);
+            } catch (PayPalsException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         try {
