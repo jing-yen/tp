@@ -233,6 +233,15 @@ Format: `list [n/NAME]`
 
 * If no name is provided, all past expenses for everyone are displayed.
 
+* If a `NAME` is provided, the list will categorize that person’s activities
+  into two sections: `fully paid` and `not fully paid`. An activity is marked 
+  as `fully paid` only if all payees have completed their payments to the specified 
+  person for that activity. If any payee has not paid, the activity will appear under 
+  `not fully paid`.
+
+* If a `NAME` is provided, any activities where the specified person is 
+  the payer will display a `[PAYER]` tag next to the activity description.
+
 Example of usage: 
 
 ```
@@ -286,6 +295,12 @@ Format: `paid n/NAME i/IDENTIFIER`
 * Note: The `IDENTIFIER` used in the command is with respect to that person specified in the command.
   In other words, the `IDENTIFIER` is the number labelled on the activity when you execute `paid n/NAME`.
 
+* Note: If the paid command is used on an activity where the specified `NAME` is the payer for the activity,
+  it will mark all participants in the activity as paid.
+
+* Note: The `IDENTIFIER` shown in the `LIST` command will change after using the `PAID` command. If you 
+  intend to use the `PAID` command again, please run the `LIST` command first to get the updated `IDENTIFIER`.
+
 Example of usage: 
 
 ```
@@ -328,6 +343,12 @@ Format: `unpaid n/NAME i/IDENTIFIER`
 * Note: The `IDENTIFIER` used in the command is with respect to that person specified in the command.
   In other words, the `IDENTIFIER` is the number labelled on the activity when you execute `paid n/NAME`.
 
+* Note: If the unpaid command is used on an activity where the specified `NAME` is the payer for the activity,
+  it will mark all participants in the activity as unpaid.
+
+* Note: The `IDENTIFIER` shown in the `LIST` command will change after using the `UNPAID` command. If you
+  intend to use the `UNPAID` command again, please run the `LIST` command first to get the updated `IDENTIFIER`.
+  
 Example of usage: 
 
 ```
