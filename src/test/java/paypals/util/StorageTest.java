@@ -14,6 +14,7 @@ import paypals.commands.AddCommand;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -80,63 +81,102 @@ public class StorageTest extends PayPalsTest {
     }
 
     @Test
-    public void checkIfFilenameValid_blockInvalidNames() {
-        try {
-            Storage storage = new Storage();
-            storage.checkIfFilenameValid("");
-            storage.checkIfFilenameValid(" ");
-            storage.checkIfFilenameValid("      ");
-            fail("Expected a PayPalsException to be thrown");
-        } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.EMPTY_FILENAME.getMessage(), e.getMessage());
-        }
+    public void checkIfFilenameValid_blockInvalidNames() throws PayPalsException {
+        Storage storage = new Storage();
+
+        PayPalsException ex1 = assertThrows(PayPalsException.class, () -> storage.checkIfFilenameValid(""));
+        assertEquals(ExceptionMessage.EMPTY_FILENAME.getMessage(), ex1.getMessage());
+
+        PayPalsException ex2 = assertThrows(PayPalsException.class, () -> storage.checkIfFilenameValid(" "));
+        assertEquals(ExceptionMessage.EMPTY_FILENAME.getMessage(), ex2.getMessage());
+
+        PayPalsException ex3 = assertThrows(PayPalsException.class, () -> storage.checkIfFilenameValid("      "));
+        assertEquals(ExceptionMessage.EMPTY_FILENAME.getMessage(), ex3.getMessage());
     }
 
     @Test
     @EnabledOnOs(OS.WINDOWS)
     void checkIfFilenameValid_blockWindowsReservedNames() throws PayPalsException {
-        try {
-            Storage storage = new Storage();
+        Storage storage = new Storage();
 
-            // Reserved device names
-            storage.checkIfFilenameValid("CON");
-            storage.checkIfFilenameValid("PRN");
-            storage.checkIfFilenameValid("AUX");
-            storage.checkIfFilenameValid("NUL");
-            storage.checkIfFilenameValid("COM1");
-            storage.checkIfFilenameValid("LPT9");
+        // Reserved device names
+        PayPalsException ex1 = assertThrows(PayPalsException.class, () -> storage.checkIfFilenameValid("CON"));
+        assertEquals(ExceptionMessage.FILENAME_DOES_NOT_EXIST.getMessage(), ex1.getMessage());
 
-            //Invalid characters
-            storage.checkIfFilenameValid("file:name.txt");
-            storage.checkIfFilenameValid("file|name.txt");
-            storage.checkIfFilenameValid("file?name.txt");
-            storage.checkIfFilenameValid("file*name.txt");
-            storage.checkIfFilenameValid("file\"name.txt");
-            storage.checkIfFilenameValid("file<name.txt");
-            storage.checkIfFilenameValid("file>name.txt");
+        PayPalsException ex2 = assertThrows(PayPalsException.class, () -> storage.checkIfFilenameValid("PRN"));
+        assertEquals(ExceptionMessage.FILENAME_DOES_NOT_EXIST.getMessage(), ex2.getMessage());
 
-            // Length exceeding MAX_PATH (260 characters)
-            String longName = "a".repeat(261);
-            storage.checkIfFilenameValid(longName);
+        PayPalsException ex3 = assertThrows(PayPalsException.class, () -> storage.checkIfFilenameValid("AUX"));
+        assertEquals(ExceptionMessage.FILENAME_DOES_NOT_EXIST.getMessage(), ex3.getMessage());
 
-            fail("Expected a PayPalsException to be thrown");
-        } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.FILENAME_DOES_NOT_EXIST.getMessage(), e.getMessage());
-        }
+        PayPalsException ex4 = assertThrows(PayPalsException.class, () -> storage.checkIfFilenameValid("NUL"));
+        assertEquals(ExceptionMessage.FILENAME_DOES_NOT_EXIST.getMessage(), ex4.getMessage());
+
+        PayPalsException ex5 = assertThrows(PayPalsException.class, () -> storage.checkIfFilenameValid("COM1"));
+        assertEquals(ExceptionMessage.FILENAME_DOES_NOT_EXIST.getMessage(), ex5.getMessage());
+
+        PayPalsException ex6 = assertThrows(PayPalsException.class, () -> storage.checkIfFilenameValid("LPT9"));
+        assertEquals(ExceptionMessage.FILENAME_DOES_NOT_EXIST.getMessage(), ex6.getMessage());
+
+        // Invalid characters
+        PayPalsException ex7 = assertThrows(PayPalsException.class,
+                () -> storage.checkIfFilenameValid("file:name.txt"));
+        assertEquals(ExceptionMessage.FILENAME_DOES_NOT_EXIST.getMessage(), ex7.getMessage());
+
+        PayPalsException ex8 = assertThrows(PayPalsException.class,
+                () -> storage.checkIfFilenameValid("file|name.txt"));
+        assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), ex8.getMessage());
+
+        PayPalsException ex9 = assertThrows(PayPalsException.class,
+                () -> storage.checkIfFilenameValid("file?name.txt"));
+        assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), ex9.getMessage());
+
+        PayPalsException ex10 = assertThrows(PayPalsException.class,
+                () -> storage.checkIfFilenameValid("file*name.txt"));
+        assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), ex10.getMessage());
+
+        PayPalsException ex11 = assertThrows(PayPalsException.class,
+                () -> storage.checkIfFilenameValid("file\"name.txt"));
+        assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), ex11.getMessage());
+
+        PayPalsException ex12 = assertThrows(PayPalsException.class,
+                () -> storage.checkIfFilenameValid("file<name.txt"));
+        assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), ex12.getMessage());
+
+        PayPalsException ex13 = assertThrows(PayPalsException.class,
+                () -> storage.checkIfFilenameValid("file>name.txt"));
+        assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), ex13.getMessage());
+
+        // Length exceeding MAX_PATH (260 characters)
+        String longName = "a".repeat(261);
+        PayPalsException ex14 = assertThrows(PayPalsException.class, () -> storage.checkIfFilenameValid(longName));
+        assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), ex14.getMessage());
     }
 
     @Test
     @EnabledOnOs({OS.LINUX, OS.MAC})
-    void checkIfFilenameValid_blockUnixSpecificInvalidNames() {
-        try {
-            Storage storage = new Storage();
-            // Invalid characters (forward slash)
-            storage.checkIfFilenameValid("file/name.txt");
-            // Null character (invalid on all OSes but explicitly test here)
-            storage.checkIfFilenameValid("file\0name.txt");
-            fail("Expected a PayPalsException to be thrown");
-        } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), e.getMessage());
-        }
+    void checkIfFilenameValid_blockUnixSpecificInvalidNames() throws PayPalsException {
+        Storage storage = new Storage();
+
+        // Invalid characters (forward slash)
+        PayPalsException ex1 = assertThrows(PayPalsException.class,
+                () -> storage.checkIfFilenameValid("file/name.txt"));
+        assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), ex1.getMessage());
+
+        // Null character (invalid on all OSes but explicitly test here)
+        PayPalsException ex2 = assertThrows(PayPalsException.class,
+                () -> storage.checkIfFilenameValid("file\0name.txt"));
+        assertEquals(ExceptionMessage.INVALID_FILENAME.getMessage(), ex2.getMessage());
+    }
+
+    @Test
+    void checkIfFilenameValid_blockInvalidNumbers() throws PayPalsException {
+        Storage storage = new Storage();
+
+        PayPalsException ex1 = assertThrows(PayPalsException.class, () -> storage.checkIfFilenameValid("9"));
+        assertEquals(ExceptionMessage.INVALID_GROUP_NUMBER.getMessage(), ex1.getMessage());
+
+        PayPalsException ex2 = assertThrows(PayPalsException.class, () -> storage.checkIfFilenameValid("-1"));
+        assertEquals(ExceptionMessage.INVALID_GROUP_NUMBER.getMessage(), ex2.getMessage());
     }
 }
