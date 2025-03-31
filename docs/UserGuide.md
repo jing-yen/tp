@@ -552,4 +552,28 @@ ERROR: Unable to edit amount owed if it has been paid
 ____________________________________________________________
 ```
 
+Or
+
+```
+> add d/lunch n/Jane f/John a/18.274517
+____________________________________________________________
+INPUT ERROR: Please enter amounts up to 2 decimal places.
+____________________________________________________________
+> 
+```
+
+Or
+
+```
+> add d/lunch n/Jane f/John a/999999
+____________________________________________________________
+INPUT ERROR: Too large amount entered exceeding limit
+____________________________________________________________
+> 
+```
+
+This could potentially be caused by
+* Invalid parameters (Monetary value more than 2 decimal places)
+* Illogical parameters (Changing the amount owed after it has been paid, or owing tens of thousands of dollars)
+
 ## Known Issues

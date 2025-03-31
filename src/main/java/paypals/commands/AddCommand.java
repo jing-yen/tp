@@ -17,7 +17,7 @@ public class AddCommand extends Command {
     private static final String WRONG_ADD_FORMAT =
             "Format: add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_OWED_1 f/FRIEND2 a/AMOUNT_OWED_2...";
     private static final double LARGE_AMOUNT_LIMIT = 10000.0;
-    private static final String MONEY_FORMAT = "^\\d+(\\.\\d{2})?$";
+    private static final String MONEY_FORMAT = "^\\d+(\\.\\d{1,2})?$";
 
     public AddCommand(String command) {
         super(command);
@@ -73,7 +73,7 @@ public class AddCommand extends Command {
             String[] parameters = pairs[i].split("\\s+a/");
             if (parameters.length==2) {
                 String oweName = parameters[0].trim();
-                if (!isValidAmount(parameters[1])) {
+                if (!isValidAmount(parameters[1].trim())) {
                     throw new PayPalsException(ExceptionMessage.NOT_MONEY_FORMAT);
                 }
                 double oweAmount;

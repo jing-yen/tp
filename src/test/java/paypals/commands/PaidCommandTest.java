@@ -14,7 +14,7 @@ class PaidCommandTest extends PayPalsTest {
 
     @BeforeEach
     public void setUpPaid() {
-        callCommand(new AddCommand("d/lunch n/John f/Jane a/28.0"));
+        callCommand(new AddCommand("d/lunch n/John f/Jane a/28"));
         callCommand(new AddCommand("d/tickets n/John f/Betty a/23.53 f/Jane a/20.21 f/Bob a/38.10"));
     }
 

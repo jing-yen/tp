@@ -12,7 +12,7 @@ class SplitCommandTest extends PayPalsTest {
 
     @Test
     public void testSplitCommand_oneActivityOneFriend_twoSystemPrintLines() {
-        callCommand(new AddCommand("d/lunch n/John f/Jane a/28.0"));
+        callCommand(new AddCommand("d/lunch n/John f/Jane a/28"));
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
@@ -28,7 +28,7 @@ class SplitCommandTest extends PayPalsTest {
 
     @Test
     public void testSplitCommand_oneActivityTwoFriends_threeSystemPrintLines() {
-        callCommand(new AddCommand("d/lunch n/John f/Jane a/28.0 f/Jeremy a/10.0"));
+        callCommand(new AddCommand("d/lunch n/John f/Jane a/28 f/Jeremy a/10"));
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
@@ -45,8 +45,8 @@ class SplitCommandTest extends PayPalsTest {
 
     @Test
     public void testSplitCommand_twoActivities_threeSystemPrintLines() {
-        callCommand(new AddCommand("d/lunch n/John f/Jane a/28.0 f/Jeremy a/10.0"));
-        callCommand(new AddCommand("d/lunch n/John f/Jane a/18.0"));
+        callCommand(new AddCommand("d/lunch n/John f/Jane a/28 f/Jeremy a/10"));
+        callCommand(new AddCommand("d/lunch n/John f/Jane a/18"));
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));

@@ -14,7 +14,7 @@ public class EditCommand extends Command {
 
     private static final Pattern COMMAND_PATTERN = Pattern.compile("([idnfao])/\\s*([^/]+?)(?=\\s+[idnfao]/|$)");
     private static final double LARGE_AMOUNT_LIMIT = 10000.0;
-    private static final String MONEY_FORMAT = "^\\d+(\\.\\d{2})?$";
+    private static final String MONEY_FORMAT = "^\\d+(\\.\\d{1,2})?$";
 
     public EditCommand(String command) {
         super(command);
@@ -30,12 +30,8 @@ public class EditCommand extends Command {
             throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
         }
 
-        try {
-            int activityId = parseActivityId(id, activityManager.getSize() - 1);
-            applyEdit(activityManager, ui, activityId, parameters);
-        } catch (PayPalsException e) {
-            System.out.println(e.getMessage());
-        }
+        int activityId = parseActivityId(id, activityManager.getSize() - 1);
+        applyEdit(activityManager, ui, activityId, parameters);
     }
 
     private Map<String, String> parseCommand() {

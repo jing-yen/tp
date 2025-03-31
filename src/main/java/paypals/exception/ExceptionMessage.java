@@ -33,7 +33,7 @@ public enum ExceptionMessage {
     LARGE_AMOUNT("INPUT ERROR: Too large amount entered exceeding limit"),
     NOT_MONEY_FORMAT("INPUT ERROR: Please enter amounts up to 2 decimal places."),
     NO_FRIENDS("INPUT ERROR: No friends were entered"),
-    INVALID_GROUP_NUMBER("INPUT ERROR: That group number is invalid or it does not exist, please enter a valid group number"),
+    INVALID_GROUP_NUMBER("INPUT ERROR: Group number does not exist or is invalid, please enter a valid group number"),
     EMPTY_FILENAME("INPUT ERROR: Input should not be empty. Please try again."),
     INVALID_FILENAME("INPUT ERROR: Filename specified must be a valid filename. Please try again."),
     FILENAME_DOES_NOT_EXIST("INPUT ERROR: Filename does not exist. Please try again.");
