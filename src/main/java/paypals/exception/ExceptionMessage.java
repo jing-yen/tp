@@ -22,20 +22,21 @@ public enum ExceptionMessage {
     STORAGE_FILE_NOT_CREATED("ERROR: An error has occurred, storage file not created"),
     STORAGE_FILE_NOT_FOUND("ERROR: An error has occurred, storage file not found"),
     SAVE_NOT_WRITTEN("ERROR: An error has occurred, storage file not written"),
-    LOAD_ERROR("ERROR: An error has occurred, save file not loaded"),
-    EDIT_ERROR("ERROR: An error has occurred, something went wrong with the edit"),
-    EDIT_AMOUNT_WHEN_PAID("ERROR: Unable to edit amount owed if it has been paid"),
-    EDIT_FORMAT_ERROR("ERROR: Invalid edit format. The format should be one of the following:" +
+    LOAD_ERROR("LOAD ERROR: An error has occurred, save file not loaded"),
+    EDIT_AMOUNT_WHEN_PAID("INPUT ERROR: Unable to edit amount owed if it has been paid"),
+    EDIT_FORMAT_ERROR("INPUT ERROR: Invalid edit format. The format should be one of the following:" +
             "\n Edit description: edit i/ID d/DESC" +
             "\n Edit payer name: edit i/ID n/NEWNAME" +
             "\n Edit friend name: edit i/ID f/NEWNAME o/OLDNAME" +
             "\n Edit friend amount owed: edit i/ID a/NEWAMOUNT o/NAME"),
-    NEGATIVE_AMOUNT("ERROR: Negative amount entered"),
-    NO_FRIENDS("ERROR: No friends were entered"),
-    INVALID_GROUP_NUMBER("ERROR: That group number is invalid or it does not exist, please enter a valid group number"),
-    EMPTY_FILENAME("ERROR: Input should not be empty. Please try again."),
-    INVALID_FILENAME("ERROR: Filename specified must be a valid filename. Please try again."),
-    FILENAME_DOES_NOT_EXIST("ERROR: Filename does not exist. Please try again.");
+    NEGATIVE_AMOUNT("INPUT ERROR: Negative amount entered"),
+    LARGE_AMOUNT("INPUT ERROR: Too large amount entered exceeding limit"),
+    NOT_MONEY_FORMAT("INPUT ERROR: Please enter amounts up to 2 decimal places."),
+    NO_FRIENDS("INPUT ERROR: No friends were entered"),
+    INVALID_GROUP_NUMBER("INPUT ERROR: That group number is invalid or it does not exist, please enter a valid group number"),
+    EMPTY_FILENAME("INPUT ERROR: Input should not be empty. Please try again."),
+    INVALID_FILENAME("INPUT ERROR: Filename specified must be a valid filename. Please try again."),
+    FILENAME_DOES_NOT_EXIST("INPUT ERROR: Filename does not exist. Please try again.");
     private final String message;
 
     ExceptionMessage(String message) {

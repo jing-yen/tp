@@ -13,6 +13,8 @@ import paypals.util.UI;
 public class EditCommand extends Command {
 
     private static final Pattern COMMAND_PATTERN = Pattern.compile("([idnfao])/\\s*([^/]+?)(?=\\s+[idnfao]/|$)");
+    private static final double LARGE_AMOUNT_LIMIT = 10000.0;
+    private static final String MONEY_FORMAT = "^\\d+(\\.\\d{2})?$";
 
     public EditCommand(String command) {
         super(command);
@@ -28,8 +30,12 @@ public class EditCommand extends Command {
             throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
         }
 
-        int activityId = parseActivityId(id, activityManager.getSize() - 1);
-        applyEdit(activityManager, ui, activityId, parameters);
+        try {
+            int activityId = parseActivityId(id, activityManager.getSize() - 1);
+            applyEdit(activityManager, ui, activityId, parameters);
+        } catch (PayPalsException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private Map<String, String> parseCommand() {
@@ -95,8 +101,14 @@ public class EditCommand extends Command {
         } else if (parameters.get("a") != null && parameters.get("o") != null) {
             try {
                 String amount = parameters.get("a");
+                if (!isValidAmount(amount)) {
+                    throw new PayPalsException(ExceptionMessage.NOT_MONEY_FORMAT);
+                }
                 String name = parameters.get("o");
                 double parseAmt = Double.parseDouble(amount);
+                if (parseAmt > LARGE_AMOUNT_LIMIT) {
+                    throw new PayPalsException(ExceptionMessage.LARGE_AMOUNT);
+                }
                 if (activityManager.getActivity(activityId).getFriend(name).hasPaid()) {
                     throw new PayPalsException(ExceptionMessage.EDIT_AMOUNT_WHEN_PAID);
                 }
@@ -108,5 +120,9 @@ public class EditCommand extends Command {
         } else {
             throw new PayPalsException(ExceptionMessage.EDIT_FORMAT_ERROR);
         }
+    }
+
+    public boolean isValidAmount(String amountStr) {
+        return amountStr.matches(MONEY_FORMAT);
     }
 }

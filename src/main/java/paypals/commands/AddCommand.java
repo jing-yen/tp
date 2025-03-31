@@ -16,6 +16,8 @@ public class AddCommand extends Command {
 
     private static final String WRONG_ADD_FORMAT =
             "Format: add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_OWED_1 f/FRIEND2 a/AMOUNT_OWED_2...";
+    private static final double LARGE_AMOUNT_LIMIT = 10000.0;
+    private static final String MONEY_FORMAT = "^\\d+(\\.\\d{2})?$";
 
     public AddCommand(String command) {
         super(command);
@@ -71,6 +73,9 @@ public class AddCommand extends Command {
             String[] parameters = pairs[i].split("\\s+a/");
             if (parameters.length==2) {
                 String oweName = parameters[0].trim();
+                if (!isValidAmount(parameters[1])) {
+                    throw new PayPalsException(ExceptionMessage.NOT_MONEY_FORMAT);
+                }
                 double oweAmount;
                 try {
                     oweAmount = Double.parseDouble(parameters[1]);
@@ -79,9 +84,13 @@ public class AddCommand extends Command {
                     throw new PayPalsException(ExceptionMessage.INVALID_AMOUNT);
                 }
 
-                if (oweAmount <= 0.0){
+                if (oweAmount <= 0.0) {
                     Logging.logWarning("Amount entered for friend out of bounds");
                     throw new PayPalsException(ExceptionMessage.AMOUNT_OUT_OF_BOUNDS);
+                }
+                if (oweAmount > LARGE_AMOUNT_LIMIT) {
+                    Logging.logWarning("Amount entered for friend out of bounds");
+                    throw new PayPalsException(ExceptionMessage.LARGE_AMOUNT);
                 }
                 validateFriend(name, oweName, owed);
                 owed.put(oweName, oweAmount);
@@ -104,5 +113,9 @@ public class AddCommand extends Command {
         activityManager.addActivity(newActivity);
 
         Logging.logInfo("Activity added successfully");
+    }
+
+    public boolean isValidAmount(String amountStr) {
+        return amountStr.matches(MONEY_FORMAT);
     }
 }
