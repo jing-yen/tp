@@ -1,0 +1,40 @@
+@startuml
+actor user
+
+participant "ui:Ui" as ui
+participant "parser:Parser" as parser
+participant "addCmd:AddCommand" as addCmd
+participant "activity:Activity" as activity
+participant "mgr:ActivityManager" as mgr
+participant "storage:Storage" as storage
+participant "listCmd:ListCommand" as listCmd
+participant "splitCmd:SplitCommand" as splitCmd
+
+== Command: add ==
+user -> ui : enterCommand("add d/... n/... f/... a/...")
+ui -> parser : decodeCommand(...)
+parser -> addCmd : new AddCommand(...)
+ui -> addCmd : execute(...)
+addCmd -> activity : new Activity(...)
+addCmd -> mgr : addActivity(...)
+addCmd -> storage : save(...)
+addCmd -> ui : print confirmation
+
+== Command: list ==
+user -> ui : enterCommand("list")
+ui -> parser : decodeCommand(...)
+parser -> listCmd : new ListCommand(...)
+ui -> listCmd : execute(...)
+listCmd -> mgr : getActivityList(...)
+listCmd -> ui : print activities
+
+== Command: split ==
+user -> ui : enterCommand("split")
+ui -> parser : decodeCommand(...)
+parser -> splitCmd : new SplitCommand(...)
+ui -> splitCmd : execute(...)
+splitCmd -> mgr : getActivity(...)
+splitCmd -> activity : getPayer(...)
+splitCmd -> activity : getAllFriends(...)
+splitCmd -> ui : print transactions
+@enduml

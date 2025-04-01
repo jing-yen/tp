@@ -45,17 +45,26 @@ Given below is a quick overview of the main components and how they interact wit
 ` Paypals` is in charge of the app launch and shut down.  
 - At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
 - At shut down, it shuts down all components.
-  
-The bulk of the app's work is down by the following five components:
+
+The bulk of the app's work is done by the following five components:
+
 * `Ui`: The UI of the App.
-* `Parser`: Parse user entry as commands
-* `Command`: The command executor
-* `Activity`: Holds the data of the App in memory
+* `Parser`: Parses user input into executable commands.
+* `Command`: The command executor (with subclasses like `AddCommand`, `ListCommand`, and `SplitCommand`).
+* `Activity`: Holds the data of the App in memory.
 * `Storage`: Reads data from, and writes data to, the hard disk.
-     
+
 **How the architecture components interact with each other**  
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command ``  
-  
+The _Sequence Diagram_ below illustrates how these components interact across three key scenarios:
+
+1. When the user issues an `add` command — showing parsing, command execution, activity creation, and data persistence.
+2. When the user issues a `list` command — showing command execution and retrieval of activity data.
+3. When the user issues a `split` command — showing how debts are calculated and resolved using in-memory data.
+
+This sequence diagram captures the flow from the user's input all the way to command execution and interaction with both memory (`Activity`) and disk (`Storage`), giving a comprehensive overview of the core execution paths in the application.
+
+![Components Interaction Diagram](diagrams/ComponentsRSSeq.png) 
+
 ### UI Component
 
 <ins>Overview</ins>
