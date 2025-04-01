@@ -23,11 +23,16 @@ public class EditCommand extends Command {
     @Override
     public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
         UI ui = new UI(enablePrint);
+
+        if (command == null || command.trim().isEmpty()) {
+            throw new PayPalsException(ExceptionMessage.EDIT_FORMAT_ERROR);
+        }
+
         Map<String, String> parameters = parseCommand();
 
         String id = parameters.getOrDefault("i", "");
         if (id.isEmpty()) {
-            throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
+            throw new PayPalsException(ExceptionMessage.NO_IDENTIFIER);
         }
 
         int activityId = parseActivityId(id, activityManager.getSize() - 1);
