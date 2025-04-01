@@ -12,6 +12,10 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Represents the command to add a new activity in PayPals.
+ * Parses and validates user input, then creates and stores a new {@link Activity} instance.
+ */
 public class AddCommand extends Command {
 
     private static final String WRONG_ADD_FORMAT =
@@ -19,10 +23,23 @@ public class AddCommand extends Command {
     private static final double LARGE_AMOUNT_LIMIT = 10000.0;
     private static final String MONEY_FORMAT = "^\\d+(\\.\\d{1,2})?$";
 
+    /**
+     * Constructs an AddCommand with the given raw user input.
+     *
+     * @param command The user command input string.
+     */
     public AddCommand(String command) {
         super(command);
     }
 
+    /**
+     * Extracts the value of a given prefix (e.g., d/, n/) from the user input.
+     *
+     * @param key               The prefix to look for.
+     * @param exceptionMessage  The exception message to throw if the prefix is missing.
+     * @return The extracted and trimmed value corresponding to the prefix.
+     * @throws PayPalsException If the key is not found in the input.
+     */
     String extractValue(String key, ExceptionMessage exceptionMessage) throws PayPalsException {
         String regex = key + "\\s*([^/]+?)(?=\\s+[a-zA-Z]/|$)";
         Pattern pattern = Pattern.compile(regex);
@@ -37,6 +54,14 @@ public class AddCommand extends Command {
         }
     }
 
+    /**
+     * Validates that a friend entry is unique and not the same as the payer.
+     *
+     * @param payer    Name of the payer.
+     * @param oweName  Name of the friend who owes money.
+     * @param owedMap  Map of currently parsed owed entries.
+     * @throws PayPalsException If validation fails (e.g., duplicate friend or payer owes themselves).
+     */
     void validateFriend(String payer, String oweName, HashMap<String, Double> owedMap) throws PayPalsException {
         assert payer != null : "Payer name should not be null";
         assert oweName != null : "OweName should not be null";
@@ -53,11 +78,20 @@ public class AddCommand extends Command {
         }
     }
 
+    /**
+     * Executes the add command: parses input, validates it, creates a new Activity,
+     * and adds it to the {@link ActivityManager}.
+     *
+     * @param activityManager The activity manager managing all activities.
+     * @param enablePrint     Whether to enable printing UI messages.
+     * @throws PayPalsException If the command input is invalid or logic constraints fail.
+     */
+    @Override
     public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
         assert activityManager != null : "ActivityManager should not be null";
 
         UI ui = new UI(enablePrint);
-        HashMap<String, Double> owed = new HashMap<String, Double>();
+        HashMap<String, Double> owed = new HashMap<>();
 
         // Step 1: Extract description and payer name
         String description = extractValue("d/", ExceptionMessage.NO_DESCRIPTION);
@@ -69,9 +103,9 @@ public class AddCommand extends Command {
         // Step 2: Capture all (f/... a/...) pairs
         String[] pairs = command.split("\\s+f/");
         double totalOwed = 0.0;
-        for (int i = 1; i< pairs.length; i++) {
+        for (int i = 1; i < pairs.length; i++) {
             String[] parameters = pairs[i].split("\\s+a/");
-            if (parameters.length==2) {
+            if (parameters.length == 2) {
                 String oweName = parameters[0].trim();
                 if (!isValidAmount(parameters[1].trim())) {
                     throw new PayPalsException(ExceptionMessage.NOT_MONEY_FORMAT);
@@ -100,21 +134,28 @@ public class AddCommand extends Command {
             } else {
                 Logging.logWarning("Incorrect number of parameters detected: {0}");
                 throw new PayPalsException(parameters.length < 2
-                        ? ExceptionMessage.NO_AMOUNT_ENTERED: ExceptionMessage.MULTIPLE_AMOUNTS_ENTERED);
+                        ? ExceptionMessage.NO_AMOUNT_ENTERED : ExceptionMessage.MULTIPLE_AMOUNTS_ENTERED);
             }
         }
 
         assert totalOwed >= 0 : "Total owed amount should not be negative";
 
-        ui.print("Desc: "+description);
-        ui.print("Name of payer: "+name);
-        ui.print("Number of friends who owe " + name +": "+owed.size());
+        ui.print("Desc: " + description);
+        ui.print("Name of payer: " + name);
+        ui.print("Number of friends who owe " + name + ": " + owed.size());
+
         Activity newActivity = new Activity(description, new Person(name, -totalOwed, false), owed);
         activityManager.addActivity(newActivity);
 
         Logging.logInfo("Activity added successfully");
     }
 
+    /**
+     * Checks if a given string is a valid monetary amount (up to 2 decimal places).
+     *
+     * @param amountStr The string to validate.
+     * @return true if the format is valid; false otherwise.
+     */
     public boolean isValidAmount(String amountStr) {
         return amountStr.matches(MONEY_FORMAT);
     }

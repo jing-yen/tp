@@ -38,7 +38,7 @@ public class PayPals {
         ui.sayHello();
         ui.printLine();
 
-        ui.print("Please select a group number from the following...");
+        ui.print("Please select a group number from the following:");
         ArrayList<String> groupNames = storage.getGroupNames();
         int index = 0;
         while (index < groupNames.size()) {
@@ -47,7 +47,7 @@ public class PayPals {
         if (groupNames.isEmpty()) {
             ui.print("(You currently have no available groups to load)");
         }
-        ui.print("... or give your new group a name:");
+        ui.print("or give your new group a name:");
 
         String groupNumberOrName = "";
         boolean validInput = false;
