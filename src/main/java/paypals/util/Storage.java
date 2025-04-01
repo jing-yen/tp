@@ -102,9 +102,6 @@ public class Storage {
             }
             return true;
         } catch (NumberFormatException e) {
-            if (fileName.matches("(?i)^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$")) {
-                throw new PayPalsException(ExceptionMessage.FILENAME_DOES_NOT_EXIST);
-            }
             String testFileName = fileName + ".txt";
             String testFilePath = STORAGE_FOLDER_PATH + "/" + testFileName;
             try {
