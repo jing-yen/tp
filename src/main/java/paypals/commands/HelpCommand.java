@@ -31,6 +31,7 @@ public class HelpCommand extends Command{
                   2. split
                   3. help
                   4. exit
+                  5. change
                   
                 For more details, please refer to the User Guide of PayPals.
                 """);
