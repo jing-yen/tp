@@ -35,6 +35,28 @@ public class PayPals {
     public void run() {
         boolean isExit = false;
         Logging.logInfo("Entering main program body. Begin accepting user commands");
+        groupSelection();
+        while (!isExit) {
+            try {
+                ui.printLine();
+                ui.printPrompt();
+                String fullCommand = ui.readLine();
+                ui.printLine();
+                Command c = parser.decodeCommand(fullCommand);
+                c.execute(activityManager, true);
+                isExit = c.isExit();
+                if (c instanceof AddCommand || c instanceof EditCommand || c instanceof DeleteCommand
+                        || c instanceof PaidCommand || c instanceof UnpaidCommand) {
+                    storage.save(activityManager);
+                }
+            } catch (PayPalsException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        ui.sayGoodbye();
+    }
+
+    public static void groupSelection(){
         ui.sayHello();
         ui.printLine();
 
@@ -74,29 +96,9 @@ public class PayPals {
         } else {
             ui.print(String.format("There are %d transactions.", activityManager.getActivityList().size()));
         }
-
-        while (!isExit) {
-            try {
-                ui.printLine();
-                ui.printPrompt();
-                String fullCommand = ui.readLine();
-                ui.printLine();
-                Command c = parser.decodeCommand(fullCommand);
-                c.execute(activityManager, true);
-                isExit = c.isExit();
-                if (c instanceof AddCommand || c instanceof EditCommand || c instanceof DeleteCommand
-                        || c instanceof PaidCommand || c instanceof UnpaidCommand) {
-                    storage.save(activityManager);
-                }
-            } catch (PayPalsException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        ui.sayGoodbye();
     }
 
     public static void main(String[] args) {
         new PayPals().run();
     }
-
 }
