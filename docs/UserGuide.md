@@ -22,6 +22,7 @@
     - [Edit payer name of an activity: `edit`](#edit-payer-name-of-an-activity-edit)
     - [Edit name of a friend that owes: `edit`](#edit-name-of-a-friend-that-owes-edit)
     - [Edit amount of a friend that owes: `edit`](#edit-amount-of-a-friend-that-owes-edit)
+    - [Change to a different group: `change`](#changing-groups-change)
     - [Exiting the application: `exit`](#exiting-the-application-exit)
   - [FAQ](#faq)
   - [Common Errors](#common-errors)
@@ -54,7 +55,7 @@ A quick reference table for all commands is presented below.
 |-------------------------------------------------|-----------------------------------------------------------------------|
 | Help menu                                       | `help`                                                                |
 | Add an activity                                 | `add d/DESCRIPTION n/NAME f/FRIEND1 a/AMOUNT1 f/FRIEND2 a/AMOUNT2...` |
-| Add an activity with equal portions of spending | `add d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`            |
+| Add an activity with equal portions of spending | `add d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`           |
 | Delete an activity                              | `delete i/IDENTIFIER`                                                 |
 | List all expenses                               | `list`                                                                |
 | List all expenses by a person                   | `list n/NAME`                                                         |
@@ -66,6 +67,7 @@ A quick reference table for all commands is presented below.
 | Edit the payer name of an activity              | `edit i/IDENTIFIER n/NEWNAME`                                         |
 | Edit the name of a friend that owes money       | `edit i/IDENTIFIER f/NEWNAME o/OLDNAME`                               |
 | Edit the amount of a friend that owes money     | `edit i/IDENTIFIER a/NEWAMOUNT o/FRIENDNAME`                          |
+| Change to a different group                     | `change`                                                              |
 | Close the application                           | `exit`                                                                |
 
 ## Features 
@@ -505,8 +507,7 @@ ____________________________________________________________
 ```
 
 ### Changing groups: `change`
-
-Changes the group the user is currently in to another group.
+Change the group the user is currently in to another group.
 
 Format: `change`
 
