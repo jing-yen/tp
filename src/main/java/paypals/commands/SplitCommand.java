@@ -38,7 +38,7 @@ public class SplitCommand extends Command {
 
             // Terminate when the maximum creditor's balance is effectively zero.
             // Since the total sum is zero, if the max creditor is near zero, all balances are settled.
-            if (Math.abs(persons.get(maxCreditorIndex).getAmount()) < 1e-9) {
+            if (checkIfBalanceIsEmpty(persons.get(maxCreditorIndex))) {
                 break;
             }
             // Determine the amount to settle.
@@ -60,6 +60,11 @@ public class SplitCommand extends Command {
         for (String t : transactions) {
             ui.print(t);
         }
+    }
+
+    public boolean checkIfBalanceIsEmpty(Person person) {
+        double threshold = 1e-9;
+        return Math.abs(person.getAmount()) < threshold;
     }
 
     public int getMaxCreditorIndex(ArrayList<Person> persons) {
@@ -87,18 +92,22 @@ public class SplitCommand extends Command {
         int activitiesSize = activityManager.getSize();
         for (int i = 0; i < activitiesSize; i++) {
             Activity activity = activityManager.getActivity(i);
-            String payerName = activity.getPayer().getName();
-            Collection<Person> allFriends = activity.getAllFriends();
-            for (Person friend : allFriends) {
-                if (friend.hasPaid()){
-                    continue;
-                }
-                String friendName = friend.getName();
-                Double amountOwed = friend.getAmount();
-                netOwedMap.put(friendName, netOwedMap.getOrDefault(friendName,0.0) - amountOwed);
-                netOwedMap.put(payerName, netOwedMap.getOrDefault(payerName,0.0) + amountOwed);
-            }
+            addAmountToNetOwedMap(activity,netOwedMap);
         }
         return netOwedMap;
+    }
+
+    public void addAmountToNetOwedMap(Activity activity, HashMap<String, Double> netOwedMap){
+        String payerName = activity.getPayer().getName();
+        Collection<Person> allFriends = activity.getAllFriends();
+        for (Person friend : allFriends) {
+            if (friend.hasPaid()){
+                continue;
+            }
+            String friendName = friend.getName();
+            Double amountOwed = friend.getAmount();
+            netOwedMap.put(friendName, netOwedMap.getOrDefault(friendName,0.0) - amountOwed);
+            netOwedMap.put(payerName, netOwedMap.getOrDefault(payerName,0.0) + amountOwed);
+        }
     }
 }

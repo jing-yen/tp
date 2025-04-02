@@ -1,0 +1,41 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+hide footbox
+participant ":DeleteCommand" as DC
+participant ":ActivityManager" as AM
+participant ":Activities" as AC
+participant ":Ui" as UI
+[-> DC : execute(activityManager, enablePrint)
+activate DC
+DC -> DC : getIdentifier()
+activate DC
+DC --> DC : identifier
+deactivate DC
+DC -> DC : getID(identifier, activityManager.getSize())
+activate DC
+DC --> DC : id
+deactivate DC
+DC -> AM : deleteActivity(id)
+activate AM
+AM -> AC : remove(id)
+activate AC
+AC --> AM
+deactivate AC
+AM --> DC
+deactivate AM
+DC -> UI ** : Ui(enablePrint)
+activate UI
+UI --> DC
+deactivate UI
+DC -> UI : print("Expense removed successfully!")
+activate UI
+UI --> DC
+deactivate UI
+[<- DC
+deactivate DC
+destroy UI
+
+
+
+
+@enduml
