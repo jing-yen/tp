@@ -136,9 +136,12 @@ public class ListCommand extends Command {
             if (friend == null) {
                 output.append(formatPayerActivity(activity)).append("\n");
             } else {
-                output.append("Desc: ").append(activity.getDescription()).append("\n")
-                        .append(INDENT).append("Payer: ").append(activity.getPayer().getName()).append("\n")
-                        .append(INDENT).append("Amount: ").append(friend.toString(true)).append("\n");
+                output.append("Desc: ")
+                        .append(activity.getDescription()).append("\n")
+                        .append(INDENT).append("Payer: ")
+                        .append(activity.getPayer().getName()).append("\n")
+                        .append(INDENT).append("Amount: ")
+                        .append(friend.toString(true)).append("\n");
             }
         }
         return output.toString();
