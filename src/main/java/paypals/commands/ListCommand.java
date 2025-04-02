@@ -130,13 +130,13 @@ public class ListCommand extends Command {
             if (activity.getPayer().getName().equals(name)) {
                 for (Person friend : activity.getAllFriends()) {
                     if (!friend.hasPaid()) {
-                        balance += friend.getAmount(); // Only add unpaid amounts
+                        balance += friend.getAmount();
                     }
                 }
             } else {
                 Person p = activity.getFriend(name);
                 if (p != null && !p.hasPaid()) {
-                    balance -= p.getAmount(); // Subtract amount Jane still owes others
+                    balance -= p.getAmount();
                 }
             }
         }
@@ -144,8 +144,6 @@ public class ListCommand extends Command {
         ui.print("Net balance for " + name + ": " + (balance >= 0 ? "+$" : "-$") + String.format("%.2f",
                 Math.abs(balance)));
     }
-
-
 
     /**
      * Prints a list of activities, each preceded by an index number.
@@ -190,12 +188,10 @@ public class ListCommand extends Command {
      * @return the formatted string
      */
     private String formatPayerActivity(Activity activity) {
-        StringBuilder result = new StringBuilder("[PAYER] Desc: ")
-                .append(activity.getDescription()).append("\n")
-                .append(INDENT).append("Amount owed by: ");
+        StringBuilder result = new StringBuilder("[PAYER] Desc: ").append(activity.getDescription()).append("\n");
         for (Person friend : activity.getAllFriends()) {
-                    result.append(friend.getName()).append(" ")
-                    .append(friend.toString(true)).append("\n");
+            result.append(INDENT).append("Amount owed by: ").append(friend.getName()).append(" $")
+                                 .append(String.format("%.2f", friend.getAmount())).append(" [Unpaid]\n");
         }
         return result.toString().trim();
     }

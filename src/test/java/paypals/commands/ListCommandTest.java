@@ -66,7 +66,7 @@ public class ListCommandTest extends PayPalsTest {
     }
 
     @Test
-    public void execute_balanceCommand_invalidFormat_exceptionThrown() {
+    public void execute_balanceCommandInvalidFormat_exceptionThrown() {
         ActivityManager manager = new ActivityManager();
         ListCommand command = new ListCommand("balance/Alice");
         PayPalsException e = assertThrows(PayPalsException.class, () -> command.execute(manager, true));
