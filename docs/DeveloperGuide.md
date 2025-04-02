@@ -234,7 +234,9 @@ The product aims to provide assistance in simplifying payments by minimising the
 | v1.0    | user                              | save current expenses when I exit the application                 | can view them again when I run the application another time |
 | v2.0    | new user                          | use a command to display all the common commands and their syntax | know how to use the app                                     |
 | v2.0    | user                              | edit an expense                                                   | can correct any mistakes I made when entering them          |
-| v2.0    | user                              | add an expense and split the cost equally among multiple people   | manually calculate individual shares.                       |
+| v2.0    | user                              | add an expense and split the cost equally among multiple people   | don't need to manually calculate individual shares.         |
+| v2.0    | user                              | create a new group                                                | can manage expenses with specific people                    |
+| v2.0     | user                              | delete a group                                                    | discard a group I don't want to track anymore                |
 
 ### Use cases
 (For all use cases below, the **System** is `Paypals` and the **Actor** is the `user`, unless specified otherwise)
