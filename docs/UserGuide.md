@@ -65,7 +65,7 @@ A quick reference table for all commands is presented below.
 |-------------------------------------------------|-----------------------------------------------------------------------|
 | Help menu                                       | `help`                                                                |
 | Add an activity                                 | `add d/DESCRIPTION n/NAME f/FRIEND1 a/AMOUNT1 f/FRIEND2 a/AMOUNT2...` |
-| Add an activity with equal portions of spending | `add d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`           |
+| Add an activity with equal portions of spending | `addequal d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`      |
 | Delete an activity                              | `delete i/IDENTIFIER`                                                 |
 | List all expenses                               | `list`                                                                |
 | List all expenses by a person                   | `list n/NAME`                                                         |
@@ -167,6 +167,7 @@ ____________________________________________________________
 
 ### Adding an expense with details: `add`
 Adds an expense.
+> Note: Names of payer  and friends are case-sensitive.
 
 Format: `add d/DESCRIPTION n/NAME f/FRIEND1 a/AMOUNT1 f/FRIEND2 a/AMOUNT2...`
 
@@ -192,6 +193,7 @@ ____________________________________________________________
 
 ### Add an expense with equal portions of spending  
 Adds an expense with amount split equally among everyone.
+> Note: Names of payer  and friends are case-sensitive.
 
 Format: `add d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`
 
@@ -216,6 +218,7 @@ ____________________________________________________________
 ```
 ### Delete an expense: `delete`
 Deletes an expense.
+> Note: if more than one`IDENTIFIER` is entered, only the first one is regarded.
 
 Format: `delete i/IDENTIFIER`
 
