@@ -104,8 +104,8 @@ public class Storage {
         } catch (NumberFormatException e) {
             String testFileName = fileName + ".txt";
             String testFilePath = STORAGE_FOLDER_PATH + "/" + testFileName;
-            File testFile = new File(testFilePath);
             try {
+                File testFile = new File(testFilePath);
                 testFile.createNewFile();
             } catch (IOException error) {
                 throw new PayPalsException(ExceptionMessage.INVALID_FILENAME);
