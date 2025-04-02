@@ -1,7 +1,7 @@
 package paypals.commands;
 
 import paypals.ActivityManager;
-import paypals.Group;
+import paypals.util.Group;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 

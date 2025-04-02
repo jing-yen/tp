@@ -1,9 +1,8 @@
-package paypals;
+package paypals.util;
 
+import paypals.ActivityManager;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
-import paypals.util.Storage;
-import paypals.util.UI;
 
 import java.util.ArrayList;
 
@@ -13,7 +12,7 @@ public class Group {
     private static ActivityManager activityManager;
 
 
-    Group(Storage storage, ActivityManager activityManager) {
+    public Group(Storage storage, ActivityManager activityManager) {
         ui = new UI(true);
         Group.storage = storage;
         Group.activityManager = activityManager;

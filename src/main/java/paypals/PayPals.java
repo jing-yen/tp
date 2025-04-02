@@ -7,12 +7,11 @@ import paypals.commands.EditCommand;
 import paypals.commands.PaidCommand;
 import paypals.commands.UnpaidCommand;
 import paypals.exception.PayPalsException;
-import paypals.util.Logging;
+import paypals.util.Group;
 import paypals.util.Parser;
 import paypals.util.Storage;
 import paypals.util.UI;
-
-import java.util.ArrayList;
+import paypals.util.Logging;
 
 public class PayPals {
     private static Parser parser;
