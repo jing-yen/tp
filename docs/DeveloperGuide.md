@@ -135,6 +135,8 @@ The abstract class `Command` have the following methods:
 * *Command*: Constructor that updates the `command` attribute based on its input argument.
 * *execute*: Method that is overridden by its child classes to fit their functionalities.
 
+The following diagram is a sequence diagram for when `execute` is called for a `DeleteCommand`. It shows how the command class updates the *Activity* component and uses the *UI* component to notify the user of a successful execution.  
+![Delete Command Diagram](diagrams/DeleteCommand.png)
 ### Activity Component
 <ins>Overview</ins>
 
