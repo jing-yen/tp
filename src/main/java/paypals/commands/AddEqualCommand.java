@@ -10,6 +10,8 @@ import paypals.util.UI;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class AddEqualCommand extends AddCommand {
 
@@ -46,18 +48,22 @@ public class AddEqualCommand extends AddCommand {
         friends = Arrays.copyOfRange(friends, 1, friends.length);  // Remove the command data
 
         double amount = totalAmount/ (friends.length + 1);
+        BigDecimal bdAmount = new BigDecimal(Double.toString(amount));
+        bdAmount = bdAmount.setScale(2, RoundingMode.HALF_EVEN);
+        double roundedAmount = bdAmount.doubleValue();
+
 
         for (String friend : friends) {
             String friendName = friend.trim();
             validateFriend(name, friendName, owed);
-            owed.put(friendName, amount);
+            owed.put(friendName, roundedAmount);
             Logging.logInfo("Friend added successfully");
         }
 
         ui.print("Desc: "+description);
         ui.print("Name of payer: "+name);
         ui.print("Number of friends who owe " + name +": "+owed.size());
-        Activity newActivity = new Activity(description, new Person(name, -(totalAmount - amount), false), owed);
+        Activity newActivity = new Activity(description, new Person(name, -(totalAmount - roundedAmount), false), owed);
         activityManager.addActivity(newActivity);
 
         Logging.logInfo("Activity added successfully");

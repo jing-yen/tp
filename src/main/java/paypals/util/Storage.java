@@ -8,10 +8,7 @@ import paypals.commands.PaidCommand;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -293,5 +290,63 @@ public class Storage {
 
     public ArrayList<String> getGroupNames() {
         return groupNames;
+    }
+
+    public void delete(String groupNumberOrName, ActivityManager activityManager) throws PayPalsException {
+        String groupName;
+        if (groupNames.contains(groupNumberOrName)) {
+            groupName = groupNumberOrName;
+        } else {
+            int groupNumber = Integer.parseInt(groupNumberOrName);
+            groupName = groupNames.get(groupNumber - 1);
+        }
+        deleteFile(groupName);
+        groupNames.remove(groupName);
+        try {
+            removeFromMasterFile(groupName);
+        } catch (IOException ee) {
+            throw new PayPalsException(ExceptionMessage.SAVE_NOT_WRITTEN);
+        }
+    }
+
+    private void removeFromMasterFile(String groupName) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(this.masterFile));
+        StringBuilder content = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            // Skip the line containing the group name
+            if (!line.contains(groupName)) {
+                content.append(line).append(System.lineSeparator());
+            }
+        }
+        reader.close();
+
+        // Write the filtered content back to the master file
+        FileWriter fw = new FileWriter(this.masterFile, false); // false means overwrite
+        fw.write(content.toString());
+        fw.close();
+    }
+
+    private void deleteFile(String groupName) {
+        String groupFilePath = STORAGE_FOLDER_PATH + "/" + groupName + FILE_EXTENSION;
+        File file = new File(groupFilePath);
+        file.delete();
+    }
+
+
+    public boolean containsFile(String groupNumberOrName) throws PayPalsException {
+        if (groupNames.contains(groupNumberOrName)) {
+            return true;
+        }
+        int groupNumber;
+        try {
+            groupNumber = Integer.parseInt(groupNumberOrName);
+        } catch (NumberFormatException e) {
+            throw new PayPalsException(ExceptionMessage.FILENAME_DOES_NOT_EXIST);
+        }
+        if (groupNumber <= 0 || groupNumber > groupNames.size()) {
+            throw new PayPalsException(ExceptionMessage.INVALID_GROUP_NUMBER);
+        }
+        return true;
     }
 }

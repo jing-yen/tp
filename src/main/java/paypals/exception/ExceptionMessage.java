@@ -36,7 +36,8 @@ public enum ExceptionMessage {
     INVALID_GROUP_NUMBER("INPUT ERROR: Group number does not exist or is invalid, please enter a valid group number"),
     EMPTY_FILENAME("INPUT ERROR: Input should not be empty. Please try again."),
     INVALID_FILENAME("INPUT ERROR: Filename specified must be a valid filename. Please try again."),
-    FILENAME_DOES_NOT_EXIST("INPUT ERROR: Filename does not exist. Please try again.");
+    FILENAME_DOES_NOT_EXIST("INPUT ERROR: Filename does not exist. Please try again."),
+    NO_GROUP("There are no groups to delete.");
     private final String message;
 
     ExceptionMessage(String message) {

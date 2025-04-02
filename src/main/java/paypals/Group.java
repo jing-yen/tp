@@ -1,5 +1,6 @@
 package paypals;
 
+import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 import paypals.util.Storage;
 import paypals.util.UI;
@@ -11,17 +12,68 @@ public class Group {
     private static Storage storage;
     private static ActivityManager activityManager;
 
+
     Group(Storage storage, ActivityManager activityManager) {
         ui = new UI(true);
         Group.storage = storage;
         Group.activityManager = activityManager;
+
+    }
+
+    public static boolean isExit() {
+        return true;
+    }
+
+    public static void groupSelection() {
+        ui.sayHello();
+        ui.printLine();
+        boolean validCommand = false;
+        while (!validCommand) {
+            ui.print("Would you like to delete or select a group?");
+            ui.printLine();
+            ui.printPrompt();
+            String command = ui.readLine();
+            if (command.equals("select")) {
+                validCommand = true;
+                selectGroup();
+            } else if (command.equals("delete")) {
+                try {
+                    deleteGroup();
+                    validCommand = true;
+                } catch (PayPalsException e) {
+                    System.out.println(e.getMessage());
+                }
+            } else {
+                ui.print("Please enter select or delete.");
+            }
+        }
+    }
+
+    private static void deleteGroup() throws PayPalsException {
+        ArrayList<String> groupNames = storage.getGroupNames();
+        if (groupNames.isEmpty()) {
+            throw new PayPalsException(ExceptionMessage.NO_GROUP);
+        }
+        ui.print("Please select a group number from the following:");
+        ui.printGroupNames(groupNames);
+
+        String groupNumberOrName = "";
+        boolean validInput = false;
+        while (!validInput) {
+            try {
+                ui.printPrompt();
+                groupNumberOrName = ui.readLine();
+                validInput = storage.containsFile(groupNumberOrName);
+            } catch (PayPalsException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        storage.delete(groupNumberOrName, activityManager);
+        groupSelection();
     }
 
     //@@author jing-yen
-    public static void groupSelection(){
-        ui.sayHello();
-        ui.printLine();
-
+    private static void selectGroup() {
         ui.print("Please select a group number from the following:");
         ArrayList<String> groupNames = storage.getGroupNames();
         ui.printGroupNames(groupNames);
@@ -54,3 +106,4 @@ public class Group {
         }
     }
 }
+
