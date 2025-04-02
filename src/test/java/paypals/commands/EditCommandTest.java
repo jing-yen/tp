@@ -110,7 +110,7 @@ public class EditCommandTest extends PayPalsTest {
             ec.execute(activityManager, false);
             fail();
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.INVALID_COMMAND.getMessage(), e.getMessage());
+            assertEquals(ExceptionMessage.NO_IDENTIFIER.getMessage(), e.getMessage());
         }
     }
 
