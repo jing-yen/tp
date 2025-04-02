@@ -52,8 +52,8 @@ public class EditCommand extends Command {
 
         Map<String, String> parameters = parseCommand();
 
-        String id = parameters.getOrDefault("i", "");
-        if (id.isEmpty()) {
+        String id = parameters.get("i");
+        if (id == null) {
             throw new PayPalsException(ExceptionMessage.NO_IDENTIFIER);
         }
 
@@ -103,6 +103,7 @@ public class EditCommand extends Command {
      * @return true if the input attempts only one valid edit operation; false otherwise.
      */
     private boolean checkValidParameters(Map<String, String> parameters) {
+        //Count how many valid command conditions have been fulfilled
         int editCount = 0;
         if (parameters.get("d") != null) {
             editCount++;
@@ -117,6 +118,7 @@ public class EditCommand extends Command {
             editCount++; // Editing amount owed
         }
 
+        // If exactly one condition is attempted, return true, else return false.
         return (editCount == 1);
     }
 
