@@ -57,6 +57,22 @@ public class ListCommandTest extends PayPalsTest {
         assertEquals("INPUT ERROR: No name of payer", e.getMessage());
     }
 
+    @Test
+    public void execute_balanceCommand_success() {
+        ActivityManager manager = new ActivityManager();
+        manager.addActivity(createTestActivity());
+        ListCommand command = new ListCommand("balance n/Alice");
+        assertDoesNotThrow(() -> command.execute(manager, false));
+    }
+
+    @Test
+    public void execute_balanceCommand_invalidFormat_exceptionThrown() {
+        ActivityManager manager = new ActivityManager();
+        ListCommand command = new ListCommand("balance/Alice");
+        PayPalsException e = assertThrows(PayPalsException.class, () -> command.execute(manager, true));
+        assertEquals("INPUT ERROR: Correct format should be: list balance n/NAME", e.getMessage());
+    }
+
     //create a sample activity for testing purposes above
     private Activity createTestActivity() {
         HashMap<String, Double> owedMap = new HashMap<>();
