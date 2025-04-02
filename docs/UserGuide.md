@@ -14,7 +14,7 @@
   - [Command Format](#command-format)
     - [Viewing help: `help`](#viewing-help-help)
     - [Adding an expense with details: `add`](#adding-an-expense-with-details-add)
-    - [Adding an expense with equal portions of spending: `addequal`]()
+    - [Adding an expense with equal portions of spending: `addequal`](#add-an-expense-with-equal-portions-of-spending-)
     - [Delete an expense: `delete`](#delete-an-expense-delete)
     - [List all past expenses: `list`](#list-all-past-expenses-list)
     - [Generate a simplified debt settlement plan: `split`](#generate-a-simplified-debt-settlement-plan-split)
