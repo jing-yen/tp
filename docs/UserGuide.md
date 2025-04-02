@@ -5,6 +5,7 @@
   - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Quick Start](#quick-start)
+  - [Glossary](#glossary)
   - [Command Reference](#command-reference)
   - [Features](#features)
     - [Expense Tracking](#expense-tracking)
@@ -24,6 +25,7 @@
     - [Edit amount of a friend that owes: `edit`](#edit-amount-of-a-friend-that-owes-edit)
     - [Change to a different group: `change`](#changing-groups-change)
     - [Exiting the application: `exit`](#exiting-the-application-exit)
+  - [Command Tips](#command-tips)
   - [FAQ](#faq)
   - [Common Errors](#common-errors)
     - [Failure to adhere to command format](#failure-to-adhere-to-command-format)
@@ -46,6 +48,14 @@ java -jar paypals.jar
 5. Select a group by entering the number of the group displayed on the console, or create a new group by entering the name of the new group. Press enter to confirm your group.
 6. Type the command in the command box and press Enter to execute it. e.g. typing help and pressing Enter will open the help window.
 7. You can now start using PayPals!
+
+## Glossary
+
+- **Activity**: A single transaction where one person pays and others owe.
+- **Payer**: The person who paid for the activity.
+- **Friend**: A person who owes part of the expense.
+- **Group**: A logical collection of activities related to a trip or event.
+- **Identifier (i/)**: A number used to identify and refer to a specific activity.
 
 ## Command Reference
 
@@ -554,6 +564,22 @@ Thank you for using PayPals!
 Hope you have enjoyed your trip and see you again soon!
 ____________________________________________________________
 ```
+## Command Tips
+
+- You can use the `list` command without a name to see all activities.
+- If you're not sure of an activity's ID, use `list` to find it before using `edit`, `paid`, or `delete`.
+- Use `addequal` when everyone owes an equal share – it's quicker and cleaner!
+- `split` only calculates who owes whom — it doesn't change any records.
+- Use `help` anytime to see all available commands and their expected formats.
+- Commands are case-insensitive, so `ADD`, `Add`, and `add` all work the same.
+- You can repeat `f/... a/...` pairs in the `add` command to include multiple friends.
+- Use `edit` to fix typos or update activity details instead of deleting and re-adding.
+- To check what someone still owes, use `list n/NAME` — it shows paid and unpaid sections clearly.
+- Use `paid n/PAYER i/IDENTIFIER` to instantly mark all friends in the activity as paid.
+- After using `paid` or `unpaid`, run `list` again to get the updated identifiers for future actions.
+- If you’re unsure why something failed, scroll down to the [Common Errors](#common-errors) section for examples and explanations.
+
+
 
 ## FAQ
 
