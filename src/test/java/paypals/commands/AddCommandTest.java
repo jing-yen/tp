@@ -133,5 +133,41 @@ public class AddCommandTest extends PayPalsTest {
             assertException(e, ExceptionMessage.DUPLICATE_FRIEND);
         }
     }
+
+    @Test
+    public void execute_invalidAmount_throwsException() {
+        String command = "add d/Lunch n/Bob f/Bobby a/test";
+        AddCommand ac = new AddCommand(command);
+        try {
+            ac.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.INVALID_AMOUNT.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_largeAmount_throwsException() {
+        String command = "add d/Lunch n/Bob f/Bobby a/9999999";
+        AddCommand ac = new AddCommand(command);
+        try {
+            ac.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.LARGE_AMOUNT.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_negativeAmount_throwsException() {
+        String command = "add d/Lunch n/Bob f/Bobby a/-10";
+        AddCommand ac = new AddCommand(command);
+        try {
+            ac.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.AMOUNT_OUT_OF_BOUNDS.getMessage(), e.getMessage());
+        }
+    }
 }
 
