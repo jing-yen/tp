@@ -11,7 +11,8 @@
     - [Expense Tracking](#expense-tracking)
     - [Debt Settlement](#debt-settlement)
     - [Storage](#storage)
-  - [Command Format](#command-format)
+  - [Command Format: Group Selection Menu](#command-format-group-selection-menu)
+  - [Command Format: Inside A Group](#command-format-inside-a-group)
     - [Viewing help: `help`](#viewing-help-help)
     - [Adding an expense with details: `add`](#adding-an-expense-with-details-add)
     - [Adding an expense with equal portions of spending: `addequal`](#add-an-expense-with-equal-portions-of-spending-)
@@ -23,7 +24,7 @@
     - [Edit payer name of an activity: `edit`](#edit-payer-name-of-an-activity-edit)
     - [Edit name of a friend that owes: `edit`](#edit-name-of-a-friend-that-owes-edit)
     - [Edit amount of a friend that owes: `edit`](#edit-amount-of-a-friend-that-owes-edit)
-    - [Change to a different group: `change`](#changing-groups-change)
+    - [Change to Group Selection Menu: `change`](#change-to-group-selection-menu-change)
     - [Exiting the application: `exit`](#exiting-the-application-exit)
   - [Command Tips](#command-tips)
   - [FAQ](#faq)
@@ -59,13 +60,13 @@ java -jar paypals.jar
 
 ## Command Reference
 
-A quick reference table for all commands is presented below.
+A quick reference table for all commands when inside a group is presented below. For further details on commands inside the group selection menu, please refer to this [section](#command-format-group-selection-menu)
 
 | Task                                            | Command Expression                                                    |
 |-------------------------------------------------|-----------------------------------------------------------------------|
 | Help menu                                       | `help`                                                                |
 | Add an activity                                 | `add d/DESCRIPTION n/NAME f/FRIEND1 a/AMOUNT1 f/FRIEND2 a/AMOUNT2...` |
-| Add an activity with equal portions of spending | `add d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`           |
+| Add an activity with equal portions of spending | `addequal d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`      |
 | Delete an activity                              | `delete i/IDENTIFIER`                                                 |
 | List all expenses                               | `list`                                                                |
 | List all expenses by a person                   | `list n/NAME`                                                         |
@@ -77,7 +78,7 @@ A quick reference table for all commands is presented below.
 | Edit the payer name of an activity              | `edit i/IDENTIFIER n/NEWNAME`                                         |
 | Edit the name of a friend that owes money       | `edit i/IDENTIFIER f/NEWNAME o/OLDNAME`                               |
 | Edit the amount of a friend that owes money     | `edit i/IDENTIFIER a/NEWAMOUNT o/FRIENDNAME`                          |
-| Change to a different group                     | `change`                                                              |
+| Change to group selection menu                   | `change`                                                              |
 | Close the application                           | `exit`                                                                |
 
 ## Features 
@@ -109,27 +110,80 @@ the data specifically for that group will be loaded. Otherwise, a new group woul
 If there are no existing groups, it will be displayed on the console to the user and the user would have to create a new group to proceed with using the app.
 This feature allows users to separate their trips to individual groups to better manage their expense tracking. 
 
-The following is an example of what the user would see when the program starts, with both cases of having existing groups and without:
+The following is an example of what the user would see when the program starts:
+
 ```
 Welcome to PayPals!
 ____________________________________________________________
-Please select a group number from the following:
-(1) JB trip
-(2) karaoke
-or give your new group a name:
-> 
+Would you like to delete or select a group?
+____________________________________________________________
+>
 ```
+
+## Command Format: Group Selection Menu
+### Selecting a group: `select`
+Shows a list of existing groups. Enter the corresponding group name or number after to enter the group. If not, a new group will be created with the input.
+  
+Example of usage:  
 ```
 Welcome to PayPals!
 ____________________________________________________________
+Would you like to delete or select a group?
+____________________________________________________________
+> select
 Please select a group number from the following:
-(You currently have no available groups to load)
+(1) group1
 or give your new group a name:
-> 
+> 1
+____________________________________________________________
+You are currently in the "group1" group.
+There are 0 transactions.
+____________________________________________________________
+```  
+Or  
 ```
+Welcome to PayPals!
+____________________________________________________________
+Would you like to delete or select a group?
+____________________________________________________________
+> select
+Please select a group number from the following:
+(1) group1
+or give your new group a name:
+> group2
+____________________________________________________________
+You are currently in the "group2" group.
+It is a new group.
+____________________________________________________________
+```   
+### Deleting A Group: `delete`
+Shows a list of existing groups. Enter the corresponding group name or number after to delete the group.  
+  
+Examples of usage:
+```
+Welcome to PayPals!
+____________________________________________________________
+Would you like to delete or select a group?
+____________________________________________________________
+> delete
+Please select a group number from the following:
+(1) group1
+(2) group2
+> group2
 
-## Command Format
-
+```
+Or
+```
+Welcome to PayPals!
+____________________________________________________________
+Would you like to delete or select a group?
+____________________________________________________________
+> delete
+Please select a group number from the following:
+(1) group1
+> 1
+```
+## Command Format: Inside A Group
 ### Viewing help: `help`
 
 Shows a help message containing all the commands available in PayPals.
@@ -167,6 +221,7 @@ ____________________________________________________________
 
 ### Adding an expense with details: `add`
 Adds an expense.
+> Note: Names of payer  and friends are case-sensitive.
 
 Format: `add d/DESCRIPTION n/NAME f/FRIEND1 a/AMOUNT1 f/FRIEND2 a/AMOUNT2...`
 
@@ -192,6 +247,9 @@ ____________________________________________________________
 
 ### Add an expense with equal portions of spending  
 Adds an expense with amount split equally among everyone.
+> Note:  
+> * Names of payer  and friends are case-sensitive.  
+> * Amount that each person owe will be rounded to 2 d.p. 
 
 Format: `add d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`
 
@@ -216,6 +274,7 @@ ____________________________________________________________
 ```
 ### Delete an expense: `delete`
 Deletes an expense.
+> Note: if more than one`IDENTIFIER` is entered, only the first one is regarded.
 
 Format: `delete i/IDENTIFIER`
 
@@ -532,14 +591,13 @@ Unsettled activities for Bobby:
 ____________________________________________________________
 ```
 
-### Changing groups: `change`
-Change the group the user is currently in to another group.
+### Change to group selection menu: `change`
+Navigate to the group selection menu.
 
 Format: `change`
 
 Example of usage:
 ```
-Welcome to PayPals!
 ____________________________________________________________
 Please select a group number from the following...
 (You currently have no available groups to load)
@@ -555,14 +613,9 @@ ____________________________________________________________
 
 Welcome to PayPals!
 ____________________________________________________________
-Please select a group number from the following...
-(1) test
-... or give your new group a name:
-> test2
+Would you like to delete or select a group?
 ____________________________________________________________
-You are currently in the "test2" group.
-It is a new group.
-____________________________________________________________
+>
 ```
 
 

@@ -1,10 +1,10 @@
 package paypals.commands;
 
 import paypals.ActivityManager;
+import paypals.util.Group;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
-import static paypals.PayPals.groupSelection;
 
 /**
  * Represents the ChangeCommand in the PayPals application.
@@ -36,6 +36,6 @@ public class ChangeCommand extends Command {
             throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
         }
         activityManager.getActivityList().clear();
-        groupSelection();
+        Group.groupSelection();
     }
 }
