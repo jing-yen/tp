@@ -188,7 +188,7 @@ The following is the sequence diagram for loading data from the save file into t
 
 <ins>Methods</ins>
 
-* `Storage`: Creates the relavant storage directory and file if it does not exist, while initializing the attributes of the object.
+* `Storage`: Creates the relevant storage directory and file if it does not exist, while initializing the attributes of the object.
 * `save`: Goes through each `Activity` in `ActivityManager` and saves its data in the save file.
 * `load`: Reads the save file line by line with the `Scanner` object and load the data into `ActivityManager`.
 * `checkIfFilenameValid`: Checks the user input whether it is a valid filename before creating the file.
