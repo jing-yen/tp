@@ -26,8 +26,8 @@ public class EditCommand extends Command {
         UI ui = new UI(enablePrint);
         Map<String, String> parameters = parseCommand();
 
-        String id = parameters.getOrDefault("i", "");
-        if (id.isEmpty()) {
+        String id = parameters.get("i");
+        if (id == null) {
             throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
         }
 
