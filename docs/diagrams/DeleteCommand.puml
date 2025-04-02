@@ -4,7 +4,7 @@ hide footbox
 participant ":DeleteCommand" as DC
 participant ":ActivityManager" as AM
 participant ":Activities" as AC
-participant ":Ui" as UI
+participant ":UI" as UI
 [-> DC : execute(activityManager, enablePrint)
 activate DC
 DC -> DC : getIdentifier()

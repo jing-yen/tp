@@ -19,6 +19,7 @@ public class PayPals {
     private static ActivityManager activityManager;
     private static Storage storage;
     private static UI ui;
+    private static Group group;
 
     public PayPals() {
         try {
@@ -27,6 +28,7 @@ public class PayPals {
             parser = new Parser();
             activityManager = new ActivityManager();
             storage = new Storage();
+            new Group(storage, activityManager);
         } catch (PayPalsException e) {
             System.out.println(e.getMessage());
         }
@@ -35,7 +37,7 @@ public class PayPals {
     public void run() {
         boolean isExit = false;
         Logging.logInfo("Entering main program body. Begin accepting user commands");
-        groupSelection();
+        Group.groupSelection();
         while (!isExit) {
             try {
                 ui.printLine();
@@ -56,47 +58,7 @@ public class PayPals {
         ui.sayGoodbye();
     }
 
-    public static void groupSelection(){
-        ui.sayHello();
-        ui.printLine();
 
-        ui.print("Please select a group number from the following:");
-        ArrayList<String> groupNames = storage.getGroupNames();
-        int index = 0;
-        while (index < groupNames.size()) {
-            ui.print(String.format("(%d) %s", index+1, groupNames.get(index++)));
-        }
-        if (groupNames.isEmpty()) {
-            ui.print("(You currently have no available groups to load)");
-        }
-        ui.print("or give your new group a name:");
-
-        String groupNumberOrName = "";
-        boolean validInput = false;
-        while (!validInput) {
-            try {
-                ui.printPrompt();
-                groupNumberOrName = ui.readLine();
-                validInput = storage.checkIfFilenameValid(groupNumberOrName);
-            } catch (PayPalsException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-
-        try {
-            storage.load(groupNumberOrName, activityManager);
-        } catch (PayPalsException e) {
-            System.out.println(e.getMessage());
-        }
-
-        ui.printLine();
-        ui.print(String.format("You are currently in the \"%s\" group.", activityManager.getGroupName()));
-        if (activityManager.checkIsNewGroup()) {
-            ui.print("It is a new group.");
-        } else {
-            ui.print(String.format("There are %d transactions.", activityManager.getActivityList().size()));
-        }
-    }
 
     public static void main(String[] args) {
         new PayPals().run();
