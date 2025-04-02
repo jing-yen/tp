@@ -77,8 +77,8 @@ the `Parser` to decode.
 
 The `UI` class has the following attributes:
 
-* **in**: A `Scanner` object used for reading from `System.in` I/O.
-* **enablePrint**: A boolean variable to allow printing if it is set to `true`, otherwise disable any printing if it is
+* `in`: A `Scanner` object used for reading from `System.in` I/O.
+* `enablePrint`: A boolean variable to allow printing if it is set to `true`, otherwise disable any printing if it is
 set to `false`.
 
 <ins>Methods</ins>
@@ -88,8 +88,10 @@ The `UI` class has the following methods:
 * `UI`: Constructs the `UI` object and initializes the attributes of the object.
 * `readLine`: Reads the user input from the console and return it as a String.
 * `print`: Prints the message specified in the input to the console.
+* `printPrompt`: Prints the `> ` character to prompt the user for input.
 * `printLine`: Prints a horizontal line to act as a divider.
 * `sayHello`: Prints a greeting message on the console.
+* `sayGoodbye`: Prints a farewell message on the console.
 
 ### Parser Component
 
@@ -136,7 +138,9 @@ The abstract class `Command` have the following methods:
 * `execute`: Method that is overridden by its child classes to fit their functionalities.
 
 The following diagram is a sequence diagram for when `execute` is called for a `DeleteCommand`. It shows how the command class updates the *Activity* component and uses the *UI* component to notify the user of a successful execution.  
+
 ![Delete Command Diagram](diagrams/DeleteCommand.png)
+
 ### Activity Component
 <ins>Overview</ins>
 
@@ -175,8 +179,10 @@ The following is the sequence diagram for loading data from the save file into t
 <ins>Attributes</ins>
 
 * `SEPARATOR`: String containing the ASCII character 31 which is an untypable character and used as the separator when storing data in the save file.
-* `SAVE_FILE_STRING`: String representing the name of the save file.
-* `storageFolderPath`: String representing the path of the `data` directory which contains the save file.
+* `MASTER_FILE_STRING`: String representing the name of the save file containing the group names.
+* `FILE_EXTENSION` String containing the extension `.txt`.
+* `STORAGE_FOLDER_PATH`: String representing the path of the `data` directory which contains the save file.
+* `masterFile`: A File object representing the `master-savefile.txt` file.
 * `activityFile`: A File object representing the `savefile.txt` file.
 * `scanner`: A Scanner object used for reading the data from the save file.
 
@@ -185,11 +191,14 @@ The following is the sequence diagram for loading data from the save file into t
 * `Storage`: Creates the relavant storage directory and file if it does not exist, while initializing the attributes of the object.
 * `save`: Goes through each `Activity` in `ActivityManager` and saves its data in the save file.
 * `load`: Reads the save file line by line with the `Scanner` object and load the data into `ActivityManager`.
+* `checkIfFilenameValid`: Checks the user input whether it is a valid filename before creating the file.
+* `loadFromGroupName`: Reads from the save file that was specified as the group name by the user.
 * `processLine`: Processes a single line of the save file to be loaded.
 * `buildInput`: Builds the command input string from the parts obtained in the save file, while also recording each `Person` that `hasPaid` is `true`.
 * `executeAddCommand`: Creates and executes the add command to load the data from a specific `Activity` into `ActivityManager` based on the input string.
 * `executePaidCommand`: Creates and executes the paid command for each name in a specific `Activity`
 * `deleteDir`: Recursively delete a directory and all its contents.
+* `getGroupNames`: Retrieves the `groupNames` attribute.
 
 <ins>Design Considerations</ins>
 
