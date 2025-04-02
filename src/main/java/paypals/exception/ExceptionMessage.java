@@ -7,6 +7,7 @@ public enum ExceptionMessage {
     NO_IDENTIFIER("INPUT ERROR: No identifier entered"),
     INVALID_FORMAT("INPUT ERROR: Correct format should be: "),
     INVALID_IDENTIFIER("INPUT ERROR: Invalid identifier entered, should be an integer"),
+    LIST_BALANCE_FORMAT("INPUT ERROR: Correct format should be: list balance n/NAME"),
     OUTOFBOUNDS_IDENTIFIER("INPUT ERROR: Identifier entered is out of bounds: "),
     NO_PAYER("INPUT ERROR: No name of payer"),
     PAYER_OWES("LOGIC ERROR: Payer owes himself or herself: "),
@@ -36,7 +37,8 @@ public enum ExceptionMessage {
     INVALID_GROUP_NUMBER("INPUT ERROR: Group number does not exist or is invalid, please enter a valid group number"),
     EMPTY_FILENAME("INPUT ERROR: Input should not be empty. Please try again."),
     INVALID_FILENAME("INPUT ERROR: Filename specified must be a valid filename. Please try again."),
-    FILENAME_DOES_NOT_EXIST("INPUT ERROR: Filename does not exist. Please try again.");
+    FILENAME_DOES_NOT_EXIST("INPUT ERROR: Filename does not exist. Please try again."),
+    NO_GROUP("There are no groups to delete.");
     private final String message;
 
     ExceptionMessage(String message) {

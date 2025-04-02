@@ -1,5 +1,6 @@
 package paypals.util;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UI {
@@ -37,4 +38,16 @@ public class UI {
         print("Thank you for using PayPals!");
         print("Hope you have enjoyed your trip and see you again soon!");
     }
+
+    //@@author jing-yen
+    public void printGroupNames(ArrayList<String> groupNames) {
+        int index = 0;
+        while (index < groupNames.size()) {
+            print(String.format("(%d) %s", index+1, groupNames.get(index++)));
+        }
+        if (groupNames.isEmpty()) {
+            print("(You currently have no available groups to load)");
+        }
+    }
+
 }
