@@ -15,7 +15,7 @@
   - [Command Format: Inside A Group](#command-format-inside-a-group)
     - [Viewing help: `help`](#viewing-help-help)
     - [Adding an expense with details: `add`](#adding-an-expense-with-details-add)
-    - [Adding an expense with equal portions of spending: `addequal`]()
+    - [Adding an expense with equal portions of spending: `addequal`](#add-an-expense-with-equal-portions-of-spending-)
     - [Delete an expense: `delete`](#delete-an-expense-delete)
     - [List all past expenses: `list`](#list-all-past-expenses-list)
     - [Generate a simplified debt settlement plan: `split`](#generate-a-simplified-debt-settlement-plan-split)
@@ -314,7 +314,15 @@ Format: `list [n/NAME]`
   the payer will display a `[PAYER]` tag next to the activity description.
 * If a `NAME` is provided, the `list` command will display the past expenses within
   the current group for `NAME`.
-  
+
+### Additional: View Net Balance
+
+You can also view the **net balance** for a person using:
+
+Format: `list balance n/NAME`
+
+* This command calculates how much the specified person is owed (positive balance)
+  or owes to others (negative balance), based on unpaid amounts only.
 
 Example of usage: 
 
@@ -340,8 +348,16 @@ Activities which have not been fully paid for John:
     Payer: Jane
     Amount: $28.00 [Unpaid]
 2.  [PAYER] Desc: tickets
-    Owed by: Bob [Unpaid] Betty [Unpaid] Jane [Unpaid]
+    Amount owed by: bob $4.00 [Unpaid]
+    Amount owed by: betty $15.00 [Unpaid]
+    Amount owed by: jane $4.00 [Unpaid]
 
+____________________________________________________________
+```
+```
+> list balance n/john
+____________________________________________________________
+Net balance for john: +$28.00
 ____________________________________________________________
 ```
 ### Generate a simplified debt settlement plan: `split`

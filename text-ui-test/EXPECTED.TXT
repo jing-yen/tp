@@ -2,7 +2,9 @@
 
 Welcome to PayPals!
 ____________________________________________________________
-Please select a group number from the following:
+Would you like to delete or select a group?
+____________________________________________________________
+> Please select a group number from the following:
 (You currently have no available groups to load)
 or give your new group a name:
 > ____________________________________________________________
