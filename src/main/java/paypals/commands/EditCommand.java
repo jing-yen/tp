@@ -8,13 +8,14 @@ import java.util.regex.Pattern;
 import paypals.ActivityManager;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
+import paypals.util.Logging;
 import paypals.util.UI;
 
 public class EditCommand extends Command {
 
     private static final Pattern COMMAND_PATTERN = Pattern.compile("([idnfao])/\\s*([^/]+?)(?=\\s+[idnfao]/|$)");
     private static final double LARGE_AMOUNT_LIMIT = 10000.0;
-    private static final String MONEY_FORMAT = "^\\d+(\\.\\d{1,2})?$";
+    private static final String MONEY_FORMAT = "^-?\\d+(\\.\\d{1,2})?$";
 
     public EditCommand(String command) {
         super(command);
@@ -97,13 +98,17 @@ public class EditCommand extends Command {
         } else if (parameters.get("a") != null && parameters.get("o") != null) {
             try {
                 String amount = parameters.get("a");
+                String name = parameters.get("o");
+                double parseAmt = Double.parseDouble(amount);
                 if (!isValidAmount(amount)) {
                     throw new PayPalsException(ExceptionMessage.NOT_MONEY_FORMAT);
                 }
-                String name = parameters.get("o");
-                double parseAmt = Double.parseDouble(amount);
                 if (parseAmt > LARGE_AMOUNT_LIMIT) {
                     throw new PayPalsException(ExceptionMessage.LARGE_AMOUNT);
+                }
+                if (parseAmt <= 0.0) {
+                    Logging.logWarning("Amount entered for friend out of bounds");
+                    throw new PayPalsException(ExceptionMessage.AMOUNT_OUT_OF_BOUNDS);
                 }
                 if (activityManager.getActivity(activityId).getFriend(name).hasPaid()) {
                     throw new PayPalsException(ExceptionMessage.EDIT_AMOUNT_WHEN_PAID);
