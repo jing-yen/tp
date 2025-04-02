@@ -103,18 +103,18 @@ The following is an example of what the user would see when the program starts, 
 ```
 Welcome to PayPals!
 ____________________________________________________________
-Please select a group number from the following...
+Please select a group number from the following:
 (1) JB trip
 (2) karaoke
-... or give your new group a name:
+or give your new group a name:
 > 
 ```
 ```
 Welcome to PayPals!
 ____________________________________________________________
-Please select a group number from the following...
+Please select a group number from the following:
 (You currently have no available groups to load)
-... or give your new group a name:
+or give your new group a name:
 > 
 ```
 
