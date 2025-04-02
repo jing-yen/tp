@@ -41,14 +41,16 @@ public class HelpCommand extends Command {
                                 -> (Payer name) edit i/IDENTIFIER n/NEWNAME
                                 -> (Friend name) edit i/IDENTIFIER f/NEWNAME o/OLDNAME
                                 -> (Friend amount) edit i/IDENTIFIER a/NEWAMOUNT o/FRIENDNAME
+                  7. list       -> list
+                                -> list n/NAME
+                                -> list balance n/NAME
                 
                 Commands without format:
-                  1. list
-                  2. split
-                  3. help
-                  4. exit
-                  5. change
-                 
+                  1. split
+                  2. help
+                  3. exit
+                  4. change
+                
                 For more details, please refer to the User Guide of PayPals.
                 """);
     }
