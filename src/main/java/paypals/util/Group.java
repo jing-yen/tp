@@ -23,19 +23,18 @@ public class Group {
     public static void groupSelection() {
         ui.sayHello();
         ui.printLine();
-        boolean validCommand = false;
-        while (!validCommand) {
+        boolean groupSelected = false;
+        while (!groupSelected) {
             ui.print("Would you like to delete or select a group?");
             ui.printLine();
             ui.printPrompt();
             String command = ui.readLine();
             if (command.equals("select")) {
-                validCommand = true;
+                groupSelected = true;
                 selectGroup();
             } else if (command.equals("delete")) {
                 try {
                     deleteGroup();
-                    validCommand = true;
                 } catch (PayPalsException e) {
                     System.out.println(e.getMessage());
                 }
@@ -65,7 +64,8 @@ public class Group {
             }
         }
         storage.delete(groupNumberOrName, activityManager);
-        groupSelection();
+        ui.print("Group has been deleted.");
+        ui.printLine();
     }
 
     //@@author jing-yen
