@@ -141,7 +141,8 @@ public class ListCommand extends Command {
             }
         }
 
-        ui.print("Net balance for " + name + ": " + (balance >= 0 ? "+$" : "-$") + String.format("%.2f", Math.abs(balance)));
+        ui.print("Net balance for " + name + ": " + (balance >= 0 ? "+$" : "-$") + String.format("%.2f",
+                Math.abs(balance)));
     }
 
 
