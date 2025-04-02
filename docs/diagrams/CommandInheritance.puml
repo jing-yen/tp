@@ -24,8 +24,10 @@ together {
     class PaidCommand
     class UnpaidCommand
     class SplitCommand
+    class ChangeCommand
 }
 
+ChangeCommand -up-|> "{abstract}\nCommand"
 AddCommand -up-|> "{abstract}\nCommand"
 AddEqualCommand -up-|> "{abstract}\nCommand"
 ExitCommand-up-|> "{abstract}\nCommand"

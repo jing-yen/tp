@@ -8,22 +8,39 @@ participant ":AddCommand" as AC
 participant ":PaidCommand" as PC
 
 PP -> S: load(activityManager)
+activate S
 loop while File has next line
 
     S -> Sc: nextLine()
+    activate Sc
+
     Sc --> S: data
+    deactivate Sc
+
     S -> AL: new ArrayList()
+    activate AL
+
     AL --> S: hasPaidNames
+    deactivate AL
+
     S -> S: buildInput(parts, hasPaidNames)
     note right: Builds command string\nand collects names with paid flag
+
     S -> AC: new AddCommand(input)
+    activate AC
     S -> AC: execute(activityManager, false)
+    AC --> S
+    deactivate AC
 
     loop for each name in hasPaidNames
         S -> PC: new PaidCommand(paidInput)
+        activate PC
         S -> PC: execute(activityManager, false)
+        PC --> S
+        deactivate PC
     end
-
 end
+
 S --> PP
+deactivate S
 @enduml
