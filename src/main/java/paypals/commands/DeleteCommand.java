@@ -24,14 +24,11 @@ public class DeleteCommand extends Command {
         assert activityManager != null : "ActivityManager should not be null";
 
         Logging.logInfo("Executing DeleteCommand with command: " + command);
-        UI ui = new UI(enablePrint);
         String identifier = getIdentifier();
         int id = getID(identifier, activityManager.getSize());
         assert id == Integer.parseInt(identifier) - 1 : "ID should match the identifier - 1";
-        Activity deletedActivity = activityManager.getActivity(id);
-        //Collection<Person> owed = deletedActivity.getAllFriends();
-        //boolean hasPaid = false;
         activityManager.deleteActivity(id);
+        UI ui = new UI(enablePrint);
         ui.print("Expense removed successfully!");
         Logging.logInfo("Activity with id " + id + " has been deleted from ActivityManager.");
     }
