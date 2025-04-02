@@ -54,7 +54,7 @@ public class EditCommand extends Command {
 
         String id = parameters.get("i");
         if (id == null) {
-            throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
+            throw new PayPalsException(ExceptionMessage.NO_IDENTIFIER);
         }
 
         int activityId = parseActivityId(id, activityManager.getSize() - 1);
