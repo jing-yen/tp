@@ -12,8 +12,8 @@ public class Group {
     private static ActivityManager activityManager;
 
 
-    public Group(Storage storage, ActivityManager activityManager) {
-        ui = new UI(true);
+    public Group(UI ui,Storage storage, ActivityManager activityManager) {
+        Group.ui = ui;
         Group.storage = storage;
         Group.activityManager = activityManager;
 

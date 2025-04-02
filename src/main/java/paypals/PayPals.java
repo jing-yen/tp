@@ -27,7 +27,7 @@ public class PayPals {
             parser = new Parser();
             activityManager = new ActivityManager();
             storage = new Storage();
-            new Group(storage, activityManager);
+            new Group(ui, storage, activityManager);
         } catch (PayPalsException e) {
             System.out.println(e.getMessage());
         }
