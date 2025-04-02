@@ -255,7 +255,15 @@ Format: `list [n/NAME]`
   the payer will display a `[PAYER]` tag next to the activity description.
 * If a `NAME` is provided, the `list` command will display the past expenses within
   the current group for `NAME`.
-  
+
+### Additional: View Net Balance
+
+You can also view the **net balance** for a person using:
+
+Format: `list balance n/NAME`
+
+* This command calculates how much the specified person is owed (positive balance)
+  or owes to others (negative balance), based on unpaid amounts only.
 
 Example of usage: 
 
@@ -281,8 +289,16 @@ Activities which have not been fully paid for John:
     Payer: Jane
     Amount: $28.00 [Unpaid]
 2.  [PAYER] Desc: tickets
-    Owed by: Bob [Unpaid] Betty [Unpaid] Jane [Unpaid]
+    Amount owed by: bob $4.00 [Unpaid]
+    Amount owed by: betty $15.00 [Unpaid]
+    Amount owed by: jane $4.00 [Unpaid]
 
+____________________________________________________________
+```
+```
+> list balance n/john
+____________________________________________________________
+Net balance for john: +$28.00
 ____________________________________________________________
 ```
 ### Generate a simplified debt settlement plan: `split`

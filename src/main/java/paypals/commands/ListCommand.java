@@ -22,6 +22,7 @@ public class ListCommand extends Command {
 
     private static final String WRONG_LIST_FORMAT = "list n/NAME";
     private static final Pattern NAME_PATTERN = Pattern.compile("^n/([^/]+)$");
+    private static final Pattern BALANCE_PATTERN = Pattern.compile("^balance n/([^/]+)$");
     private static final String INDENT = "    ";
 
     private final UI ui;
@@ -47,6 +48,8 @@ public class ListCommand extends Command {
     public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
         if (command.isEmpty()) {
             printAllActivities(activityManager);
+        } else if (command.startsWith("balance")) {
+            printBalance(activityManager);
         } else {
             printPersonActivities(activityManager);
         }
@@ -109,6 +112,40 @@ public class ListCommand extends Command {
     }
 
     /**
+     * Prints the net balance of the person.
+     *
+     * @param activityManager the manager containing all activities
+     * @throws PayPalsException if the command format is invalid
+     */
+    private void printBalance(ActivityManager activityManager) throws PayPalsException {
+        Matcher matcher = BALANCE_PATTERN.matcher(command);
+        if (!matcher.matches()) {
+            throw new PayPalsException(ExceptionMessage.LIST_BALANCE_FORMAT);
+        }
+
+        String name = matcher.group(1);
+        double balance = 0.0;
+
+        for (Activity activity : activityManager.getActivityList()) {
+            if (activity.getPayer().getName().equals(name)) {
+                for (Person friend : activity.getAllFriends()) {
+                    if (!friend.hasPaid()) {
+                        balance += friend.getAmount();
+                    }
+                }
+            } else {
+                Person p = activity.getFriend(name);
+                if (p != null && !p.hasPaid()) {
+                    balance -= p.getAmount();
+                }
+            }
+        }
+
+        ui.print("Net balance for " + name + ": " + (balance >= 0 ? "+$" : "-$") + String.format("%.2f",
+                Math.abs(balance)));
+    }
+
+    /**
      * Prints a list of activities, each preceded by an index number.
      *
      * @param activities the list of activities to print
@@ -151,11 +188,10 @@ public class ListCommand extends Command {
      * @return the formatted string
      */
     private String formatPayerActivity(Activity activity) {
-        StringBuilder result = new StringBuilder("[PAYER] Desc: ")
-                .append(activity.getDescription()).append("\n")
-                .append(INDENT).append("Owed by: ");
+        StringBuilder result = new StringBuilder("[PAYER] Desc: ").append(activity.getDescription()).append("\n");
         for (Person friend : activity.getAllFriends()) {
-            result.append(friend.toString(false)).append(" ");
+            result.append(INDENT).append("Amount owed by: ").append(friend.getName()).append(" $")
+                                 .append(String.format("%.2f", friend.getAmount())).append(" [Unpaid]\n");
         }
         return result.toString().trim();
     }
