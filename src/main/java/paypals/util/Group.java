@@ -19,9 +19,6 @@ public class Group {
 
     }
 
-    public static boolean isExit() {
-        return true;
-    }
 
     public static void groupSelection() {
         ui.sayHello();
