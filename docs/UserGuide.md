@@ -22,6 +22,7 @@
     - [Edit payer name of an activity: `edit`](#edit-payer-name-of-an-activity-edit)
     - [Edit name of a friend that owes: `edit`](#edit-name-of-a-friend-that-owes-edit)
     - [Edit amount of a friend that owes: `edit`](#edit-amount-of-a-friend-that-owes-edit)
+    - [Change to a different group: `change`](#changing-groups-change)
     - [Exiting the application: `exit`](#exiting-the-application-exit)
   - [FAQ](#faq)
   - [Common Errors](#common-errors)
@@ -54,7 +55,7 @@ A quick reference table for all commands is presented below.
 |-------------------------------------------------|-----------------------------------------------------------------------|
 | Help menu                                       | `help`                                                                |
 | Add an activity                                 | `add d/DESCRIPTION n/NAME f/FRIEND1 a/AMOUNT1 f/FRIEND2 a/AMOUNT2...` |
-| Add an activity with equal portions of spending | `add d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`            |
+| Add an activity with equal portions of spending | `add d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`           |
 | Delete an activity                              | `delete i/IDENTIFIER`                                                 |
 | List all expenses                               | `list`                                                                |
 | List all expenses by a person                   | `list n/NAME`                                                         |
@@ -66,6 +67,7 @@ A quick reference table for all commands is presented below.
 | Edit the payer name of an activity              | `edit i/IDENTIFIER n/NEWNAME`                                         |
 | Edit the name of a friend that owes money       | `edit i/IDENTIFIER f/NEWNAME o/OLDNAME`                               |
 | Edit the amount of a friend that owes money     | `edit i/IDENTIFIER a/NEWAMOUNT o/FRIENDNAME`                          |
+| Change to a different group                     | `change`                                                              |
 | Close the application                           | `exit`                                                                |
 
 ## Features 
@@ -241,6 +243,9 @@ Format: `list [n/NAME]`
 
 * If a `NAME` is provided, any activities where the specified person is 
   the payer will display a `[PAYER]` tag next to the activity description.
+* If a `NAME` is provided, the `list` command will display the past expenses within
+  the current group for `NAME`.
+  
 
 Example of usage: 
 
@@ -293,7 +298,8 @@ Marks an expense as paid for a specific person.
 Format: `paid n/NAME i/IDENTIFIER`
 
 * Note: The `IDENTIFIER` used in the command is with respect to that person specified in the command.
-  In other words, the `IDENTIFIER` is the number labelled on the activity when you execute `paid n/NAME`.
+  In other words, the `IDENTIFIER` is the number labelled on the activity in the non-fully paid category
+  when you execute `list n/NAME`.
 
 * Note: If the paid command is used on an activity where the specified `NAME` is the payer for the activity,
   it will mark all participants in the activity as paid.
@@ -341,7 +347,7 @@ Unmarks an expense as unpaid for a specific person.
 Format: `unpaid n/NAME i/IDENTIFIER`
 
 * Note: The `IDENTIFIER` used in the command is with respect to that person specified in the command.
-  In other words, the `IDENTIFIER` is the number labelled on the activity when you execute `paid n/NAME`.
+  In other words, the `IDENTIFIER` is the number labelled on the activity in the fully paid category when you execute `list n/NAME`.
 
 * Note: If the unpaid command is used on an activity where the specified `NAME` is the payer for the activity,
   it will mark all participants in the activity as unpaid.
@@ -499,6 +505,40 @@ Activities which have not been fully paid for Bobby:
 
 ____________________________________________________________
 ```
+
+### Changing groups: `change`
+Change the group the user is currently in to another group.
+
+Format: `change`
+
+Example of usage:
+```
+Welcome to PayPals!
+____________________________________________________________
+Please select a group number from the following...
+(You currently have no available groups to load)
+... or give your new group a name:
+> test
+____________________________________________________________
+You are currently in the "test" group.
+It is a new group.
+____________________________________________________________
+> change
+____________________________________________________________
+
+
+Welcome to PayPals!
+____________________________________________________________
+Please select a group number from the following...
+(1) test
+... or give your new group a name:
+> test2
+____________________________________________________________
+You are currently in the "test2" group.
+It is a new group.
+____________________________________________________________
+```
+
 
 ### Exiting the application: `exit`
 Exits the application.

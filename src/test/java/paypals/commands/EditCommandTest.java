@@ -137,4 +137,40 @@ public class EditCommandTest extends PayPalsTest {
             assertEquals(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER.getMessage(), e.getMessage());
         }
     }
+
+    @Test
+    public void execute_invalidAmount_throwsException() {
+        String command = "i/1 a/test o/John";
+        EditCommand ec = new EditCommand(command);
+        try {
+            ec.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.INVALID_AMOUNT.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_negativeAmount_throwsException() {
+        String command = "i/1 a/-10 o/John";
+        EditCommand ec = new EditCommand(command);
+        try {
+            ec.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.AMOUNT_OUT_OF_BOUNDS.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_largeAmount_throwsException() {
+        String command = "i/1 a/999999 o/John";
+        EditCommand ec = new EditCommand(command);
+        try {
+            ec.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.LARGE_AMOUNT.getMessage(), e.getMessage());
+        }
+    }
 }

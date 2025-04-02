@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import paypals.ActivityManager;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
+import paypals.util.Logging;
 import paypals.util.UI;
 
 /**
@@ -21,9 +22,7 @@ public class EditCommand extends Command {
 
     /** Maximum amount limit allowed per person. */
     private static final double LARGE_AMOUNT_LIMIT = 10000.0;
-
-    /** Format pattern for valid money values. */
-    private static final String MONEY_FORMAT = "^\\d+(\\.\\d{1,2})?$";
+    private static final String MONEY_FORMAT = "^-?\\d+(\\.\\d{1,2})?$";
 
     /**
      * Constructs an EditCommand object.
@@ -155,15 +154,18 @@ public class EditCommand extends Command {
         } else if (parameters.get("a") != null && parameters.get("o") != null) {
             try {
                 String amount = parameters.get("a");
+                String name = parameters.get("o");
+                double parseAmt = Double.parseDouble(amount);
                 if (!isValidAmount(amount)) {
                     throw new PayPalsException(ExceptionMessage.NOT_MONEY_FORMAT);
                 }
 
-                String name = parameters.get("o");
-                double parseAmt = Double.parseDouble(amount);
-
                 if (parseAmt > LARGE_AMOUNT_LIMIT) {
                     throw new PayPalsException(ExceptionMessage.LARGE_AMOUNT);
+                }
+                if (parseAmt <= 0.0) {
+                    Logging.logWarning("Amount entered for friend out of bounds");
+                    throw new PayPalsException(ExceptionMessage.AMOUNT_OUT_OF_BOUNDS);
                 }
 
                 if (activityManager.getActivity(activityId).getFriend(name).hasPaid()) {

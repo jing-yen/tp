@@ -15,7 +15,9 @@ public class AddEqualCommand extends AddCommand {
 
     private static final String WRONG_ADD_FORMAT =
             "Format: addequal d/DESCRIPTION n/PAYER f/FRIEND1 f/FRIEND2 ... a/AMOUNT_OWED";
-
+    private static final double LARGE_AMOUNT_LIMIT = 10000.0;
+    private static final String MONEY_FORMAT = "^-?\\d+(\\.\\d{1,2})?$";
+    
     public AddEqualCommand(String command) {
         super(command);
     }
@@ -69,11 +71,22 @@ public class AddEqualCommand extends AddCommand {
             totalAmount = Double.parseDouble(amountEntered);
         } catch (NumberFormatException e) {
             Logging.logWarning("Invalid amount entered: " + amountEntered);
-            throw new PayPalsException(ExceptionMessage.INVALID_AMOUNT, amountEntered);
+            throw new PayPalsException(ExceptionMessage.INVALID_AMOUNT);
         }
-        if (totalAmount < 0) {
-            throw new PayPalsException(ExceptionMessage.NEGATIVE_AMOUNT, amountEntered);
+        if (!isValidAmount(amountEntered)) {
+            throw new PayPalsException(ExceptionMessage.NOT_MONEY_FORMAT);
+        }
+        if (totalAmount > LARGE_AMOUNT_LIMIT) {
+            Logging.logWarning("Amount entered for friend out of bounds");
+            throw new PayPalsException(ExceptionMessage.LARGE_AMOUNT);
+        }
+        if (totalAmount <= 0) {
+            throw new PayPalsException(ExceptionMessage.NEGATIVE_AMOUNT);
         }
         return totalAmount;
+    }
+
+    public boolean isValidAmount(String amountStr) {
+        return amountStr.matches(MONEY_FORMAT);
     }
 }

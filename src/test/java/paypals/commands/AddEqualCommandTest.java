@@ -10,7 +10,6 @@ import paypals.exception.PayPalsException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class AddEqualCommandTest extends PayPalsTest {
@@ -40,12 +39,17 @@ public class AddEqualCommandTest extends PayPalsTest {
     }
 
     @Test
-    public void execute_activityWithZeroAmount_noExceptionThrown() {
+    public void execute_activityWithZeroAmount_exceptionThrown() {
         String command = "addequal d/Meeting n/Jake f/Karen a/0";
         AddEqualCommand addEqualCommand = new AddEqualCommand(command);
 
-        assertDoesNotThrow(() -> addEqualCommand.execute(activityManager, false));
-        assertEquals(1, activityManager.getSize());
+        try {
+            addEqualCommand.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.NEGATIVE_AMOUNT.getMessage(), e.getMessage());
+            assertEquals(0, activityManager.getSize());
+        }
     }
 
     /*@Test
@@ -152,19 +156,19 @@ public class AddEqualCommandTest extends PayPalsTest {
             addEqualCommand.execute(activityManager, false);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertException(e, ExceptionMessage.INVALID_AMOUNT);
+            assertEquals(e.getMessage(), ExceptionMessage.INVALID_AMOUNT.getMessage());
         }
     }
 
     @Test
     public void execute_negativeAmount_exceptionThrown() {
-        String command = "addequal d/Trip n/Alice f/Bob a/-10";
+        String command = "addequal d/Trip n/Alice f/Bob a/-10.00";
         AddEqualCommand addEqualCommand = new AddEqualCommand(command);
         try {
             addEqualCommand.execute(activityManager, false);
             fail("Expected PayPalsException but none was thrown");
         } catch (PayPalsException e) {
-            assertException(e, ExceptionMessage.NEGATIVE_AMOUNT);
+            assertEquals(ExceptionMessage.NEGATIVE_AMOUNT.getMessage(), e.getMessage());
         }
     }
 }
