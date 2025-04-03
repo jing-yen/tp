@@ -162,7 +162,7 @@ public class AddEqualCommandTest extends PayPalsTest {
 
     @Test
     public void execute_negativeAmount_exceptionThrown() {
-        String command = "addequal d/Trip n/Alice f/Bob a/-10.00";
+        String command = "d/Trip n/Alice f/Bob a/-10.00";
         AddEqualCommand addEqualCommand = new AddEqualCommand(command);
         try {
             addEqualCommand.execute(activityManager, false);
@@ -170,5 +170,43 @@ public class AddEqualCommandTest extends PayPalsTest {
         } catch (PayPalsException e) {
             assertEquals(ExceptionMessage.NEGATIVE_AMOUNT.getMessage(), e.getMessage());
         }
+    }
+
+    @Test
+    public void execute_largeAmount_exceptionThrown() {
+        String command = "d/Trip n/Alice f/Bob a/100000.00";
+        AddEqualCommand addEqualCommand = new AddEqualCommand(command);
+        try {
+            addEqualCommand.execute(activityManager, false);
+            fail("Expected PayPalsException for large amount");
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.LARGE_AMOUNT.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_invalidMoneyFormat_exceptionThrown() {
+        String command = "d/Trip n/Alice f/Bob a/10.123";
+        AddEqualCommand addEqualCommand = new AddEqualCommand(command);
+        try {
+            addEqualCommand.execute(activityManager, false);
+            fail("Expected PayPalsException for money format");
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.NOT_MONEY_FORMAT.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_validRounding_correctRoundedAmounts() throws PayPalsException {
+        String command = "d/Pizza n/Anna f/Bill f/Clara a/10";
+        AddEqualCommand addEqualCommand = new AddEqualCommand(command);
+        addEqualCommand.execute(activityManager, false);
+
+        Activity activity = activityManager.getActivity(0);
+        ArrayList<Person> friends = new ArrayList<>(activity.getAllFriends());
+        for (Person p : friends) {
+            assertEquals(3.33, p.getAmount(), 0.01);
+        }
+        assertEquals(-6.67, activity.getPayer().getAmount(), 0.01);
     }
 }
