@@ -9,7 +9,11 @@ import paypals.exception.PayPalsException;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class AddCommandTest extends PayPalsTest {
 
@@ -191,7 +195,7 @@ public class AddCommandTest extends PayPalsTest {
     }
 
     @Test
-    public void execute_amountWithThreeDecimals_notMoneyFormat_exceptionThrown() {
+    public void amountWithThreeDecimals_notMoneyFormat_exceptionThrown() {
         String command = "d/Trip n/Alice f/Bob a/10.555";
         AddCommand cmd = new AddCommand(command);
         try {
@@ -238,7 +242,7 @@ public class AddCommandTest extends PayPalsTest {
     }
 
     @Test
-    public void execute_unorderedPrefixes_invalidFormat_exceptionThrown() {
+    public void unorderedPrefixes_invalidFormat_exceptionThrown() {
         String command = "f/Bob a/10 d/Lunch n/Alice";
         AddCommand cmd = new AddCommand(command);
         try {

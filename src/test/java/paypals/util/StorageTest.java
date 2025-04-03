@@ -16,7 +16,12 @@ import paypals.commands.PaidCommand;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class StorageTest extends PayPalsTest {
     @Test

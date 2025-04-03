@@ -102,7 +102,7 @@ public class ListCommandTest extends PayPalsTest {
     }
 
     @Test
-    public void execute_balanceCommand_friendPartiallyPaid_balanceIsAccurate() {
+    public void balanceCommand_friendPartiallyPaid_balanceIsAccurate() {
         ActivityManager manager = new ActivityManager();
         Activity activity = createTestActivity();
         activity.getFriend("Bob").markAsPaid(); // Bob already paid

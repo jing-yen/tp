@@ -3,13 +3,29 @@ package paypals.util;
 import org.junit.jupiter.api.Test;
 
 import paypals.PayPalsTest;
-import paypals.commands.*;
+import paypals.commands.Command;
+import paypals.commands.AddCommand;
+import paypals.commands.AddEqualCommand;
+import paypals.commands.DeleteCommand;
+import paypals.commands.ListCommand;
+import paypals.commands.SplitCommand;
+import paypals.commands.PaidCommand;
+import paypals.commands.EditCommand;
+import paypals.commands.ExitCommand;
+import paypals.commands.UnpaidCommand;
+import paypals.commands.HelpCommand;
+import paypals.commands.ChangeCommand;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ParserTest extends PayPalsTest {
+
+    private final Parser parser = new Parser();
     @Test
     public void decodeCommand_invalidCommand_throwsException() {
         Parser parser = new Parser();
@@ -21,8 +37,6 @@ public class ParserTest extends PayPalsTest {
             assertException(e, ExceptionMessage.INVALID_COMMAND);
         }
     }
-
-    private final Parser parser = new Parser();
 
     @Test
     public void decodeCommand_validAddCommand_returnsAddCommand() throws PayPalsException {
