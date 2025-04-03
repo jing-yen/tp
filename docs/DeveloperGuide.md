@@ -21,8 +21,8 @@
   - [Non-functional Requirements](#non-functional-requirements)
   - [Glossary](#glossary)
 - [Appendix: Instructions for Testing](#appendix-instructions-for-testing)
-  - [Deleting a person]()
-  - [Saving data]()
+  - [Manual Testing]()
+  - [JUnit Testing]()
 
 ## Acknowledgements
 
@@ -32,6 +32,10 @@ PayPals uses the following tools for development and testing:
 2. [Gradle](https://gradle.org) - Used for build automation.
 
 ## Design & Implementation
+
+The UML class diagram below provides an overview of the classes and their interactions within the PayPals application.
+
+![Main Class Diagram](diagrams/main.png)
 
 ### Architecture
 
@@ -173,6 +177,7 @@ DESCRIPTION|PAYER|AMOUNT|HASPAID|FRIEND|AMOUNT|HASPAID...
 ![Sample save file](diagrams/savefile.png)
 
 The following is the sequence diagram for loading data from the save file into the `ActivityManager`.
+Note that the lifelines should terminate with the cross, but due to the limitations of PlantUML, the lifeline is shown to continue.
 
 ![Load Storage](diagrams/StorageLoad.png)
 
@@ -188,7 +193,7 @@ The following is the sequence diagram for loading data from the save file into t
 
 <ins>Methods</ins>
 
-* `Storage`: Creates the relavant storage directory and file if it does not exist, while initializing the attributes of the object.
+* `Storage`: Creates the relevant storage directory and file if it does not exist, while initializing the attributes of the object.
 * `save`: Goes through each `Activity` in `ActivityManager` and saves its data in the save file.
 * `load`: Reads the save file line by line with the `Scanner` object and load the data into `ActivityManager`.
 * `checkIfFilenameValid`: Checks the user input whether it is a valid filename before creating the file.

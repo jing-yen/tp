@@ -6,7 +6,7 @@ public enum ExceptionMessage {
     NO_DESCRIPTION("INPUT ERROR: No activity description"),
     NO_IDENTIFIER("INPUT ERROR: No identifier entered"),
     INVALID_FORMAT("INPUT ERROR: Correct format should be: "),
-    INVALID_IDENTIFIER("INPUT ERROR: Invalid identifier entered, should be an integer"),
+    INVALID_IDENTIFIER("INPUT ERROR: Invalid identifier entered, should be an integer: "),
     LIST_BALANCE_FORMAT("INPUT ERROR: Correct format should be: list balance n/NAME"),
     OUTOFBOUNDS_IDENTIFIER("INPUT ERROR: Identifier entered is out of bounds: "),
     NO_PAYER("INPUT ERROR: No name of payer"),

@@ -28,9 +28,4 @@ public class PayPalsTest {
             System.out.println(e.getMessage());
         }
     }
-
-    @Test
-    public void sampleTest() {
-        assertTrue(true);
-    }
 }

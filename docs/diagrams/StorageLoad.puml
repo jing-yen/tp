@@ -2,45 +2,53 @@
 
 participant ":PayPals" as PP
 participant "storage:Storage" as S
+participant ":ActivityManager" as AM
 participant ":Scanner" as Sc
 participant ":ArrayList" as AL
 participant ":AddCommand" as AC
 participant ":PaidCommand" as PC
 
-PP -> S: load(activityManager)
+PP -> S: load(groupNumberOrName, activityManager)
 activate S
+S -> AM: getGroupDetails()
+activate AM
+return
+S -> Sc **: new Scanner(activityFile)
+activate Sc
+return
+
 loop while File has next line
 
     S -> Sc: nextLine()
     activate Sc
+    return data
 
-    Sc --> S: data
-    deactivate Sc
-
-    S -> AL: new ArrayList()
+    S -> AL ** : new ArrayList()
     activate AL
-
-    AL --> S: hasPaidNames
-    deactivate AL
+    return hasPaidNames
+    destroy AL
 
     S -> S: buildInput(parts, hasPaidNames)
+    activate S
     note right: Builds command string\nand collects names with paid flag
+    return input
 
-    S -> AC: new AddCommand(input)
+    S -> AC ** : new AddCommand(input)
     activate AC
     S -> AC: execute(activityManager, false)
-    AC --> S
-    deactivate AC
+    return
+    destroy AC
 
     loop for each name in hasPaidNames
-        S -> PC: new PaidCommand(paidInput)
+        S -> PC **: new PaidCommand(paidInput)
         activate PC
         S -> PC: execute(activityManager, false)
-        PC --> S
-        deactivate PC
+        return
+        destroy PC
     end
 end
 
-S --> PP
-deactivate S
+destroy Sc
+return
+
 @enduml

@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class SplitCommandTest extends PayPalsTest {
 
@@ -59,5 +60,12 @@ class SplitCommandTest extends PayPalsTest {
                 "Jane pays John $46.00\n" +
                 "Jeremy pays John $10.00\n";
         assertEquals(expectedOutput.trim().replace("\r\n", "\n"), outputStream.toString().trim().replace("\r\n", "\n"));
+    }
+
+    @Test
+    public void isExit_someInput_expectFalse() {
+        SplitCommand command = new SplitCommand("");
+
+        assertFalse(command.isExit(), "isExit() should return false for a SplitCommand");
     }
 }

@@ -92,7 +92,7 @@ public class AddCommand extends Command {
 
         UI ui = new UI(enablePrint);
         HashMap<String, Double> owed = new HashMap<>();
-
+        validatePrefixOrder();
         // Step 1: Extract description and payer name
         String description = extractValue("d/", ExceptionMessage.NO_DESCRIPTION);
         String name = extractValue("n/", ExceptionMessage.NO_PAYER);
@@ -113,6 +113,9 @@ public class AddCommand extends Command {
                 } catch (Exception e) {
                     Logging.logWarning("Invalid amount entered for friend");
                     throw new PayPalsException(ExceptionMessage.INVALID_AMOUNT);
+                }
+                if (oweName.isEmpty()){
+                    throw new PayPalsException(ExceptionMessage.INVALID_FRIEND);
                 }
                 if (!isValidAmount(parameters[1].trim())) {
                     throw new PayPalsException(ExceptionMessage.NOT_MONEY_FORMAT);
@@ -157,5 +160,23 @@ public class AddCommand extends Command {
      */
     public boolean isValidAmount(String amountStr) {
         return amountStr.matches(MONEY_FORMAT);
+    }
+
+    public void validatePrefixOrder() throws PayPalsException {
+        int dIndex = command.indexOf("d/");
+        int nIndex = command.indexOf("n/");
+        int fIndex = command.indexOf("f/");
+
+        if (dIndex == -1){
+            throw new PayPalsException(ExceptionMessage.NO_DESCRIPTION);
+        }
+
+        if (nIndex == -1){
+            throw new PayPalsException(ExceptionMessage.NO_PAYER);
+        }
+
+        if (!(dIndex < nIndex && nIndex < fIndex )) {
+            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT);
+        }
     }
 }

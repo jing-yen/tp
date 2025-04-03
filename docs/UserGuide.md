@@ -101,7 +101,7 @@ When it’s time to split the total bill, the app simplifies the process by calc
 
 PayPals data is saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 The file is also created automatically if it does not exist.
-Note: Do not edit any of the data files manually as it will result in corrupted files.
+Note: Do not edit any of the data files manually as it will result in corrupted files. Also do not add more than 1000 transactions for any given group.
 
 ### Groups
 
@@ -184,6 +184,9 @@ Please select a group number from the following:
 > 1
 ```
 ## Command Format: Inside A Group
+
+Note: If more than one command keyword (`add`, `delete`, `edit`, etc) is specified, only the first one will be used and the rest will be ignored.
+
 ### Viewing help: `help`
 
 Shows a help message containing all the commands available in PayPals.
