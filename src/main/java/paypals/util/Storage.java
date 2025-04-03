@@ -298,6 +298,15 @@ public class Storage {
         return groupNames;
     }
 
+    /**
+     * Deletes a group from the system by removing its file and updating the master file.
+     * The group can be identified either by its name or by its position number in the list.
+     *
+     * @param groupNumberOrName The name of the group or its position number (1-based index) in the list
+     * @param activityManager The activity manager instance, used for any cleanup related to the group
+     * @throws PayPalsException If an error occurs during file deletion or master file updating,
+     *                          or if the group number is invalid
+     */
     public void delete(String groupNumberOrName, ActivityManager activityManager) throws PayPalsException {
         String groupName;
         if (groupNames.contains(groupNumberOrName)) {
@@ -315,6 +324,13 @@ public class Storage {
         }
     }
 
+    /**
+     * Removes a group's entry from the master file by reading the entire file,
+     * filtering out the line containing the group name, and writing the filtered content back.
+     *
+     * @param groupName The name of the group to be removed from the master file
+     * @throws IOException If an error occurs during file reading or writing operations
+     */
     private void removeFromMasterFile(String groupName) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(this.masterFile));
         StringBuilder content = new StringBuilder();
@@ -333,13 +349,27 @@ public class Storage {
         fw.close();
     }
 
+    /**
+     * Deletes the file associated with a group from the storage location.
+     *
+     * @param groupName The name of the group whose file should be deleted
+     */
     private void deleteFile(String groupName) {
         String groupFilePath = STORAGE_FOLDER_PATH + "/" + groupName + FILE_EXTENSION;
         File file = new File(groupFilePath);
         file.delete();
     }
 
-
+    /**
+     * Checks if a group exists in the system by its name or position number.
+     * When a number is provided, this method verifies that it's a valid index
+     * within the range of existing groups.
+     *
+     * @param groupNumberOrName The name of the group or its position number (1-based index) in the list
+     * @return true if the group exists or the provided number is valid
+     * @throws PayPalsException If the provided string is neither a valid group name nor a valid number,
+     *                          or if the number is out of range
+     */
     public boolean containsFile(String groupNumberOrName) throws PayPalsException {
         if (groupNames.contains(groupNumberOrName)) {
             return true;
