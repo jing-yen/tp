@@ -104,10 +104,10 @@ public class ListCommand extends Command {
             }
         }
 
-        ui.print("Activities which have been fully paid for " + name + ":");
+        ui.print("Settled activities for " + name + ":");
         ui.print(formatActivitiesList(paid, name));
 
-        ui.print("Activities which have not been fully paid for " + name + ":");
+        ui.print("Unsettled activities for " + name + ":");
         ui.print(formatActivitiesList(unpaid, name));
     }
 
@@ -193,8 +193,10 @@ public class ListCommand extends Command {
     private String formatPayerActivity(Activity activity) {
         StringBuilder result = new StringBuilder("[PAYER] Desc: ").append(activity.getDescription()).append("\n");
         for (Person friend : activity.getAllFriends()) {
-            result.append(INDENT).append("Amount owed by: ").append(friend.getName()).append(" $")
-                                 .append(String.format("%.2f", friend.getAmount())).append(" [Unpaid]\n");
+            result.append(INDENT).append("Amount owed by: ")
+                    .append(friend.getName()).append(" $")
+                    .append(String.format("%.2f", friend.getAmount())).append(" ")
+                    .append(friend.hasPaid() ? "[Paid]" : "[Unpaid]").append("\n");
         }
         return result.toString().trim();
     }

@@ -341,9 +341,9 @@ ____________________________________________________________
 ```
 > list n/John
 ____________________________________________________________
-Activities which have been fully paid for John:
+Settled activities for John:
 
-Activities which have not been fully paid for John:
+Unsettled activities for John:
 1.  Desc: lunch
     Payer: Jane
     Amount: $28.00 [Unpaid]
@@ -397,9 +397,9 @@ Example of usage:
 ```
 > list n/John
 ____________________________________________________________
-Activities which have been fully paid for John:
+Settled activities for John:
 
-Activities which have not been fully paid for John:
+Unsettled activities for John:
 1.  Desc: lunch
     Payer: Jane
     Amount: $28.00 [Unpaid]
@@ -413,12 +413,12 @@ Marked as paid!
 ____________________________________________________________
 > list n/John
 ____________________________________________________________
-Activities which have been fully paid for John:
+Settled activities for John:
 1.  Desc: lunch
     Payer: Jane
     Amount: $28.00 [Paid]
 
-Activities which have not been fully paid for John:
+Unsettled activities for John:
 1.  [PAYER] Desc: tickets
     Owed by: Bob [Unpaid] Betty [Unpaid] Jane [Unpaid]
 
@@ -445,12 +445,12 @@ Example of usage:
 ```
 > list n/Bobby
 ____________________________________________________________
-Activities which have been fully paid for Bobby:
+Settled activities for Bobby:
 1.  Desc: tickets
     Payer: Johnny
     Amount: $15.00 [Paid]
 
-Activities which have not been fully paid for Bobby:
+Unsettled activities for Bobby:
 
 ____________________________________________________________
 > unpaid n/Bobby i/1
@@ -459,9 +459,9 @@ Marked as unpaid!
 ____________________________________________________________
 > list n/Bobby
 ____________________________________________________________
-Activities which have been fully paid for Bobby:
+Settled activities for Bobby:
 
-Activities which have not been fully paid for Bobby:
+Unsettled activities for Bobby:
 1.  Desc: tickets
     Payer: Johnny
     Amount: $15.00 [Unpaid]
@@ -567,9 +567,9 @@ Format: `edit i/IDENTIFIER a/NEWAMOUNT o/FRIENDNAME`
 ```
 > list n/Bobby
 ____________________________________________________________
-Activities which have been fully paid for Bobby:
+Settled activities for Bobby:
 
-Activities which have not been fully paid for Bobby:
+Unsettled activities for Bobby:
 1.  Desc: tickets
     Payer: Johnny
     Amount: $38.10 [Unpaid]
@@ -581,9 +581,9 @@ Bobby's amount owed has been changed to 15
 ____________________________________________________________
 > list n/Bobby
 ____________________________________________________________
-Activities which have been fully paid for Bobby:
+Settled activities for Bobby:
 
-Activities which have not been fully paid for Bobby:
+Unsettled activities for Bobby:
 1.  Desc: tickets
     Payer: Johnny
     Amount: $15.00 [Unpaid]
@@ -694,12 +694,12 @@ may also trigger error messages. For example:
 ```
 > list n/John
 ____________________________________________________________
-Activities which have been fully paid for John:
+Settled activities for John:
 1.  Desc: lunch
     Payer: Jane
     Amount: $28.00 [Paid]
 
-Activities which have not been fully paid for John:
+Unsettled activities for John:
 
 ____________________________________________________________
 > edit i/1 a/10 o/John

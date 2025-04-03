@@ -32,7 +32,7 @@ Given below are my contributions to the project.
 
 * **General Contributions**: Abstraction of Commands, Exceptions, and Logging
   * What it does:
-    * Commands: All the command types implemented are inherited from a base abstract class `Comamnd`, providing a standardized 
+    * Commands: All the command types implemented are inherited from a base abstract class `Command`, providing a standardized 
       format for all commands in the application.
     * Exceptions: Centralizes exception handling logic using enumerations for all exception messages, allowing for easy error
       reporting and graceful error recovery across the application.

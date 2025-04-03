@@ -9,15 +9,31 @@ import paypals.util.UI;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * Command that handles the deletion of an activity from the activity manager.
+ * The command processes an identifier in the format "i/[number]" to determine
+ * which activity to delete.
+ */
 public class DeleteCommand extends Command {
 
-
+    /**
+     * Constructs a new DeleteCommand with the specified command string.
+     *
+     * @param command The command string containing the identifier
+     */
     public DeleteCommand(String command) {
         super(command);
     }
 
-
+    /**
+     * Executes the delete command by removing the specified activity from the activity manager.
+     * The method extracts the identifier from the command, validates it, converts it to an
+     * index, and deletes the corresponding activity.
+     *
+     * @param activityManager The activity manager containing the list of activities
+     * @param enablePrint Boolean flag indicating whether to print output messages
+     * @throws PayPalsException If the identifier is missing, invalid, or out of bounds
+     */
     @Override
     public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
         assert activityManager != null : "ActivityManager should not be null";
@@ -32,6 +48,13 @@ public class DeleteCommand extends Command {
         Logging.logInfo("Activity with id " + id + " has been deleted from ActivityManager.");
     }
 
+    /**
+     * Extracts the identifier from the command string using regex pattern matching.
+     * The identifier is expected to be in the format "i/[number]".
+     *
+     * @return The extracted identifier as a string
+     * @throws PayPalsException If no identifier is found in the command string
+     */
     private String getIdentifier() throws PayPalsException {
         String identifier;
         // Step 1: Process the description and name
@@ -49,6 +72,16 @@ public class DeleteCommand extends Command {
         return identifier;
     }
 
+    /**
+     * Converts the identifier string to an integer ID and validates that it's within
+     * the bounds of the activity list.
+     *
+     * @param identifier The string identifier extracted from the command
+     * @param size The number of activities in the activity manager
+     * @return The validated activity ID (zero-based index)
+     * @throws PayPalsException If the identifier cannot be parsed as an integer
+     *                          or if the resulting ID is out of bounds
+     */
     private int getID(String identifier, int size) throws PayPalsException {
         int id;
         try {
