@@ -117,5 +117,39 @@ public class DeleteCommandTest extends PayPalsTest {
         }
     }
 
+    @Test
+    public void execute_negativeIdentifier_exceptionThrown() {
+        DeleteCommand command = new DeleteCommand("i/-1");
+        try {
+            command.execute(activityManager, false);
+            fail("Expected PayPalsException for negative index");
+        } catch (PayPalsException e) {
+            assertException(e, ExceptionMessage.NO_IDENTIFIER);
+        }
+    }
 
+    @Test
+    public void execute_zeroIdentifier_exceptionThrown() {
+        DeleteCommand command = new DeleteCommand("i/0");
+        try {
+            command.execute(activityManager, false);
+            fail("Expected PayPalsException for zero index");
+        } catch (PayPalsException e) {
+            assertException(e, ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
+        }
+    }
+
+    @Test
+    public void execute_identifierWithSpaces_validCommandStillParses() throws PayPalsException {
+        DeleteCommand command = new DeleteCommand("   i/2   ");
+        command.execute(activityManager, false);
+        assertEquals(1, activityManager.getSize(), "Activity should be deleted successfully despite spaces");
+    }
+
+    @Test
+    public void execute_identifierWithExtraText_ignoresTrailingGarbage() throws PayPalsException {
+        DeleteCommand command = new DeleteCommand("i/2 extra text");
+        command.execute(activityManager, false);
+        assertEquals(1, activityManager.getSize(), "Activity should be deleted even with extra trailing text");
+    }
 }

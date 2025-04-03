@@ -1,0 +1,23 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide circle
+
+class PayPals
+class "{abstract}\nCommand"
+class UI
+class Storage
+class Parser
+class ActivityManager
+class Activity
+class Person
+
+PayPals -> "{abstract}\nCommand"
+PayPals -d-> "1" Storage : uses
+PayPals -l-> "1" UI : uses
+PayPals -u-> "1" Parser : uses
+PayPals -u-> "1" ActivityManager
+ActivityManager "1" o-- "*" Activity
+Activity "1" o-- "1..*" Person
+"{abstract}\nCommand" ..> "1" ActivityManager
+
+@enduml

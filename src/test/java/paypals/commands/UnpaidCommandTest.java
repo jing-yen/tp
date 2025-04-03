@@ -53,4 +53,79 @@ class UnpaidCommandTest extends PayPalsTest {
                     + " should have been marked as unpaid");
         }
     }
+
+    @Test
+    public void testUnpaidCommand_alreadyUnpaidFriend_throwsException() {
+        callCommand(new UnpaidCommand("n/Jane i/1"));
+        try {
+            callCommand(new UnpaidCommand("n/Jane i/1"));
+        } catch (Exception e) {
+            assertException(e, ExceptionMessage.ALREADY_UNPAID);
+        }
+    }
+
+    @Test
+    public void invalidIndexFormat_nonNumeric_throwsInvalidIdentifier() {
+        try {
+            callCommand(new UnpaidCommand("n/Jane i/abc"));
+        } catch (Exception e) {
+            assertException(e, ExceptionMessage.INVALID_IDENTIFIER);
+        }
+    }
+
+    @Test
+    public void execute_friendNotInActivity_throwsInvalidFriend() {
+        try {
+            callCommand(new UnpaidCommand("n/Alice i/1"));
+        } catch (Exception e) {
+            assertException(e, ExceptionMessage.INVALID_FRIEND);
+        }
+    }
+
+    @Test
+    public void execute_friendHasNoPaidActivities_throwsOutOfBoundsIdentifier() {
+        callCommand(new UnpaidCommand("n/Jane i/1")); // Unpaid already
+        try {
+            callCommand(new UnpaidCommand("n/Jane i/1")); // Again = out of bounds
+        } catch (Exception e) {
+            assertException(e, ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
+        }
+    }
+
+    @Test
+    public void execute_negativeIndex_throwsOutOfBoundsIdentifier() {
+        try {
+            callCommand(new UnpaidCommand("n/Jane i/-1"));
+        } catch (Exception e) {
+            assertException(e, ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
+        }
+    }
+
+    @Test
+    public void execute_zeroIndex_throwsOutOfBoundsIdentifier() {
+        try {
+            callCommand(new UnpaidCommand("n/Jane i/0"));
+        } catch (Exception e) {
+            assertException(e, ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
+        }
+    }
+
+    @Test
+    public void execute_missingWhitespaceBetweenArgs_throwsInvalidFormat() {
+        try {
+            callCommand(new UnpaidCommand("n/Janei/1"));
+        } catch (Exception e) {
+            assertException(e, ExceptionMessage.INVALID_FORMAT);
+        }
+    }
+
+    @Test
+    public void execute_extraArgumentsAfterIndex_throwsInvalidFormat() {
+        try {
+            callCommand(new UnpaidCommand("n/Jane i/1 extra"));
+        } catch (Exception e) {
+            assertException(e, ExceptionMessage.INVALID_FORMAT);
+        }
+    }
+
 }
