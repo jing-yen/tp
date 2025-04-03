@@ -21,8 +21,8 @@
   - [Non-functional Requirements](#non-functional-requirements)
   - [Glossary](#glossary)
 - [Appendix: Instructions for Testing](#appendix-instructions-for-testing)
-  - [Deleting a person]()
-  - [Saving data]()
+  - [Manual Testing]()
+  - [JUnit Testing]()
 
 ## Acknowledgements
 
@@ -177,6 +177,7 @@ DESCRIPTION|PAYER|AMOUNT|HASPAID|FRIEND|AMOUNT|HASPAID...
 ![Sample save file](diagrams/savefile.png)
 
 The following is the sequence diagram for loading data from the save file into the `ActivityManager`.
+Note that the lifelines should terminate with the cross, but due to the limitations of PlantUML, the lifeline is shown to continue.
 
 ![Load Storage](diagrams/StorageLoad.png)
 
