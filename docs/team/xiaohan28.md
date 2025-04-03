@@ -19,37 +19,50 @@ Given below are my contributions to the project.
     * **Highlights**: Robust balance calculation logic that accounts for both amounts owed to and by the user.
 
 
-* **General Code Contributions: Abstraction, Refactoring, and Logging**
-    * **What it does**: Centralised command implementation by having all command types inherit from a base abstract class, standardized exception handling through enumerated messages, and encapsulated logging logic for consistency.
-    * **Justification**: This abstraction improves code structure and maintainability by hiding complex details behind simple interfaces, making it easier for developers to work on high-level concepts.
-    * **Highlights**: Enhanced error reporting and graceful recovery, leading to a more robust codebase.
+* **General Code Contributions: Refactoring, Formatting and Logging**
+  * **What it does**:
+    - Improved the readability and output formatting of the list function so that activities are displayed with clear, properly indented details. (Pull Request [#124](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/124))
+    - Refactored the AddCommand to enhance overall code readability and maintainability. (Pull Request [#47](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/47))
+    - Enhanced logging practices across the codebase to provide consistent, detailed runtime diagnostics.
+  * **Justification**:
+    - Clearer output formatting in the list function makes it easier for users to understand the status of their transactions.
+    - Refactoring the AddCommand contributes to cleaner, more structured code that is easier to maintain and debug.
+    - Improved logging simplifies troubleshooting and supports graceful error recovery.
+  * **Highlights**:
+    - Refined list function with better indentation and clearer separation of paid and unpaid activities.
+    - Restructured AddCommand for improved code clarity and maintainability.
+    - Consolidated logging across modules to ensure robust error reporting.
 
 
-* **UI Class Enhancements**
-    * **What it does**: Refined the UI class to standardise output formatting and ensure consistent display across commands.
-    * **Justification**: A consistent, clear UI improves the overall user experience, particularly in a CLI application.
-    * **Highlights**: Updated display formats for command responses and enhanced error messaging.
+* **General Enhancements: Documentation & UI Improvements**
+  * **What it does**:
+    - Added comprehensive Javadoc comments to key classes (e.g., `AddCommand`, `HelpCommand`, `EditCommand`) to improve code readability and maintainability. (Pull Request [#131](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/131))
+    - Refined the UI class to standardise output formatting and ensure consistent display across commands. 
+  * **Justification**:
+    - Clear and comprehensive documentation is vital for long-term maintenance and for new developers to quickly understand the codebase.
+    - A consistent, clear UI greatly enhances the user experience, especially in a CLI application.
+  * **Highlights**:
+    - Streamlined and standardised documentation across the project, facilitating debugging and future feature enhancements.
+    - Updated display formats for command responses and enhanced error messaging in the UI class.
 
-
-* **Code Documentation Enhancements**
-    * **What it does**: I added comprehensive Javadoc comments to key classes (e.g., `AddCommand`, `HelpCommand`, `EditCommand`) to improve code readability and maintainability.
-    * **Justification**: Clear documentation is vital for long-term maintenance and for new developers to quickly understand the codebase.
-    * **Highlights**: Streamlined and standardized documentation across the project, facilitating debugging and future feature enhancements.
 
 * **User Guide Improvements**
-    * **What it does**: Revised all command examples to reflect clearer outputs, added a detailed Help section, included a Glossary to define key terms, and incorporated Command Tips to assist users.
+    * **What it does**: Revised all command examples to reflect clearer outputs, added a detailed Help section, included a Glossary to define key terms, and incorporated Command Tips to assist users. (Pull Request [#122](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/122))
     * **Justification**: Enhancing the User Guide ensures that new users can quickly understand and effectively use the application.
     * **Highlights**: Added the new `list balance` information and improved troubleshooting guidance for command mistakes.
 
+
 * **Developer Guide Enhancements**
-    * **What it does**: Added sequence diagrams that illustrate interactions among key components (commands, storage, UI, etc.) and a class diagram for the activity component (showing interactions between `Activity`, `ActivityManager`, `Person`, and `Logging`).
+    * **What it does**: Added sequence diagrams that illustrate interactions among key components (commands, storage, UI, etc.) (Pull Request [#117](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/117)) and a class diagram for the activity component (showing interactions between `Activity`, `ActivityManager`, `Person`, and `Logging`). (Pull Request [#94](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/94))
     * **Justification**: Detailed diagrams provide clarity on system architecture, making it easier for future development and maintenance.
     * **Highlights**: Comprehensive coverage of the activity component section and clear documentation of internal workflows.
+
 
 * **Project Management & Community Contributions**
     * Participated actively in code reviews and provided constructive feedback.
     * Assisted in updating both the User Guide and Developer Guide.
-    * Engaged in forum discussions to help resolve bugs and improve project features.
+    * Review of pull requests. (Pull Request [#135](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/135), [#134](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/134), [#130](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/130), [#110](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/110), [#107](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/107))
+
 
 * **Code Contributed**: [RepoSense Link](https://nus-cs2113-ay2425s2.github.io/tp-dashboard/?search=xiaohan28&breakdown=true)
 
