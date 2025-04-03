@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.io.FileWriter;
 
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -11,13 +12,11 @@ import paypals.Activity;
 import paypals.ActivityManager;
 import paypals.PayPalsTest;
 import paypals.commands.AddCommand;
+import paypals.commands.PaidCommand;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class StorageTest extends PayPalsTest {
     @Test
@@ -179,4 +178,168 @@ public class StorageTest extends PayPalsTest {
         PayPalsException ex2 = assertThrows(PayPalsException.class, () -> storage.checkIfFilenameValid("-1"));
         assertEquals(ExceptionMessage.INVALID_GROUP_NUMBER.getMessage(), ex2.getMessage());
     }
+
+    @Test
+    public void deleteGroup_existingGroup_fileRemovedSuccessfully() throws PayPalsException {
+        Storage storage = new Storage();
+        ActivityManager activityManager = new ActivityManager();
+        storage.load("testgroup", activityManager);
+        File file = new File("./data/testgroup.txt");
+        assertTrue(file.exists());
+
+        storage.delete("testgroup", activityManager);
+        assertFalse(file.exists(), "File should be deleted after group deletion");
+
+        storage.deleteDir(new File("./data"));
+    }
+
+    @Test
+    public void deleteGroup_byNumber_fileRemovedSuccessfully() throws PayPalsException {
+        Storage storage = new Storage();
+        ActivityManager activityManager = new ActivityManager();
+        storage.load("test2", activityManager); // adds to groupNames at index 0
+
+        assertTrue(storage.containsFile("1"), "Should recognize group number 1");
+        storage.delete("1", activityManager);
+
+        File file = new File("./data/test2.txt");
+        assertFalse(file.exists(), "Group file should be deleted");
+
+        storage.deleteDir(new File("./data"));
+    }
+
+    @Test
+    public void containsFile_invalidName_throwsException() throws PayPalsException {
+        Storage storage = new Storage();
+
+        PayPalsException ex = assertThrows(PayPalsException.class,
+                () -> storage.containsFile("NotExists123"));
+
+        assertEquals(ExceptionMessage.FILENAME_DOES_NOT_EXIST.getMessage(), ex.getMessage());
+    }
+
+    @Test
+    public void containsFile_invalidNumberOutOfBounds_throwsException() throws PayPalsException {
+        Storage storage = new Storage();
+        PayPalsException ex = assertThrows(PayPalsException.class, () -> storage.containsFile("999"));
+        assertEquals(ExceptionMessage.INVALID_GROUP_NUMBER.getMessage(), ex.getMessage());
+    }
+
+    @Test
+    public void save_emptyActivityList_writesNothing() throws Exception {
+        Storage storage = new Storage();
+        ActivityManager manager = new ActivityManager();
+
+        storage.load("emptySave", manager);
+        storage.save(manager);
+
+        File f = new File("./data/emptySave.txt");
+        assertTrue(f.exists() && f.length() == 0, "Save file should be empty");
+
+        storage.deleteDir(new File("./data"));
+    }
+
+    @Test
+    public void load_existingGroupByNumber_loadsSuccessfully() throws PayPalsException {
+        Storage storage = new Storage();
+        ActivityManager am = new ActivityManager();
+
+        storage.load("GroupByNumber", am); // adds it
+        storage.load("1", am); // should resolve to same group
+
+        assertEquals("GroupByNumber", am.getGroupName());
+        storage.deleteDir(new File("./data"));
+    }
+
+    @Test
+    public void load_malformedStorageLine_throwsLoadError() throws Exception {
+        Storage storage = new Storage();
+        ActivityManager am = new ActivityManager();
+
+        // Create a broken save file manually
+        File file = new File("./data/BrokenGroup.txt");
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+        try (FileWriter fw = new FileWriter(file)) {
+            fw.write("invalid data without enough parts\n");
+        }
+
+        // Write group name into master file
+        File master = new File("./data/master-savefile.txt");
+        try (FileWriter masterWriter = new FileWriter(master, true)) {
+            masterWriter.write("BrokenGroup\n");
+        }
+
+        PayPalsException ex = assertThrows(PayPalsException.class, () -> storage.load("BrokenGroup", am));
+        assertEquals(ExceptionMessage.LOAD_ERROR.getMessage(), ex.getMessage());
+
+        storage.deleteDir(new File("./data"));
+    }
+
+    @Test
+    public void checkIfFilenameValid_validName_returnsTrue() throws PayPalsException {
+        Storage storage = new Storage();
+        boolean result = storage.checkIfFilenameValid("valid_filename123");
+        assertTrue(result);
+        storage.deleteDir(new File("./data"));
+    }
+
+    @Test
+    public void checkIfFilenameValid_validGroupNumber_returnsTrue() throws PayPalsException {
+        Storage storage = new Storage();
+        ActivityManager am = new ActivityManager();
+        storage.load("SomeGroup", am);
+        assertTrue(storage.checkIfFilenameValid("1"));
+        storage.deleteDir(new File("./data"));
+    }
+
+    @Test
+    public void processLine_invalidBooleanValue_ignoresInvalidPaidFlag() throws Exception {
+        Storage storage = new Storage();
+        ActivityManager am = new ActivityManager();
+        File file = new File("./data/testflag.txt");
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+
+        try (FileWriter fw = new FileWriter(file)) {
+            // Has 1 friend, invalid boolean at end
+            String sep = String.valueOf(Character.toChars(31));
+            String line = "Lunch" + sep + "John" + sep + "dummy" + sep + "dummy" +
+                    sep + "Bob" + sep + "20" + sep + "notaboolean\n";
+            fw.write(line);
+        }
+
+        File master = new File("./data/master-savefile.txt");
+        try (FileWriter masterWriter = new FileWriter(master, true)) {
+            masterWriter.write("testflag\n");
+        }
+
+        assertDoesNotThrow(() -> storage.load("testflag", am));
+        assertEquals(1, am.getActivityList().size());
+
+        storage.deleteDir(new File("./data"));
+    }
+
+    @Test
+    public void save_thenLoad_preservesHasPaidFlag() throws Exception {
+        Storage storage = new Storage();
+        ActivityManager am1 = new ActivityManager();
+        ActivityManager am2 = new ActivityManager();
+
+        AddCommand cmd1 = new AddCommand("d/Coffee n/Ann f/Tom a/5.00");
+        cmd1.execute(am1, false);
+
+        PaidCommand paidCmd = new PaidCommand("n/Tom i/1");
+        paidCmd.execute(am1, false);
+
+        storage.load("paidTest", am1);
+        storage.save(am1);
+        storage.load("paidTest", am2);
+
+        assertEquals(1, am2.getActivityList().size());
+        assertTrue(am2.getActivity(0).getFriend("Tom").hasPaid());
+
+        storage.deleteDir(new File("./data"));
+    }
+
 }
