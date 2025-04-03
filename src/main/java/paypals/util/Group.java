@@ -6,12 +6,23 @@ import paypals.exception.PayPalsException;
 
 import java.util.ArrayList;
 
+/**
+ * The Group class manages operations related to groups in the PayPals application.
+ * It provides functionality for selecting, creating, and deleting groups, and
+ * interfaces with the Storage and ActivityManager components.
+ */
 public class Group {
     private static UI ui;
     private static Storage storage;
     private static ActivityManager activityManager;
 
-
+    /**
+     * Constructs a new Group instance with the specified components.
+     *
+     * @param ui The user interface component for handling user interaction
+     * @param storage The storage component for file operations
+     * @param activityManager The activity manager for expense tracking
+     */
     public Group(UI ui,Storage storage, ActivityManager activityManager) {
         Group.ui = ui;
         Group.storage = storage;
@@ -19,7 +30,10 @@ public class Group {
 
     }
 
-
+    /**
+     * The method displays a welcome message and prompts the user to choose
+     * between selecting or deleting a group.
+     */
     public static void groupSelection() {
         ui.sayHello();
         ui.printLine();
@@ -44,6 +58,13 @@ public class Group {
         }
     }
 
+    /**
+     * Handles the deletion of an existing group.
+     * This method displays available groups, prompts the user to select a group to delete,
+     * and then removes the selected group from storage.
+     *
+     * @throws PayPalsException If there are no groups available for deletion or if deletion fails
+     */
     private static void deleteGroup() throws PayPalsException {
         ArrayList<String> groupNames = storage.getGroupNames();
         if (groupNames.isEmpty()) {
@@ -67,7 +88,11 @@ public class Group {
         ui.print("Group has been deleted.");
         ui.printLine();
     }
-
+    /**
+     * Handles the selection or creation of a group.
+     * This method displays existing groups, allows the user to select an existing group
+     * or create a new one by providing a name, and loads the selected group's data.
+     */
     //@@author jing-yen
     private static void selectGroup() {
         ui.print("Please select a group number from the following:");
