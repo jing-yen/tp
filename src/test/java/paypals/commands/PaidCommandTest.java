@@ -2,7 +2,6 @@ package paypals.commands;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import paypals.ActivityManager;
 import paypals.PayPalsTest;
 import paypals.Person;
 import paypals.exception.ExceptionMessage;
