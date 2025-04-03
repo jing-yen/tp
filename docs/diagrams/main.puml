@@ -12,11 +12,12 @@ class Activity
 class Person
 
 PayPals -> "{abstract}\nCommand"
-PayPals "1" -d-> "1" Storage
-PayPals "1" -l-> "1" UI
-PayPals "1" -u-> "1" Parser
-PayPals "1"-> "1" ActivityManager
+PayPals -d-> "1" Storage : uses
+PayPals -l-> "1" UI : uses
+PayPals -u-> "1" Parser : uses
+PayPals -u-> "1" ActivityManager
 ActivityManager "1" o-- "*" Activity
-Activity "1" o-r- "0..*" Person : owes
+Activity "1" o-- "1..*" Person
+"{abstract}\nCommand" ..> "1" ActivityManager
 
 @enduml

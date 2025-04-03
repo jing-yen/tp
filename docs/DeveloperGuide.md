@@ -33,6 +33,10 @@ PayPals uses the following tools for development and testing:
 
 ## Design & Implementation
 
+The UML class diagram below provides an overview of the classes and their interactions within the PayPals application.
+
+![Main Class Diagram](diagrams/main.png)
+
 ### Architecture
 
 ![Architecture Diagram](diagrams/MainArchitecture.png)  
