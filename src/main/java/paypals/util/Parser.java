@@ -28,8 +28,10 @@ public class Parser {
      * Decodes a raw input string into a specific {@link Command} object based on the command keyword and parameters.
      *
      * <p>The input string is expected to follow the format: "COMMAND [PARAMETERS]". The method validates the input,
-     * splits it into the command and its parameters, and maps the command to the corresponding {@link Command} subclass.
-     * If the input is invalid or improperly formatted, a {@link PayPalsException} is thrown with an appropriate error message.</p>
+     * splits it into the command and its parameters,
+     * and maps the command to the corresponding {@link Command} subclass.
+     * If the input is invalid or improperly formatted, a {@link PayPalsException} is thrown
+     * with an appropriate error message.</p>
      *
      * @param input the raw input string provided by the user
      * @return a {@link Command} object representing the decoded command

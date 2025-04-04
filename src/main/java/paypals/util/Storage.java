@@ -287,8 +287,10 @@ public class Storage {
     /**
      * Recursively deletes a directory and all its contents.
      *
-     * <p>This method traverses the directory structure, deleting all files and subdirectories within the given directory.
-     * After all contents are deleted, the directory itself is removed. If the directory is already empty, it is deleted directly.</p>
+     * <p>This method traverses the directory structure,
+     * deleting all files and subdirectories within the given directory.
+     * After all contents are deleted, the directory itself is removed.
+     * If the directory is already empty, it is deleted directly.</p>
      *
      * @param dir the directory to be deleted
      */

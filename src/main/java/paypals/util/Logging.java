@@ -36,7 +36,8 @@ public class Logging {
     }
 
     /**
-     * Disables console logging by setting the level of any {@link ConsoleHandler} attached to the logger to {@code Level.OFF}.
+     * Disables console logging by setting the level of any {@link ConsoleHandler} attached to the logger
+     * to {@code Level.OFF}.
      * This ensures that log messages are only written to the file and not printed to the console.
      */
     public static void disableConsoleLogging() {
