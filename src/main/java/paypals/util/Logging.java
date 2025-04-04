@@ -35,6 +35,11 @@ public class Logging {
         }
     }
 
+    /**
+     * Disables console logging by setting the level of any {@link ConsoleHandler} attached to the logger
+     * to {@code Level.OFF}.
+     * This ensures that log messages are only written to the file and not printed to the console.
+     */
     public static void disableConsoleLogging() {
         Handler[] handlers = paypalsLogger.getHandlers();
         for (Handler handler : handlers) {
@@ -44,14 +49,30 @@ public class Logging {
         }
     }
 
+    /**
+     * Logs a message at the specified logging level.
+     *
+     * @param level   the logging level (e.g., {@code Level.INFO}, {@code Level.WARNING})
+     * @param message the message to be logged
+     */
     public static void log(Level level, String message) {
         paypalsLogger.log(level, message);
     }
 
+    /**
+     * Logs an informational message.
+     *
+     * @param message the informational message to be logged
+     */
     public static void logInfo(String message) {
         paypalsLogger.log(Level.INFO, message);
     }
 
+    /**
+     * Logs a warning message.
+     *
+     * @param message the warning message to be logged
+     */
     public static void logWarning(String message) {
         paypalsLogger.log(Level.WARNING, message);
     }

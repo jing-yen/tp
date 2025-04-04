@@ -66,6 +66,13 @@ public class Activity {
         return outputString;
     }
 
+
+    /**
+     * Converts the activity into a storage-friendly string format, using the specified separator.
+     *
+     * @param separator the delimiter used to separate data fields
+     * @return a string representation of the activity in storage format
+     */
     public String toStorageString(String separator) {
         String data = this.description + separator;
         data += payer.getName() + separator + payer.getAmount() + separator + payer.hasPaid() + separator;
@@ -77,6 +84,11 @@ public class Activity {
         return data;
     }
 
+    /**
+     * Updates the list of people who owe money for this activity.
+     *
+     * @param owed the new map of people who owe money
+     */
     public void setOwed(HashMap<String, Person> owed) {
         Logging.logInfo("Updating owed list for activity: " + description);
         this.owed = owed;
@@ -102,6 +114,16 @@ public class Activity {
         this.owed.get(name).editAmount(newAmount);
     }
 
+    /**
+     * Checks whether the activity is fully paid.
+     *
+     * <p>If {@code checkAllPayer} is {@code true}, it checks if all people have paid their dues.
+     * Otherwise, it checks if the specified person has paid their dues.</p>
+     *
+     * @param name        the name of the person to check (ignored if {@code checkAllPayer} is {@code true})
+     * @param checkAllPayer whether to check if all people have paid their dues
+     * @return {@code true} if the activity is fully paid, {@code false} otherwise
+     */
     public boolean isActivityFullyPaid(String name, boolean checkAllPayer) {
         if (checkAllPayer || payer.getName().equals(name)) {
             for (Person friend : owed.values()) {

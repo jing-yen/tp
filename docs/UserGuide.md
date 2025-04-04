@@ -42,15 +42,16 @@ PayPals is a CLI-based application that aims to provide assistance in simplifyin
 ## Quick Start
 
 1. Ensure that you have Java 17 installed on your computer. Mac users can install the JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html)
-2. Download the latest .jar file from [here](https://github.com/AY2425S2-CS2113-T13-2/tp/releases/tag/v1.0)
+2. Download the latest .jar file from the [Releases page](https://github.com/AY2425S2-CS2113-T13-2/tp/releases).
 3. Copy the file to the folder you want to use as the home folder for your PayPals application.
 4. Open a command terminal, cd into the folder you put the jar file in, and use the following command to run the application:
 ```
-java -jar paypals.jar
+java -jar PayPals.jar
 ```
-5. Select a group by entering the number of the group displayed on the console, or create a new group by entering the name of the new group. Press enter to confirm your group.
-6. Type the command in the command box and press Enter to execute it. e.g. typing help and pressing Enter will open the help window.
-7. You can now start using PayPals!
+5. Choose to load in a PayPals group by typing `select` and pressing Enter.
+6. Select a group to load by entering the number of the group displayed on the console, or create a new group by entering the name of the new group. Press Enter to confirm your group.
+7. Type the command in the command box and press Enter to execute it. e.g. typing `help` and pressing Enter will open the help window.
+8. You can now start using PayPals!
 
 ## Glossary
 
@@ -101,7 +102,7 @@ When it’s time to split the total bill, the app simplifies the process by calc
 
 ### Storage
 
-PayPals data is saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+PayPals data is saved in the storage automatically after any command that changes the data. There is no need to save manually.
 The file is also created automatically if it does not exist.
 Note: Do not edit any of the data files manually as it will result in corrupted files. Also do not add more than 1000 transactions for any given group.
 
@@ -190,6 +191,8 @@ Please select a group number from the following:
 Note: 
 * If more than one command keyword (`add`, `delete`, `edit`, etc) is specified, only the first one will be used and the rest will be ignored.
 * For `edit` commands, if a parameter (e.g. `i/`) is specified more than one time when it does not require it to be specified multiple times, the latest one will overwrite the earlier ones. Whereas for other commands, only the first one will be used while the later ones get ignored.
+
+- Example: `add addequal split d/Lunch n/John f/Farah a/50` will be treated as `add d/Lunch n/John f/Farah a/50`.
 
 ### Viewing help: `help`
 
@@ -661,7 +664,7 @@ ____________________________________________________________
 
 **Q**: How do I transfer my data to another computer? 
 
-**A**: Install PayPals on the other computer and replace the save file in data directory with the save file containing you data.
+**A**: Install PayPals on the other computer and replace the save file in data directory with the save file containing your data.
 
 ## Common Errors
 

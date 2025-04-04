@@ -24,16 +24,35 @@ public class Parser {
                     "delete", "delete i/IDENTIFIER",
                     "paid", "paid n/NAME i/IDENTIFIER");
 
+    /**
+     * Decodes a raw input string into a specific {@link Command} object based on the command keyword and parameters.
+     *
+     * <p>The input string is expected to follow the format: "COMMAND [PARAMETERS]". The method validates the input,
+     * splits it into the command and its parameters,
+     * and maps the command to the corresponding {@link Command} subclass.
+     * If the input is invalid or improperly formatted, a {@link PayPalsException} is thrown
+     * with an appropriate error message.</p>
+     *
+     * @param input the raw input string provided by the user
+     * @return a {@link Command} object representing the decoded command
+     * @throws PayPalsException if the input is invalid or improperly formatted
+     */
     public Command decodeCommand(String input) throws PayPalsException {
         String[] tokens = input.split(" ", 2);
         if (tokens.length != 2 && tokens.length != 1) {
             throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
         }
+
+        // Obtain command and convert it to its lowercase equivalent (to maintain case-insensitivity)
         String command = tokens[0].trim();
+        command = command.toLowerCase();
+
+        // Obtain the rest of the input to be passed to Command class
         String parameters = "";
         if (tokens.length == 2) {
             parameters = tokens[1].trim();
         }
+
         try {
             switch (command) {
             case "add":
