@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 public class AddCommand extends Command {
 
     private static final String WRONG_ADD_FORMAT =
-            "Format: add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_OWED_1 f/FRIEND2 a/AMOUNT_OWED_2...";
+            "add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_OWED_1 f/FRIEND2 a/AMOUNT_OWED_2...";
     private static final double LARGE_AMOUNT_LIMIT = 10000.0;
     private static final String MONEY_FORMAT = "^-?\\d+(\\.\\d{1,2})?$";
 
@@ -107,6 +107,10 @@ public class AddCommand extends Command {
             String[] parameters = pairs[i].split("\\s+a/");
             if (parameters.length == 2) {
                 String oweName = parameters[0].trim();
+                String amountString = parameters[1].trim();
+                if (amountString.split("\\s+").length > 1) {
+                    throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_ADD_FORMAT);
+                }
                 double oweAmount;
                 try {
                     oweAmount = Double.parseDouble(parameters[1]);
@@ -176,7 +180,7 @@ public class AddCommand extends Command {
         }
 
         if (!(dIndex < nIndex && nIndex < fIndex )) {
-            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT);
+            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_ADD_FORMAT);
         }
     }
 }

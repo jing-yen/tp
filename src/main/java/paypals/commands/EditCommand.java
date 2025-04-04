@@ -150,6 +150,9 @@ public class EditCommand extends Command {
         } else if (parameters.get("f") != null && parameters.get("o") != null) {
             String friend = parameters.get("f");
             String oldName = parameters.get("o");
+            if (activityManager.getActivity(activityId).getFriend(oldName) == null) {
+                throw new PayPalsException(ExceptionMessage.FRIEND_DOES_NOT_EXIST);
+            }
             activityManager.editActivityOwedName(activityId, oldName, friend);
             ui.print(oldName + "'s name has been changed to " + friend);
 
@@ -170,6 +173,9 @@ public class EditCommand extends Command {
                     throw new PayPalsException(ExceptionMessage.AMOUNT_OUT_OF_BOUNDS);
                 }
 
+                if (activityManager.getActivity(activityId).getFriend(name) == null) {
+                    throw new PayPalsException(ExceptionMessage.FRIEND_DOES_NOT_EXIST);
+                }
                 if (activityManager.getActivity(activityId).getFriend(name).hasPaid()) {
                     throw new PayPalsException(ExceptionMessage.EDIT_AMOUNT_WHEN_PAID);
                 }
