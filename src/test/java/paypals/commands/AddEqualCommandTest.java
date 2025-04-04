@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class AddEqualCommandTest extends PayPalsTest {
     @Test
@@ -208,5 +209,13 @@ public class AddEqualCommandTest extends PayPalsTest {
             assertEquals(3.33, p.getAmount(), 0.01);
         }
         assertEquals(-6.67, activity.getPayer().getAmount(), 0.01);
+    }
+
+    @Test
+    public void isExit_someInput_expectFalse() {
+        String command = "d/Trip n/Eve f/Frank f/Gina a/30";
+        AddEqualCommand addEqualCommand = new AddEqualCommand(command);
+
+        assertFalse(addEqualCommand.isExit(), "isExit() should return false for an AddEqualCommand");
     }
 }

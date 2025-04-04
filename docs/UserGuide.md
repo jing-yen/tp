@@ -669,7 +669,7 @@ For example:
 > lsit
 ____________________________________________________________
 INPUT ERROR: Invalid command entered
-Try these commands: add | delete | edit | list | split | paid | unpaid | exit | help
+Try these commands: add | addequal | delete | edit | list | split | paid | unpaid | exit | help
 ____________________________________________________________
 ```
 

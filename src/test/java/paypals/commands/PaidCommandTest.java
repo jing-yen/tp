@@ -96,4 +96,11 @@ class PaidCommandTest extends PayPalsTest {
         }
     }
 
+    @Test
+    public void isExit_someInput_expectFalse() {
+        PaidCommand command = new PaidCommand("n/Jane i/1");
+
+        assertFalse(command.isExit(), "isExit() should return false for a PaidCommand");
+    }
+
 }

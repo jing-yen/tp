@@ -14,6 +14,7 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 public class DeleteCommandTest extends PayPalsTest {
@@ -151,5 +152,12 @@ public class DeleteCommandTest extends PayPalsTest {
         DeleteCommand command = new DeleteCommand("i/2 extra text");
         command.execute(activityManager, false);
         assertEquals(1, activityManager.getSize(), "Activity should be deleted even with extra trailing text");
+    }
+
+    @Test
+    public void isExit_someInput_expectFalse() {
+        DeleteCommand command = new DeleteCommand("i/2");
+
+        assertFalse(command.isExit(), "isExit() should return false for a DeleteCommand");
     }
 }

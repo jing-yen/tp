@@ -7,6 +7,7 @@ import paypals.ActivityManager;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HelpCommandTest {
@@ -38,5 +39,12 @@ public class HelpCommandTest {
         assertTrue(output.contains("split"));
         assertTrue(output.contains("help"));
         assertTrue(output.contains("exit"));
+    }
+
+    @Test
+    public void isExit_someInput_expectFalse() {
+        HelpCommand helpCommand = new HelpCommand("");
+
+        assertFalse(helpCommand.isExit(), "isExit() should return false for a HelpCommand");
     }
 }

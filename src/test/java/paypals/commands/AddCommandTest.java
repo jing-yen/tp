@@ -282,5 +282,13 @@ public class AddCommandTest extends PayPalsTest {
             assertEquals(ExceptionMessage.NO_PAYER.getMessage(), e.getMessage());
         }
     }
+
+    @Test
+    public void isExit_someInput_expectFalse() {
+        String command = "d/Trip n/Eve f/Frank a/30 f/Gina a/20";
+        AddCommand addCommand = new AddCommand(command);
+
+        assertFalse(addCommand.isExit(), "isExit() should return false for an AddCommand");
+    }
 }
 
