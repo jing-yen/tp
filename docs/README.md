@@ -1,9 +1,4 @@
----
-layout: page
-title: PayPals
----
-
-# Paypals
+# PayPals
 
 [![CI Status](https://github.com/AY2425S2-CS2113-T13-2/tp/workflows/Java%20CI/badge.svg)](https://github.com/AY2425S2-CS2113-T13-2/tp/actions)
 
