@@ -6,16 +6,21 @@ import paypals.PayPalsTest;
 import paypals.Person;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
+import paypals.util.Parser;
 
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class AddCommandTest extends PayPalsTest {
+
+    private static final String WRONG_ADD_FORMAT =
+            "add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_OWED_1 f/FRIEND2 a/AMOUNT_OWED_2...";
 
     @Test
     public void execute_validMultipleFriends_correctlyUpdatesNetOwedMap() throws PayPalsException {
@@ -249,7 +254,7 @@ public class AddCommandTest extends PayPalsTest {
             cmd.execute(activityManager, false);
             fail("Expected NO_DESCRIPTION exception due to unordered prefix usage");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.INVALID_FORMAT.getMessage(), e.getMessage());
+            assertEquals(ExceptionMessage.INVALID_FORMAT.getMessage() + WRONG_ADD_FORMAT, e.getMessage());
         }
     }
 
@@ -289,6 +294,184 @@ public class AddCommandTest extends PayPalsTest {
         AddCommand addCommand = new AddCommand(command);
 
         assertFalse(addCommand.isExit(), "isExit() should return false for an AddCommand");
+    }
+
+    // Test that a description with multiple words is correctly parsed.
+    @Test
+    public void execute_descriptionWithSpaces_parsedCorrectly() throws PayPalsException {
+        String command = "d/Group Trip n/Anna f/Ben a/25";
+        AddCommand cmd = new AddCommand(command);
+        cmd.execute(activityManager, false);
+        Activity activity = activityManager.getActivity(0);
+        assertEquals("Group Trip", activity.getDescription());
+    }
+
+    // Test that a friend name containing special characters (e.g., hyphen) is accepted.
+    @Test
+    public void execute_friendNameWithSpecialCharacters_validCommandExecutes() throws PayPalsException {
+        String command = "d/Concert n/Mark f/Jean-Pierre a/40";
+        AddCommand cmd = new AddCommand(command);
+        cmd.execute(activityManager, false);
+        Activity activity = activityManager.getActivity(0);
+        Person friend = activity.getFriend("Jean-Pierre");
+        assertNotNull(friend);
+        assertEquals(40, friend.getAmount(), 0.001);
+    }
+
+    // Test that friend names differing only by case are treated as distinct (if allowed).
+    @Test
+    public void execute_duplicateFriendDifferentCase_validCommandExecutes() throws PayPalsException {
+        String command = "d/Outing n/Alice f/Bob a/30 f/bob a/20";
+        AddCommand cmd = new AddCommand(command);
+        cmd.execute(activityManager, false);
+        Activity activity = activityManager.getActivity(0);
+        // Both "Bob" and "bob" should be present as separate entries.
+        Person friend1 = activity.getFriend("Bob");
+        Person friend2 = activity.getFriend("bob");
+        assertNotNull(friend1);
+        assertNotNull(friend2);
+        assertEquals(30, friend1.getAmount(), 0.001);
+        assertEquals(20, friend2.getAmount(), 0.001);
+        assertEquals(2, activity.getAllFriends().size());
+    }
+
+    // Test the isValidAmount method returns false for an empty string.
+    @Test
+    public void isValidAmount_emptyString_returnsFalse() {
+        AddCommand cmd = new AddCommand("d/Trip n/Mark f/Bob a/10");
+        assertFalse(cmd.isValidAmount(""));
+    }
+
+    // Test that extracting a value which is only whitespace throws the expected exception.
+    @Test
+    public void extractValue_whitespaceOnlyValue_throwsException() {
+        Parser parser = new Parser();
+        String command = "add d/Party n/John f/Jill a/    ";
+        try {
+            Command cmd = parser.decodeCommand(command);
+            cmd.execute(activityManager, false);
+            fail("Expected NO_AMOUNT_ENTERED exception");
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.NO_AMOUNT_ENTERED.getMessage(), e.getMessage());
+        }
+    }
+
+    // Test that an extra, unprefixed token at the end of the command results in an exception.
+    @Test
+    public void execute_extraTrailingToken_exceptionThrown() {
+        Parser parser = new Parser();
+        String command = "add d/Trip n/Alice f/Bob a/20 extra";
+        try {
+            Command cmd = parser.decodeCommand(command);
+            cmd.execute(activityManager, false);
+            fail("Expected INVALID_FORMAT exception due to extra trailing token");
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.INVALID_FORMAT.getMessage() + WRONG_ADD_FORMAT, e.getMessage());
+        }
+    }
+
+    // Test that an empty command (no input) throws an exception.
+    @Test
+    public void execute_emptyInput_exceptionThrown() {
+        String command = "";
+        try {
+            AddCommand cmd = new AddCommand(command);
+            cmd.execute(activityManager, false);
+            fail("Expected exception due to empty input");
+        } catch (PayPalsException e) {
+            // Depending on implementation, missing description may be flagged.
+            assertEquals(ExceptionMessage.NO_DESCRIPTION.getMessage(), e.getMessage());
+        }
+    }
+
+    // Test that an empty description (d/ with no text) throws a NO_DESCRIPTION exception.
+    @Test
+    public void execute_emptyDescription_exceptionThrown() {
+        String command = "d/ n/Alice f/Bob a/10";
+        AddCommand cmd = new AddCommand(command);
+        try {
+            cmd.execute(activityManager, false);
+            fail("Expected NO_DESCRIPTION exception");
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.NO_DESCRIPTION.getMessage(), e.getMessage());
+        }
+    }
+
+    // Test that an empty payer (n/ with no text) throws a NO_PAYER exception.
+    @Test
+    public void execute_emptyPayer_exceptionThrown() {
+        String command = "d/Trip n/ f/Bob a/10";
+        AddCommand cmd = new AddCommand(command);
+        try {
+            cmd.execute(activityManager, false);
+            fail("Expected NO_PAYER exception");
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.NO_PAYER.getMessage(), e.getMessage());
+        }
+    }
+
+    // Test that friend names with extra whitespace are trimmed correctly.
+    @Test
+    public void execute_friendNameWithWhitespace_validAfterTrimming() throws PayPalsException {
+        String command = "d/Party n/Jane f/   Bob   a/15";
+        AddCommand cmd = new AddCommand(command);
+        cmd.execute(activityManager, false);
+        Activity activity = activityManager.getActivity(0);
+        Person friend = activity.getFriend("Bob");
+        assertNotNull(friend);
+        assertEquals(15, friend.getAmount(), 0.001);
+    }
+
+    // Test that payer names with extra whitespace are trimmed correctly.
+    @Test
+    public void execute_payerNameWithWhitespace_validAfterTrimming() throws PayPalsException {
+        String command = "d/Party n/   John   f/Jill a/25";
+        AddCommand cmd = new AddCommand(command);
+        cmd.execute(activityManager, false);
+        Activity activity = activityManager.getActivity(0);
+        assertEquals("John", activity.getPayer().getName());
+    }
+
+    // Test that an amount with a leading plus sign is considered invalid.
+    @Test
+    public void isValidAmount_leadingPlusSign_returnsFalse() {
+        AddCommand cmd = new AddCommand("d/Trip n/Mark f/Bob a/+10");
+        assertFalse(cmd.isValidAmount("+10"));
+    }
+
+    // Test that an amount exactly equal to the limit (10000) is accepted.
+    @Test
+    public void execute_amountAtLimit_parsedCorrectly() throws PayPalsException {
+        String command = "d/LimitTest n/John f/Jane a/10000";
+        AddCommand cmd = new AddCommand(command);
+        cmd.execute(activityManager, false);
+
+        Activity activity = activityManager.getActivity(0);
+        Person friend = activity.getFriend("Jane");
+        assertNotNull(friend);
+        assertEquals(10000, friend.getAmount(), 0.001);
+    }
+
+    // Test that an amount just above the limit (e.g., 10000.01) is rejected.
+    @Test
+    public void execute_amountJustAboveLimit_exceptionThrown() {
+        String command = "d/LimitTest n/John f/Jane a/10000.01";
+        AddCommand cmd = new AddCommand(command);
+        try {
+            cmd.execute(activityManager, false);
+            fail("Expected LARGE_AMOUNT exception");
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.LARGE_AMOUNT.getMessage(), e.getMessage());
+        }
+    }
+
+    // Test that isValidAmount returns true for a negative number
+    // (even though business logic later rejects negative amounts).
+    @Test
+    public void isValidAmount_negativeNumber_returnsTrue() {
+        AddCommand cmd = new AddCommand("d/Trip n/Mark f/Bob a/-10");
+        // The regex allows a negative sign, so this should return true.
+        assertTrue(cmd.isValidAmount("-10"));
     }
 }
 
