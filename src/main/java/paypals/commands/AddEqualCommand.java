@@ -72,6 +72,10 @@ public class AddEqualCommand extends AddCommand {
 
         for (String friend : friends) {
             String friendName = friend.trim();
+            // Add explicit validation for empty friend names.
+            if (friendName.isEmpty()) {
+                throw new PayPalsException(ExceptionMessage.INVALID_FRIEND);
+            }
             validateFriend(name, friendName, owed);
             owed.put(friendName,roundedAmount);
             Logging.logInfo("Friend added successfully");

@@ -12,6 +12,8 @@
     - [Debt Settlement](#debt-settlement)
     - [Storage](#storage)
   - [Command Format: Group Selection Menu](#command-format-group-selection-menu)
+    - [Selecting a group: `select`](#selecting-a-group-select)
+    - [Deleting A Group: `delete`](#deleting-a-group-delete)
   - [Command Format: Inside A Group](#command-format-inside-a-group)
     - [Viewing help: `help`](#viewing-help-help)
     - [Adding an expense with details: `add`](#adding-an-expense-with-details-add)
@@ -185,7 +187,9 @@ Please select a group number from the following:
 ```
 ## Command Format: Inside A Group
 
-Note: If more than one command keyword (`add`, `delete`, `edit`, etc) is specified, only the first one will be used and the rest will be ignored.
+Note: 
+* If more than one command keyword (`add`, `delete`, `edit`, etc) is specified, only the first one will be used and the rest will be ignored.
+* For `edit` commands, if a parameter (e.g. `i/`) is specified more than one time when it does not require it to be specified multiple times, the latest one will overwrite the earlier ones. Whereas for other commands, only the first one will be used while the later ones get ignored.
 
 ### Viewing help: `help`
 

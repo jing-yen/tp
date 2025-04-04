@@ -10,6 +10,8 @@ import paypals.exception.PayPalsException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class AddEqualCommandTest extends PayPalsTest {
@@ -208,5 +210,109 @@ public class AddEqualCommandTest extends PayPalsTest {
             assertEquals(3.33, p.getAmount(), 0.01);
         }
         assertEquals(-6.67, activity.getPayer().getAmount(), 0.01);
+    }
+
+    // Test that extra trailing tokens in the amount value cause an exception (e.g., "30 extra").
+    @Test
+    public void execute_extraTrailingTokenInAmount_exceptionThrown() {
+        String command = "addequal d/Trip n/Alice f/Bob f/Charlie a/30 extra";
+        AddEqualCommand addEqualCommand = new AddEqualCommand(command);
+        try {
+            addEqualCommand.execute(activityManager, false);
+            fail("Expected exception due to extra trailing tokens in amount");
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.INVALID_AMOUNT.getMessage(), e.getMessage());
+        }
+    }
+
+    // Test that a friend name which is empty (or only whitespace) throws an INVALID_FRIEND exception.
+    @Test
+    public void execute_emptyFriendName_exceptionThrown() {
+        String command = "addequal d/Trip n/Alice f/    a/30";
+        AddEqualCommand addEqualCommand = new AddEqualCommand(command);
+        try {
+            addEqualCommand.execute(activityManager, false);
+            fail("Expected exception due to empty friend name");
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.INVALID_FRIEND.getMessage(), e.getMessage());
+        }
+    }
+
+    // Test that if a friend name equals the payer’s name, a PAYER_OWES exception is thrown.
+    @Test
+    public void execute_friendNameSameAsPayer_exceptionThrown() {
+        String command = "addequal d/Trip n/Alice f/Alice a/30";
+        AddEqualCommand addEqualCommand = new AddEqualCommand(command);
+        try {
+            addEqualCommand.execute(activityManager, false);
+            fail("Expected exception since payer cannot owe themselves");
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.PAYER_OWES.getMessage() + "Alice", e.getMessage());
+        }
+    }
+
+    // Test that friend names with extra spaces are trimmed correctly.
+    @Test
+    public void execute_friendNamesWithExtraSpaces_trimmed() throws PayPalsException {
+        String command = "addequal d/Trip n/Alice f/  Bob   f/   Charlie    a/60";
+        AddEqualCommand addEqualCommand = new AddEqualCommand(command);
+        addEqualCommand.execute(activityManager, false);
+        Activity activity = activityManager.getActivity(0);
+        // Check that the trimmed names exist.
+        assertEquals(60/3.0, activity.getFriend("Bob").getAmount(), 0.001);
+        assertEquals(60/3.0, activity.getFriend("Charlie").getAmount(), 0.001);
+    }
+
+    // Test equal split with more friends and exact division.
+    // For instance, total 100 split among 4 people (3 friends + payer).
+    @Test
+    public void execute_equalSplit_exactDivision() throws PayPalsException {
+        String command = "addequal d/Trip n/Alice f/Bob f/Charlie f/David a/100";
+        AddEqualCommand addEqualCommand = new AddEqualCommand(command);
+        addEqualCommand.execute(activityManager, false);
+        Activity activity = activityManager.getActivity(0);
+        // Each share should be 100/4 = 25.0 and payer gets -75.0.
+        assertEquals(25.0, activity.getFriend("Bob").getAmount(), 0.001);
+        assertEquals(25.0, activity.getFriend("Charlie").getAmount(), 0.001);
+        assertEquals(25.0, activity.getFriend("David").getAmount(), 0.001);
+        assertEquals(-75.0, activity.getPayer().getAmount(), 0.001);
+    }
+
+    // Test that the total amount value is properly trimmed when it has extra whitespace.
+    @Test
+    public void execute_totalAmountWithWhitespace_success() throws PayPalsException {
+        String command = "addequal d/Trip n/Alice f/Bob f/Charlie a/   60   ";
+        AddEqualCommand addEqualCommand = new AddEqualCommand(command);
+        addEqualCommand.execute(activityManager, false);
+        Activity activity = activityManager.getActivity(0);
+        assertEquals(20.0, activity.getFriend("Bob").getAmount(), 0.001);
+        assertEquals(20.0, activity.getFriend("Charlie").getAmount(), 0.001);
+        assertEquals(-40.0, activity.getPayer().getAmount(), 0.001);
+    }
+
+    // Test that friend names with special characters are accepted.
+    @Test
+    public void execute_friendNamesWithSpecialCharacters_success() throws PayPalsException {
+        String command = "addequal d/Trip n/Alice f/Bob-Smith f/Clara_Lee a/50";
+        AddEqualCommand addEqualCommand = new AddEqualCommand(command);
+        addEqualCommand.execute(activityManager, false);
+        Activity activity = activityManager.getActivity(0);
+        assertNotNull(activity.getFriend("Bob-Smith"));
+        assertNotNull(activity.getFriend("Clara_Lee"));
+    }
+
+    // Test that a friend name containing an extra slash gets truncated (or behaves as designed).
+    // For instance, "f/Bob/Smith" will likely capture "Bob" only.
+    @Test
+    public void execute_friendNameWithSlash_truncated() throws PayPalsException {
+        String command = "addequal d/Trip n/Alice f/Bob/Smith f/Clara a/50";
+        AddEqualCommand addEqualCommand = new AddEqualCommand(command);
+        addEqualCommand.execute(activityManager, false);
+        Activity activity = activityManager.getActivity(0);
+        // Expect that only "Bob" was captured.
+        assertNull(activity.getFriend("Bob"));
+        assertNull(activity.getFriend("Smith"));
+        assertNotNull(activity.getFriend("Clara"));
+        // "Smith" will not be part of the friend's name.
     }
 }
