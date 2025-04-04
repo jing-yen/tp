@@ -7,7 +7,7 @@ title: PayPals
 
 [![CI Status](https://github.com/AY2425S2-CS2113-T13-2/tp/workflows/Java%20CI/badge.svg)](https://github.com/AY2425S2-CS2113-T13-2/tp/actions)
 
-![img.png](img.png)
+![img.png](diagrams/img.png)
 
 PayPals is a Command-Line Interface (CLI) application designed to simplify expense tracking and settlement for groups. It calculates the **minimum number of transactions required** to balance shared costs, making it ideal for trips, projects, or housemates.
 
