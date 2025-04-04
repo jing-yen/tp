@@ -12,6 +12,7 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class ListCommandTest extends PayPalsTest {
 
@@ -110,6 +111,14 @@ public class ListCommandTest extends PayPalsTest {
 
         ListCommand command = new ListCommand("balance n/Alice");
         assertDoesNotThrow(() -> command.execute(manager, false));
+    }
+
+    @Test
+    public void isExit_someInput_expectFalse() {
+        ActivityManager manager = new ActivityManager();
+        ListCommand command = new ListCommand("");
+
+        assertFalse(command.isExit(), "isExit() should return false for a ListCommand");
     }
 
     //create a sample activity for testing purposes above

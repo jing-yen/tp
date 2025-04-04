@@ -3,7 +3,6 @@ package paypals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import paypals.commands.Command;
 import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
@@ -27,10 +26,5 @@ public class PayPalsTest {
         } catch (PayPalsException e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    @Test
-    public void sampleTest() {
-        assertTrue(true);
     }
 }

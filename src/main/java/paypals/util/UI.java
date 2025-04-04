@@ -22,6 +22,31 @@ public class UI {
         }
     }
 
+    public void printBold(String message) {
+        if (enablePrint) {
+            System.out.println("\033[1m" + message + "\033[0m");
+        }
+    }
+
+    public void printUnderlined(String message) {
+        if (enablePrint) {
+            System.out.print("\033[4m" + message + "\033[0m");
+        }
+    }
+
+    public void printLoading(String message) {
+        for (int i = 0; i <= message.length(); i++) {
+            System.out.print("\033[2K"); // Clear the line
+            System.out.print(String.format("\r%s", message.substring(0, i)));
+            try {
+                Thread.sleep(100); // Simulate typing
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        System.out.print("\n");
+    }
+
     public void printPrompt() {
         System.out.print("> ");
     }

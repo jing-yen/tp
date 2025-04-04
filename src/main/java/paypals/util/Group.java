@@ -23,11 +23,10 @@ public class Group {
      * @param storage The storage component for file operations
      * @param activityManager The activity manager for expense tracking
      */
-    public Group(UI ui,Storage storage, ActivityManager activityManager) {
+    public Group(UI ui, Storage storage, ActivityManager activityManager) {
         Group.ui = ui;
         Group.storage = storage;
         Group.activityManager = activityManager;
-
     }
 
     /**
@@ -88,6 +87,7 @@ public class Group {
         ui.print("Group has been deleted.");
         ui.printLine();
     }
+
     /**
      * Handles the selection or creation of a group.
      * This method displays existing groups, allows the user to select an existing group

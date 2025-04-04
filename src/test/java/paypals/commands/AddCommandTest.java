@@ -288,6 +288,14 @@ public class AddCommandTest extends PayPalsTest {
         }
     }
 
+    @Test
+    public void isExit_someInput_expectFalse() {
+        String command = "d/Trip n/Eve f/Frank a/30 f/Gina a/20";
+        AddCommand addCommand = new AddCommand(command);
+
+        assertFalse(addCommand.isExit(), "isExit() should return false for an AddCommand");
+    }
+
     // Test that a description with multiple words is correctly parsed.
     @Test
     public void execute_descriptionWithSpaces_parsedCorrectly() throws PayPalsException {

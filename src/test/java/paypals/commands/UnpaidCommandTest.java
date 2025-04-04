@@ -128,4 +128,10 @@ class UnpaidCommandTest extends PayPalsTest {
         }
     }
 
+    @Test
+    public void isExit_someInput_expectFalse() {
+        UnpaidCommand command = new UnpaidCommand("n/Jane i/1");
+
+        assertFalse(command.isExit(), "isExit() should return false for an UnpaidCommand");
+    }
 }
