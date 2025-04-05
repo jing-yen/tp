@@ -22,6 +22,7 @@
     - [List all past expenses: `list`](#list-all-past-expenses-list)
     - [Generate a simplified debt settlement plan: `split`](#generate-a-simplified-debt-settlement-plan-split)
     - [Mark as "paid" when settled: `paid`](#mark-as-paid-when-settled-paid)
+    - [Unmark as "paid": `unpaid`](#unmark-as-paid-unpaid)
     - [Edit description of an activity: `edit`](#edit-description-of-an-activity-edit)
     - [Edit payer name of an activity: `edit`](#edit-payer-name-of-an-activity-edit)
     - [Edit name of a friend that owes: `edit`](#edit-name-of-a-friend-that-owes-edit)
@@ -203,6 +204,8 @@ Note:
 * For `edit` commands, if a parameter (e.g. `i/`) is specified more than one time when it does not require it to be specified multiple times, the latest one will overwrite the earlier ones. Whereas for other commands, only the first one will be used while the later ones get ignored. 
   * Example: `add addequal split d/Lunch n/John f/Farah a/50` will be treated as `add d/Lunch n/John f/Farah a/50`.
 * Commands that require the `i/IDENTIFIER` parameter refer to the number identifiers of the activities when you execute the `list` command, **except for `paid` and `unpaid` commands**. (Refer to [paid](#mark-as-paid-when-settled-paid) and [unpaid](#unmark-as-paid-unpaid) for more details)
+* The following commands can only be executed when inside a group. The commands will not be executed if used during the group selection menu.
+* The commands are case-insensitive.
 
 ### Viewing help: `help`
 
@@ -272,7 +275,7 @@ ____________________________________________________________
 Adds an expense with amount split equally among everyone.
 > Note:  
 > * Names of payer  and friends are case-sensitive.  
-> * Amount that each person owe will be rounded to 2 d.p. 
+> * Amount that each person owe will be rounded to 2 decimal place. 
 
 Format: `add d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`
 
@@ -335,6 +338,7 @@ Format: `list [n/NAME]`
 
 * If a `NAME` is provided, any activities where the specified person is 
   the payer will display a `[PAYER]` tag next to the activity description.
+
 * If a `NAME` is provided, the `list` command will display the past expenses within
   the current group for `NAME`.
 
@@ -385,6 +389,8 @@ ____________________________________________________________
 ```
 ### Generate a simplified debt settlement plan: `split`
 Generates and displays the debt settlement plan that uses the least number of transactions for everyone.
+
+* Note: `split` will only show the transaction amount to 2 decimal place. 
 
 Format: `split`
 
@@ -462,7 +468,7 @@ Format: `unpaid n/NAME i/IDENTIFIER`
 
 * Note: The `IDENTIFIER` shown in the `LIST` command will change after using the `UNPAID` command. If you
   intend to use the `UNPAID` command again, please run the `LIST` command first to get the updated `IDENTIFIER`.
-  
+
 Example of usage: 
 
 ```
