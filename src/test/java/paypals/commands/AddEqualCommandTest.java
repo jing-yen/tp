@@ -324,4 +324,26 @@ public class AddEqualCommandTest extends PayPalsTest {
         assertNotNull(activity.getFriend("Clara"));
         // "Smith" will not be part of the friend's name.
     }
+
+    @Test
+    public void execute_numbersInPayerName_throwsException() {
+        AddEqualCommand cmd = new AddEqualCommand("d/dinner n/123 f/Bob f/Bobby a/10");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.NUMBERS_IN_NAME.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_numbersInFriendName_throwsException() {
+        AddEqualCommand cmd = new AddEqualCommand("d/dinner n/Bob f/123 f/Clara a/10");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.NUMBERS_IN_NAME.getMessage(), e.getMessage());
+        }
+    }
 }

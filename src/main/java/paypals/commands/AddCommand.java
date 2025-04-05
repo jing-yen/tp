@@ -97,6 +97,10 @@ public class AddCommand extends Command {
         String description = extractValue("d/", ExceptionMessage.NO_DESCRIPTION);
         String name = extractValue("n/", ExceptionMessage.NO_PAYER);
 
+        if (name.matches(".*\\d.*")) {
+            throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
+        }
+
         assert !description.isEmpty() : "Description should not be null or empty";
         assert !name.isEmpty() : "Payer name should not be null or empty";
 
@@ -107,6 +111,9 @@ public class AddCommand extends Command {
             String[] parameters = pairs[i].split("\\s+a/");
             if (parameters.length == 2) {
                 String oweName = parameters[0].trim();
+                if (oweName.matches(".*\\d.*")) {
+                    throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
+                }
                 String amountString = parameters[1].trim();
                 if (amountString.split("\\s+").length > 1) {
                     throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_ADD_FORMAT);

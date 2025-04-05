@@ -63,7 +63,16 @@ java -jar PayPals.jar
 
 ## Command Reference
 
-A quick reference table for all commands when inside a group is presented below. For further details on commands inside the group selection menu, please refer to this [section](#command-format-group-selection-menu)
+Below is a quick reference to all the commands in both stages, in the group selection menu and when inside a group. 
+
+### Group Selection Menu
+
+| Task                     | Command Expression |
+|--------------------------|--------------------|
+| Select a group           | `select`           |
+| Delete an existing group | `delete`           |
+
+### Inside a Group
 
 | Task                                            | Command Expression                                                    |
 |-------------------------------------------------|-----------------------------------------------------------------------|
@@ -81,7 +90,7 @@ A quick reference table for all commands when inside a group is presented below.
 | Edit the payer name of an activity              | `edit i/IDENTIFIER n/NEWNAME`                                         |
 | Edit the name of a friend that owes money       | `edit i/IDENTIFIER f/NEWNAME o/OLDNAME`                               |
 | Edit the amount of a friend that owes money     | `edit i/IDENTIFIER a/NEWAMOUNT o/FRIENDNAME`                          |
-| Change to group selection menu                   | `change`                                                              |
+| Change to group selection menu                  | `change`                                                              |
 | Close the application                           | `exit`                                                                |
 
 ## Features 

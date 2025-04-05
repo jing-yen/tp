@@ -473,5 +473,27 @@ public class AddCommandTest extends PayPalsTest {
         // The regex allows a negative sign, so this should return true.
         assertTrue(cmd.isValidAmount("-10"));
     }
+
+    @Test
+    public void execute_numbersInPayerName_throwsException() {
+        AddCommand cmd = new AddCommand("d/dinner n/123 f/Bob a/10");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.NUMBERS_IN_NAME.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_numbersInFriendName_throwsException() {
+        AddCommand cmd = new AddCommand("d/dinner n/Bob f/123 a/10");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.NUMBERS_IN_NAME.getMessage(), e.getMessage());
+        }
+    }
 }
 

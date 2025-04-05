@@ -498,4 +498,26 @@ public class EditCommandTest extends PayPalsTest {
         assertNull(activityManager.getActivity(0).getFriend("John"));
         assertNotNull(activityManager.getActivity(0).getFriend("AnotherName"));
     }
+
+    @Test
+    public void execute_numbersInPayerName_throwsException() {
+        EditCommand cmd = new EditCommand("i/1 n/123");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.NUMBERS_IN_NAME.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_numbersInFriendName_throwsException() {
+        EditCommand cmd = new EditCommand("i/1 f/123 o/John");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.NUMBERS_IN_NAME.getMessage(), e.getMessage());
+        }
+    }
 }

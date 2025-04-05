@@ -144,11 +144,17 @@ public class EditCommand extends Command {
 
         } else if (parameters.get("n") != null) {
             String payerName = parameters.get("n");
+            if (payerName.matches(".*\\d.*")) {
+                throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
+            }
             activityManager.editActivityPayer(activityId, payerName);
             ui.print("Payer's name has been modified to " + payerName);
 
         } else if (parameters.get("f") != null && parameters.get("o") != null) {
             String friend = parameters.get("f");
+            if (friend.matches(".*\\d.*")) {
+                throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
+            }
             String oldName = parameters.get("o");
             if (activityManager.getActivity(activityId).getFriend(oldName) == null) {
                 throw new PayPalsException(ExceptionMessage.FRIEND_DOES_NOT_EXIST);

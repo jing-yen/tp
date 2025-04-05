@@ -40,7 +40,8 @@ public enum ExceptionMessage {
     INVALID_FILENAME("INPUT ERROR: Filename specified must be a valid filename. Please try again."),
     FILENAME_DOES_NOT_EXIST("INPUT ERROR: Filename does not exist. Please try again."),
     NO_GROUP("There are no groups to delete."),
-    FRIEND_DOES_NOT_EXIST("INPUT ERROR: The friend you have specified does not exist.");
+    FRIEND_DOES_NOT_EXIST("INPUT ERROR: The friend you have specified does not exist."),
+    NUMBERS_IN_NAME("INPUT ERROR: Names cannot contain numbers.");
     private final String message;
 
     ExceptionMessage(String message) {

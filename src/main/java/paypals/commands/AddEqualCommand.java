@@ -50,6 +50,9 @@ public class AddEqualCommand extends AddCommand {
 
         String description = extractValue("d/", ExceptionMessage.NO_DESCRIPTION);
         String name = extractValue("n/", ExceptionMessage.NO_PAYER);
+        if (name.matches(".*\\d.*")) {
+            throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
+        }
 
         assert !description.isEmpty() : "Description should not be null or empty";
         assert !name.isEmpty() : "Payer name should not be null or empty";
@@ -75,6 +78,9 @@ public class AddEqualCommand extends AddCommand {
             // Add explicit validation for empty friend names.
             if (friendName.isEmpty()) {
                 throw new PayPalsException(ExceptionMessage.INVALID_FRIEND);
+            }
+            if (friendName.matches(".*\\d.*")) {
+                throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
             }
             validateFriend(name, friendName, owed);
             owed.put(friendName,roundedAmount);
