@@ -44,7 +44,12 @@ public enum ExceptionMessage {
     NUMBERS_IN_NAME("INPUT ERROR: Names cannot contain numbers."),
     FRIEND_NAME_SAME_AS_PAYER("INPUT ERROR: New name cannot be the same as the payer."),
     FRIEND_NAME_SAME_AS_ANOTHER_FRIEND("INPUT ERROR: New friend name cannot be the same as another friend."),
-    PAYER_NAME_SAME_AS_FRIEND("INPUT ERROR: New payer name cannot be the same a friend already in the activity");
+    PAYER_NAME_SAME_AS_FRIEND("INPUT ERROR: New payer name cannot be the same a friend already in the activity"),
+    MORE_THAN_1000_ACTIVITIES("You have hit 1000 or more activities for this group, " +
+            "you are unable to add more activities"),
+    LARGE_NUMBER_OF_ACTIVITIES("You have somehow entered a large number of activities (probably through modifying " +
+            "save files), please ensure that there are less than 1000 activities for any given group" +
+            "\n Exiting the program now...");
     private final String message;
 
     ExceptionMessage(String message) {

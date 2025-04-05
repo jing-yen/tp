@@ -6,6 +6,7 @@ import paypals.commands.DeleteCommand;
 import paypals.commands.EditCommand;
 import paypals.commands.PaidCommand;
 import paypals.commands.UnpaidCommand;
+import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 import paypals.util.Group;
 import paypals.util.Parser;
@@ -40,6 +41,10 @@ public class PayPals {
         while (!isExit) {
             try {
                 ui.printLine();
+                if (activityManager.getSize() >= 1000) {
+                    isExit = true;
+                    throw new PayPalsException(ExceptionMessage.LARGE_NUMBER_OF_ACTIVITIES);
+                }
                 ui.printPrompt();
                 String fullCommand = ui.readLine();
                 ui.printLine();

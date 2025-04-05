@@ -47,6 +47,9 @@ public class AddEqualCommand extends AddCommand {
 
         UI ui = new UI(enablePrint);
         HashMap<String, Double> owed = new HashMap<>();
+        if (activityManager.getSize() >= 1000) {
+            throw new PayPalsException(ExceptionMessage.MORE_THAN_1000_ACTIVITIES);
+        }
 
         String description = extractValue("d/", ExceptionMessage.NO_DESCRIPTION);
         String name = extractValue("n/", ExceptionMessage.NO_PAYER);

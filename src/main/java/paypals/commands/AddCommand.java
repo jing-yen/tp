@@ -91,6 +91,9 @@ public class AddCommand extends Command {
         assert activityManager != null : "ActivityManager should not be null";
 
         UI ui = new UI(enablePrint);
+        if (activityManager.getSize() >= 1000) {
+            throw new PayPalsException(ExceptionMessage.MORE_THAN_1000_ACTIVITIES);
+        }
         HashMap<String, Double> owed = new HashMap<>();
         validatePrefixOrder();
         // Step 1: Extract description and payer name
