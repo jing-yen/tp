@@ -126,8 +126,7 @@ The `Command` class has been subdivided into further packages for similar comman
 
 The following diagram is an inheritance diagram for `Command` and its children classes. This has been heavily simplified to show just the high level overview.
 
-![Command Inheritance Diagram](diagrams/CommandInheritance.png)
-
+![Command Inheritance Diagram 1](diagrams/CommandInheritance.png)
 <ins>Attributes</ins>
 
 The abstract class `Command` have the following attributes:

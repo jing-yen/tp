@@ -1,42 +1,56 @@
 @startuml
 skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
 hide circle
+top to bottom direction
 
+' Row 1
+package "Commands (Row 1)" as Row1 {
+  class AddCommand
+  class AddEqualCommand
+  class ExitCommand
+  class EditCommand
+  class ListCommand
+}
+
+' Row 2
+package "Commands (Row 2)" as Row2 {
+  class DeleteCommand
+  class HelpCommand
+  class PaidCommand
+  class UnpaidCommand
+  class SplitCommand
+  class ChangeCommand
+}
+
+' Abstract Command class
 class "{abstract}\nCommand" {
     -command: String
     +execute(enablePrint: boolean)
 }
 
-class ActivityManager {
+' ActivityManager at the very bottom
+class ActivityManager
 
-}
+' Force vertical ordering with hidden arrows
+Row1 -[hidden]-> Row2
+Row2 -[hidden]-> "{abstract}\nCommand"
+"{abstract}\nCommand" -[hidden]-> ActivityManager
 
-"{abstract}\nCommand" -> "1" ActivityManager
+' Inheritance relationships
+AddCommand -|> "{abstract}\nCommand"
+AddEqualCommand -|> "{abstract}\nCommand"
+ExitCommand -|> "{abstract}\nCommand"
+EditCommand -|> "{abstract}\nCommand"
+ListCommand -|> "{abstract}\nCommand"
+DeleteCommand -|> "{abstract}\nCommand"
+HelpCommand -|> "{abstract}\nCommand"
+PaidCommand -|> "{abstract}\nCommand"
+UnpaidCommand -|> "{abstract}\nCommand"
+SplitCommand -|> "{abstract}\nCommand"
+ChangeCommand -|> "{abstract}\nCommand"
 
-together {
-    class AddCommand
-    class AddEqualCommand
-    class ExitCommand
-    class EditCommand
-    class ListCommand
-    class DeleteCommand
-    class HelpCommand
-    class PaidCommand
-    class UnpaidCommand
-    class SplitCommand
-    class ChangeCommand
-}
-
-ChangeCommand -up-|> "{abstract}\nCommand"
-AddCommand -up-|> "{abstract}\nCommand"
-AddEqualCommand -up-|> "{abstract}\nCommand"
-ExitCommand-up-|> "{abstract}\nCommand"
-EditCommand -up-|> "{abstract}\nCommand"
-ListCommand -up-|> "{abstract}\nCommand"
-DeleteCommand -up-|> "{abstract}\nCommand"
-HelpCommand -up-|> "{abstract}\nCommand"
-PaidCommand -up-|> "{abstract}\nCommand"
-UnpaidCommand -up-|> "{abstract}\nCommand"
-SplitCommand -up-|> "{abstract}\nCommand"
+' Connect abstract Command to ActivityManager
+"{abstract}\nCommand" --> "1" ActivityManager
 
 @enduml
