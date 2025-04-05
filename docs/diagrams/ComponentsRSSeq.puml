@@ -12,29 +12,65 @@ participant "splitCmd:SplitCommand" as splitCmd
 
 == Command: add ==
 user -> ui : enterCommand("add d/... n/... f/... a/...")
+activate ui
 ui -> parser : decodeCommand(...)
+activate parser
 parser -> addCmd : new AddCommand(...)
+activate addCmd
+deactivate parser
 ui -> addCmd : execute(...)
+' addCmd remains active during its execution
 addCmd -> activity : new Activity(...)
+activate activity
+deactivate activity
 addCmd -> mgr : addActivity(...)
+activate mgr
+deactivate mgr
 addCmd -> storage : save(...)
+activate storage
+deactivate storage
 addCmd -> ui : print confirmation
+deactivate addCmd
+deactivate ui
 
 == Command: list ==
 user -> ui : enterCommand("list")
+activate ui
 ui -> parser : decodeCommand(...)
+activate parser
 parser -> listCmd : new ListCommand(...)
+activate listCmd
+deactivate parser
 ui -> listCmd : execute(...)
+activate listCmd
 listCmd -> mgr : getActivityList(...)
+activate mgr
+deactivate mgr
 listCmd -> ui : print activities
+deactivate listCmd
+deactivate ui
 
 == Command: split ==
 user -> ui : enterCommand("split")
+activate ui
 ui -> parser : decodeCommand(...)
+activate parser
 parser -> splitCmd : new SplitCommand(...)
+activate splitCmd
+deactivate parser
 ui -> splitCmd : execute(...)
+activate splitCmd
 splitCmd -> mgr : getActivity(...)
+activate mgr
+deactivate mgr
 splitCmd -> activity : getPayer(...)
+activate activity
+deactivate activity
 splitCmd -> activity : getAllFriends(...)
+activate activity
+deactivate activity
 splitCmd -> ui : print transactions
+deactivate splitCmd
+deactivate ui
+
 @enduml
