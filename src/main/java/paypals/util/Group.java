@@ -41,7 +41,7 @@ public class Group {
             ui.print("Would you like to delete or select a group?");
             ui.printLine();
             ui.printPrompt();
-            String command = ui.readLine();
+            String command = ui.readLine().trim();
             if (command.equals("select")) {
                 groupSelected = true;
                 selectGroup();

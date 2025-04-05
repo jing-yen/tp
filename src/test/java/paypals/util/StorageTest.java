@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class StorageTest extends PayPalsTest {
     @Test
@@ -319,8 +318,13 @@ public class StorageTest extends PayPalsTest {
             masterWriter.write("testflag\n");
         }
 
-        assertDoesNotThrow(() -> storage.load("testflag", am));
-        assertEquals(1, am.getActivityList().size());
+        try {
+            storage.load("testflag", am);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.LOAD_ERROR.getMessage(), e.getMessage());
+            assertEquals(0, am.getActivityList().size());
+        }
 
         storage.deleteDir(new File("./data"));
     }
