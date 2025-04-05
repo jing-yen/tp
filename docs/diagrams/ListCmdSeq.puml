@@ -1,0 +1,32 @@
+@startuml
+title Sequence Diagram - List Command
+actor user
+
+participant "ui:Ui" as ui
+participant "parser:Parser" as parser
+participant "listCmd:ListCommand" as listCmd
+participant "mgr:ActivityManager" as mgr
+
+user -> ui : enterCommand("list")
+activate ui
+ui -> parser : decodeCommand(...)
+activate parser
+parser -> listCmd : new ListCommand(...)
+activate listCmd
+listCmd --> parser :
+deactivate listCmd
+deactivate parser
+
+ui -> listCmd : execute(...)
+activate listCmd
+listCmd -> mgr : getActivityList(...)
+activate mgr
+mgr --> listCmd :
+deactivate mgr
+
+listCmd -> ui : print activities
+ui --> listCmd :
+deactivate listCmd
+ui --> user :
+deactivate ui
+@enduml
