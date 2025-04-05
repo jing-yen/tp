@@ -57,8 +57,6 @@ public class PayPals {
         ui.sayGoodbye();
     }
 
-
-
     public static void main(String[] args) {
         new PayPals().run();
     }
