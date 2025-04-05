@@ -144,12 +144,27 @@ public class EditCommand extends Command {
 
         } else if (parameters.get("n") != null) {
             String payerName = parameters.get("n");
+            if (payerName.matches(".*\\d.*")) {
+                throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
+            }
+            if (activityManager.getActivity(activityId).getFriend(payerName) != null) {
+                throw new PayPalsException(ExceptionMessage.PAYER_NAME_SAME_AS_FRIEND);
+            }
             activityManager.editActivityPayer(activityId, payerName);
             ui.print("Payer's name has been modified to " + payerName);
 
         } else if (parameters.get("f") != null && parameters.get("o") != null) {
             String friend = parameters.get("f");
+            if (friend.matches(".*\\d.*")) {
+                throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
+            }
             String oldName = parameters.get("o");
+            if (activityManager.getActivity(activityId).getPayer().getName().equals(friend)) {
+                throw new PayPalsException(ExceptionMessage.FRIEND_NAME_SAME_AS_PAYER);
+            }
+            if (activityManager.getActivity(activityId).getFriend(friend) != null) {
+                throw new PayPalsException(ExceptionMessage.FRIEND_NAME_SAME_AS_ANOTHER_FRIEND);
+            }
             if (activityManager.getActivity(activityId).getFriend(oldName) == null) {
                 throw new PayPalsException(ExceptionMessage.FRIEND_DOES_NOT_EXIST);
             }

@@ -63,7 +63,16 @@ java -jar PayPals.jar
 
 ## Command Reference
 
-A quick reference table for all commands when inside a group is presented below. For further details on commands inside the group selection menu, please refer to this [section](#command-format-group-selection-menu)
+Below is a quick reference to all the commands in both stages, in the group selection menu and when inside a group. 
+
+### Group Selection Menu
+
+| Task                     | Command Expression |
+|--------------------------|--------------------|
+| Select a group           | `select`           |
+| Delete an existing group | `delete`           |
+
+### Inside a Group
 
 | Task                                            | Command Expression                                                    |
 |-------------------------------------------------|-----------------------------------------------------------------------|
@@ -81,7 +90,7 @@ A quick reference table for all commands when inside a group is presented below.
 | Edit the payer name of an activity              | `edit i/IDENTIFIER n/NEWNAME`                                         |
 | Edit the name of a friend that owes money       | `edit i/IDENTIFIER f/NEWNAME o/OLDNAME`                               |
 | Edit the amount of a friend that owes money     | `edit i/IDENTIFIER a/NEWAMOUNT o/FRIENDNAME`                          |
-| Change to group selection menu                   | `change`                                                              |
+| Change to group selection menu                  | `change`                                                              |
 | Close the application                           | `exit`                                                                |
 
 # Features 
@@ -190,9 +199,9 @@ Please select a group number from the following:
 
 Note: 
 * If more than one command keyword (`add`, `delete`, `edit`, etc) is specified, only the first one will be used and the rest will be ignored.
-* For `edit` commands, if a parameter (e.g. `i/`) is specified more than one time when it does not require it to be specified multiple times, the latest one will overwrite the earlier ones. Whereas for other commands, only the first one will be used while the later ones get ignored.
-
-- Example: `add addequal split d/Lunch n/John f/Farah a/50` will be treated as `add d/Lunch n/John f/Farah a/50`.
+* For `edit` commands, if a parameter (e.g. `i/`) is specified more than one time when it does not require it to be specified multiple times, the latest one will overwrite the earlier ones. Whereas for other commands, only the first one will be used while the later ones get ignored. 
+  * Example: `add addequal split d/Lunch n/John f/Farah a/50` will be treated as `add d/Lunch n/John f/Farah a/50`.
+* Commands that require the `i/IDENTIFIER` parameter refer to the number identifiers of the activities when you execute the `list` command, **except for `paid` and `unpaid` commands**. (Refer to [paid](#mark-as-paid-when-settled-paid) and [unpaid](#unmark-as-paid-unpaid) for more details)
 
 ### Viewing help: `help`
 
@@ -315,10 +324,10 @@ Format: `list [n/NAME]`
 * If no name is provided, all past expenses for everyone are displayed.
 
 * If a `NAME` is provided, the list will categorize that person’s activities
-  into two sections: `fully paid` and `not fully paid`. An activity is marked 
-  as `fully paid` only if all payees have completed their payments to the specified 
+  into two sections: `Settled` and `Unsettled`. An activity is marked 
+  as `Settled` only if all payees have completed their payments to the specified 
   person for that activity. If any payee has not paid, the activity will appear under 
-  `not fully paid`.
+  `Unsettled`.
 
 * If a `NAME` is provided, any activities where the specified person is 
   the payer will display a `[PAYER]` tag next to the activity description.

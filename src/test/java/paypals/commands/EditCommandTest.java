@@ -18,7 +18,7 @@ public class EditCommandTest extends PayPalsTest {
 
     @BeforeEach
     public void setUpEditTests() throws PayPalsException {
-        AddCommand c1 = new AddCommand("add d/lunch n/Jane f/John a/28");
+        AddCommand c1 = new AddCommand("add d/lunch n/Jane f/John a/28 f/Jim a/35");
         c1.execute(activityManager, false);
     }
 
@@ -497,5 +497,60 @@ public class EditCommandTest extends PayPalsTest {
         // Verify that the friend "John" has been changed to "AnotherName".
         assertNull(activityManager.getActivity(0).getFriend("John"));
         assertNotNull(activityManager.getActivity(0).getFriend("AnotherName"));
+    }
+
+    @Test
+    public void execute_numbersInPayerName_throwsException() {
+        EditCommand cmd = new EditCommand("i/1 n/123");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.NUMBERS_IN_NAME.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_numbersInFriendName_throwsException() {
+        EditCommand cmd = new EditCommand("i/1 f/123 o/John");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.NUMBERS_IN_NAME.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_editFriendNameSameAsPayer_throwsException() {
+        EditCommand cmd = new EditCommand("i/1 f/Jane o/John");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.FRIEND_NAME_SAME_AS_PAYER.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_editPayerNameSameAsFriend_throwsException() {
+        EditCommand cmd = new EditCommand("i/1 n/John");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.PAYER_NAME_SAME_AS_FRIEND.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_editFriendNameSameAsFriend_throwsException() {
+        EditCommand cmd = new EditCommand("i/1 f/Jim o/John");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.FRIEND_NAME_SAME_AS_ANOTHER_FRIEND.getMessage(), e.getMessage());
+        }
     }
 }

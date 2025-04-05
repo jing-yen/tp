@@ -33,6 +33,8 @@ PayPals uses the following tools for development and testing:
 
 ## Design & Implementation
 
+Note that for all sequence diagrams in this guide, the lifelines should terminate with the cross, but due to the limitations of PlantUML, the lifeline is shown to continue.
+
 The UML class diagram below provides an overview of the classes and their interactions within the PayPals application.
 
 ![Main Class Diagram](diagrams/main.png)
@@ -138,7 +140,7 @@ The abstract class `Command` have the following methods:
 * `Command`: Constructor that updates the `command` attribute based on its input argument.
 * `execute`: Method that is overridden by its child classes to fit their functionalities.
 
-The following diagram is a sequence diagram for when `execute` is called for a `DeleteCommand`. It shows how the command class updates the *Activity* component and uses the *UI* component to notify the user of a successful execution.  
+The following diagram is a sequence diagram for when `execute` is called for a `DeleteCommand`. It shows how the command class updates the *Activity* component and uses the *UI* component to notify the user of a successful execution.
 
 ![Delete Command Diagram](diagrams/DeleteCommand.png)
 
@@ -174,7 +176,6 @@ DESCRIPTION|PAYER|AMOUNT|HASPAID|FRIEND|AMOUNT|HASPAID...
 ![Sample save file](diagrams/savefile.png)
 
 The following is the sequence diagram for loading data from the save file into the `ActivityManager`.
-Note that the lifelines should terminate with the cross, but due to the limitations of PlantUML, the lifeline is shown to continue.
 
 ![Load Storage](diagrams/StorageLoad.png)
 
@@ -279,10 +280,9 @@ The product aims to provide assistance in simplifying payments by minimising the
     Use case resumes at step 3.
     
 ### Non-Functional Requirements
-1. Should work on any mainstream OS as long as it has Java `17` or above installed.
-2. Should be able to hold up to 1000(?) expenses without a noticeable sluggishness in performance for typical usage
+1. The application should work on any mainstream OS as long as it has Java `17` or above installed.
+2. The application should be able to hold up to 1000 expenses without a noticeable sluggishness in performance for typical usage
 3. A user with above average typing speed for regular English test (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-4. (add more)
 
 ### Glossary
 
