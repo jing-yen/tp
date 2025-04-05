@@ -82,6 +82,7 @@ Below is a quick reference to all the commands in both stages, in the group sele
 | Delete an activity                              | `delete i/IDENTIFIER`                                                 |
 | List all expenses                               | `list`                                                                |
 | List all expenses by a person                   | `list n/NAME`                                                         |
+| View the net balance of a person                | `list balance n/NAME`                                                 |
 | Split bills                                     | `split`                                                               |
 | Mark an activity as paid for a person           | `paid n/NAME i/IDENTIFIER`                                            |
 | Mark an activity as unpaid for a person         | `unpaid n/NAME i/IDENTIFIER`                                          |
@@ -217,7 +218,7 @@ ____________________________________________________________
 Help - Available Commands:
 
 Commands with format:
-  1. add    -> add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_1 f/FRIEND2 a/AMOUNT_2...
+  1. add        -> add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_1 f/FRIEND2 a/AMOUNT_2...
   2. addequal   -> addequal d/DESCRIPTION n/PAYER f/FRIEND1 f/FRIEND2 ... a/AMOUNT
   3. delete     -> delete i/IDENTIFIER
   4. paid       -> paid n/NAME i/IDENTIFIER
@@ -226,12 +227,15 @@ Commands with format:
                 -> (Payer name) edit i/IDENTIFIER n/NEWNAME
                 -> (Friend name) edit i/IDENTIFIER f/NEWNAME o/OLDNAME
                 -> (Friend amount) edit i/IDENTIFIER a/NEWAMOUNT o/FRIENDNAME
+  7. list       -> list
+                -> list n/NAME
+                -> list balance n/NAME
 
 Commands without format:
-  1. list
-  2. split
-  3. help
-  4. exit
+  1. split
+  2. help
+  3. exit
+  4. change
 
 For more details, please refer to the User Guide of PayPals.
 
@@ -658,7 +662,7 @@ ____________________________________________________________
 - If you're not sure of an activity's ID, use `list` to find it before using `edit`, `paid`, or `delete`.
 - Use `addequal` when everyone owes an equal share – it's quicker and cleaner!
 - `split` only calculates who owes whom — it doesn't change any records.
-- Use `help` anytime to see all available commands and their expected formats.
+- Use `help` when inside a group to see all available commands and their expected formats.
 - Commands are case-insensitive, so `ADD`, `Add`, and `add` all work the same.
 - You can repeat `f/... a/...` pairs in the `add` command to include multiple friends.
 - Use `edit` to fix typos or update activity details instead of deleting and re-adding.
