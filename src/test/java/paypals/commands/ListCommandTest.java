@@ -128,4 +128,12 @@ public class ListCommandTest extends PayPalsTest {
         owedMap.put("Charlie", 20.0);
         return new Activity("Dinner", new Person("Alice", -30.0, false), owedMap);
     }
+
+    @Test
+    public void listActivitiesByPayer_payerNameWithSpacing_success() {
+        ActivityManager manager = new ActivityManager();
+        manager.addActivity(createTestActivity());
+        ListCommand command = new ListCommand("n/   Alice  ");
+        assertDoesNotThrow(() -> command.execute(manager, false));
+    }
 }

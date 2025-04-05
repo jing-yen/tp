@@ -85,7 +85,7 @@ public class ListCommand extends Command {
             throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_LIST_FORMAT);
         }
 
-        String name = matcher.group(1);
+        String name = matcher.group(1).trim();
         ArrayList<Activity> personActivities = getActivities(name, activityManager.getActivityList());
 
         if (personActivities.isEmpty()) {
