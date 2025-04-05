@@ -33,6 +33,8 @@ PayPals uses the following tools for development and testing:
 
 ## Design & Implementation
 
+Note that for all sequence diagrams in this guide, the lifelines should terminate with the cross, but due to the limitations of PlantUML, the lifeline is shown to continue.
+
 The UML class diagram below provides an overview of the classes and their interactions within the PayPals application.
 
 ![Main Class Diagram](diagrams/main.png)
@@ -141,7 +143,7 @@ The abstract class `Command` have the following methods:
 * `Command`: Constructor that updates the `command` attribute based on its input argument.
 * `execute`: Method that is overridden by its child classes to fit their functionalities.
 
-The following diagram is a sequence diagram for when `execute` is called for a `DeleteCommand`. It shows how the command class updates the *Activity* component and uses the *UI* component to notify the user of a successful execution.  
+The following diagram is a sequence diagram for when `execute` is called for a `DeleteCommand`. It shows how the command class updates the *Activity* component and uses the *UI* component to notify the user of a successful execution.
 
 ![Delete Command Diagram](diagrams/DeleteCommand.png)
 
@@ -177,7 +179,6 @@ DESCRIPTION|PAYER|AMOUNT|HASPAID|FRIEND|AMOUNT|HASPAID...
 ![Sample save file](diagrams/savefile.png)
 
 The following is the sequence diagram for loading data from the save file into the `ActivityManager`.
-Note that the lifelines should terminate with the cross, but due to the limitations of PlantUML, the lifeline is shown to continue.
 
 ![Load Storage](diagrams/StorageLoad.png)
 
