@@ -41,10 +41,6 @@ public class PayPals {
         while (!isExit) {
             try {
                 ui.printLine();
-                if (activityManager.getSize() >= 1000) {
-                    isExit = true;
-                    throw new PayPalsException(ExceptionMessage.LARGE_NUMBER_OF_ACTIVITIES);
-                }
                 ui.printPrompt();
                 String fullCommand = ui.readLine();
                 ui.printLine();
