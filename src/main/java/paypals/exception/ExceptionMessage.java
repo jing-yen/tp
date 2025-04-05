@@ -49,7 +49,8 @@ public enum ExceptionMessage {
             "you are unable to add more activities"),
     LARGE_NUMBER_OF_ACTIVITIES("You have somehow entered a large number of activities (probably through modifying " +
             "save files), please ensure that there are less than 1000 activities for any given group" +
-            "\n Exiting the program now...");
+            "\n Exiting the program now..."),
+    MULTIPLE_AMOUNTS_FOR_ADDEQUAL("INPUT ERROR: Only one amount can be provided.");
     private final String message;
 
     ExceptionMessage(String message) {
