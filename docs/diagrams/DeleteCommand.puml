@@ -32,7 +32,6 @@ activate UI
 UI --> DC
 deactivate UI
 [<- DC
-deactivate DC
 destroy UI
 
 

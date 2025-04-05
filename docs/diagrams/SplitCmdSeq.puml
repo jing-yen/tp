@@ -1,0 +1,43 @@
+@startuml
+title Sequence Diagram - Split Command
+actor user
+
+participant "ui:Ui" as ui
+participant "parser:Parser" as parser
+participant "splitCmd:SplitCommand" as splitCmd
+participant "mgr:ActivityManager" as mgr
+participant "activity:Activity" as activity
+
+user -> ui : enterCommand("split")
+activate ui
+ui -> parser : decodeCommand(...)
+activate parser
+parser -> splitCmd : new SplitCommand(...)
+activate splitCmd
+splitCmd --> parser :
+deactivate splitCmd
+deactivate parser
+
+ui -> splitCmd : execute(...)
+activate splitCmd
+splitCmd -> mgr : getActivity(...)
+activate mgr
+mgr --> splitCmd :
+deactivate mgr
+
+splitCmd -> activity : getPayer(...)
+activate activity
+activity --> splitCmd :
+deactivate activity
+
+splitCmd -> activity : getAllFriends(...)
+activate activity
+activity --> splitCmd :
+deactivate activity
+
+splitCmd -> ui : print transactions
+ui --> splitCmd :
+deactivate splitCmd
+ui --> user :
+deactivate ui
+@enduml
