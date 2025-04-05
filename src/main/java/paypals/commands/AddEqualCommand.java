@@ -108,6 +108,12 @@ public class AddEqualCommand extends AddCommand {
      * @throws PayPalsException if the amount is not a number, negative, or improperly formatted
      */
     private double getTotalAmount() throws PayPalsException {
+        int count = command.split("a/").length - 1; // Count occurrences of "a/"
+        if (count > 1) {
+            Logging.logWarning("Multiple 'a/' prefixes found in command");
+            throw new PayPalsException(ExceptionMessage.MULTIPLE_AMOUNTS_FOR_ADDEQUAL);
+        }
+
         String amountEntered = extractValue("a/", ExceptionMessage.NO_AMOUNT_ENTERED);
         double totalAmount;
         try {
