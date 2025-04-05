@@ -125,7 +125,7 @@ public class ListCommand extends Command {
 
         String name = matcher.group(1);
         double balance = 0.0;
-
+        int activityCount = 0;
         for (Activity activity : activityManager.getActivityList()) {
             if (activity.getPayer().getName().equals(name)) {
                 for (Person friend : activity.getAllFriends()) {
@@ -133,14 +133,21 @@ public class ListCommand extends Command {
                         balance += friend.getAmount();
                     }
                 }
+                activityCount++;
             } else {
                 Person p = activity.getFriend(name);
-                if (p != null && !p.hasPaid()) {
-                    balance -= p.getAmount();
+                if (p != null) {
+                    activityCount++;
+                    if (!p.hasPaid()) {
+                        balance -= p.getAmount();
+                    }
                 }
             }
         }
-
+        if (activityCount == 0) {
+            Logging.logWarning("Payer could not be found");
+            throw new PayPalsException(ExceptionMessage.NO_PAYER);
+        }
         ui.print("Net balance for " + name + ": " + (balance >= 0 ? "+$" : "-$") + String.format("%.2f",
                 Math.abs(balance)));
     }

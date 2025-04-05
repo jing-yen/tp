@@ -22,6 +22,7 @@
     - [List all past expenses: `list`](#list-all-past-expenses-list)
     - [Generate a simplified debt settlement plan: `split`](#generate-a-simplified-debt-settlement-plan-split)
     - [Mark as "paid" when settled: `paid`](#mark-as-paid-when-settled-paid)
+    - [Unmark as "paid": `unpaid`](#unmark-as-paid-unpaid)
     - [Edit description of an activity: `edit`](#edit-description-of-an-activity-edit)
     - [Edit payer name of an activity: `edit`](#edit-payer-name-of-an-activity-edit)
     - [Edit name of a friend that owes: `edit`](#edit-name-of-a-friend-that-owes-edit)
@@ -208,6 +209,8 @@ Note:
 
 Shows a help message containing all the commands available in PayPals.
 
+* Note: `help` command is only available inside a group. Do not use `help` when selecting or deleting a group.
+
 Format: `help`
 
 Example of usage:
@@ -272,7 +275,7 @@ ____________________________________________________________
 Adds an expense with amount split equally among everyone.
 > Note:  
 > * Names of payer  and friends are case-sensitive.  
-> * Amount that each person owe will be rounded to 2 d.p. 
+> * Amount that each person owe will be rounded to 2 decimal place. 
 
 Format: `add d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`
 
@@ -386,6 +389,8 @@ ____________________________________________________________
 ### Generate a simplified debt settlement plan: `split`
 Generates and displays the debt settlement plan that uses the least number of transactions for everyone.
 
+* Note: `split` will only show the transaction amount to 2 decimal place. 
+
 Format: `split`
 
 Example of usage: 
@@ -414,6 +419,8 @@ Format: `paid n/NAME i/IDENTIFIER`
 
 * Note: The `IDENTIFIER` shown in the `LIST` command will change after using the `PAID` command. If you 
   intend to use the `PAID` command again, please run the `LIST` command first to get the updated `IDENTIFIER`.
+
+* Note: The `PAID` command is case-insensitive.
 
 Example of usage: 
 
@@ -462,7 +469,9 @@ Format: `unpaid n/NAME i/IDENTIFIER`
 
 * Note: The `IDENTIFIER` shown in the `LIST` command will change after using the `UNPAID` command. If you
   intend to use the `UNPAID` command again, please run the `LIST` command first to get the updated `IDENTIFIER`.
-  
+
+* Note: The `UNPAID` command is case-insensitive.
+
 Example of usage: 
 
 ```
