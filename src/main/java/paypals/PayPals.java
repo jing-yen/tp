@@ -6,7 +6,6 @@ import paypals.commands.DeleteCommand;
 import paypals.commands.EditCommand;
 import paypals.commands.PaidCommand;
 import paypals.commands.UnpaidCommand;
-import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 import paypals.util.Group;
 import paypals.util.Parser;
