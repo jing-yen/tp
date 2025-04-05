@@ -41,7 +41,10 @@ public enum ExceptionMessage {
     FILENAME_DOES_NOT_EXIST("INPUT ERROR: Filename does not exist. Please try again."),
     NO_GROUP("There are no groups to delete."),
     FRIEND_DOES_NOT_EXIST("INPUT ERROR: The friend you have specified does not exist."),
-    NUMBERS_IN_NAME("INPUT ERROR: Names cannot contain numbers.");
+    NUMBERS_IN_NAME("INPUT ERROR: Names cannot contain numbers."),
+    FRIEND_NAME_SAME_AS_PAYER("INPUT ERROR: New name cannot be the same as the payer."),
+    FRIEND_NAME_SAME_AS_ANOTHER_FRIEND("INPUT ERROR: New friend name cannot be the same as another friend."),
+    PAYER_NAME_SAME_AS_FRIEND("INPUT ERROR: New payer name cannot be the same a friend already in the activity");
     private final String message;
 
     ExceptionMessage(String message) {
