@@ -93,9 +93,9 @@ Below is a quick reference to all the commands in both stages, in the group sele
 | Change to group selection menu                  | `change`                                                              |
 | Close the application                           | `exit`                                                                |
 
-## Features 
+# Features 
 
-Notes about the command format:
+## Notes on the general command format:
 - Words in UPPER_CASE are the parameters to be supplied by the user. e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John`.
   - Parameters are case-insensitive and cannot contain the symbol `/`.
 - Items in square brackets are optional. e.g `n/NAME [t/TAG]` can be used as `n/John t/friend` or as `n/John`.

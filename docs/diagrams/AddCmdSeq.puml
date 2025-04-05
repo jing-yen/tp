@@ -1,0 +1,44 @@
+@startuml
+title Sequence Diagram - Add Command
+actor user
+
+participant "ui:Ui" as ui
+participant "parser:Parser" as parser
+participant "addCmd:AddCommand" as addCmd
+participant "activity:Activity" as activity
+participant "mgr:ActivityManager" as mgr
+participant "storage:Storage" as storage
+
+user -> ui : enterCommand("add d/... n/... f/... a/...")
+activate ui
+ui -> parser : decodeCommand(...)
+activate parser
+parser -> addCmd : new AddCommand(...)
+activate addCmd
+addCmd --> parser : return
+deactivate addCmd
+deactivate parser
+
+ui -> addCmd : execute(...)
+activate addCmd
+addCmd -> activity : new Activity(...)
+activate activity
+activity --> addCmd :
+deactivate activity
+
+addCmd -> mgr : addActivity(...)
+activate mgr
+mgr --> addCmd :
+deactivate mgr
+
+addCmd -> storage : save(...)
+activate storage
+storage --> addCmd :
+deactivate storage
+
+addCmd -> ui : print confirmation
+ui --> addCmd :
+deactivate addCmd
+ui --> user :
+deactivate ui
+@enduml

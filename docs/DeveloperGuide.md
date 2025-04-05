@@ -39,12 +39,7 @@ The UML class diagram below provides an overview of the classes and their intera
 
 ![Main Class Diagram](diagrams/main.png)
 
-### Architecture
 
-![Architecture Diagram](diagrams/MainArchitecture.png)  
-
-The **Architecture Diagram** given above explains the high-level design of the App.  
-  
 Given below is a quick overview of the main components and how they interact with each other.  
   
 **Main components of the architecture**  
@@ -61,15 +56,18 @@ The bulk of the app's work is done by the following five components:
 * `Storage`: Reads data from, and writes data to, the hard disk.
 
 **How the architecture components interact with each other**  
-The _Sequence Diagram_ below illustrates how these components interact across three key scenarios:
+The _Sequence Diagrams_ below illustrates how these components interact across three key scenarios:
 
 1. When the user issues an `add` command — showing parsing, command execution, activity creation, and data persistence.
 2. When the user issues a `list` command — showing command execution and retrieval of activity data.
 3. When the user issues a `split` command — showing how debts are calculated and resolved using in-memory data.
 
-This sequence diagram captures the flow from the user's input all the way to command execution and interaction with both memory (`Activity`) and disk (`Storage`), giving a comprehensive overview of the core execution paths in the application.
+This sequence diagrams below captures the flow from the user's input all the way to command execution and interaction with both memory (`Activity`) and disk (`Storage`), giving a comprehensive overview of the core execution paths in the application.
 
-![Components Interaction Diagram](diagrams/ComponentsRSSeq.png) 
+![Components Interaction Diagram - Add Command](diagrams/AddCmdSeq.png)
+![Components Interaction Diagram - List Command](diagrams/ListCmdSeq.png)
+![Components Interaction Diagram - Split Command](diagrams/SplitCmdSeq.png)
+
 
 ### UI Component
 
@@ -128,8 +126,7 @@ The `Command` class has been subdivided into further packages for similar comman
 
 The following diagram is an inheritance diagram for `Command` and its children classes. This has been heavily simplified to show just the high level overview.
 
-![Command Inheritance Diagram](diagrams/CommandInheritance.png)
-
+![Command Inheritance Diagram 1](diagrams/CommandInheritance.png)
 <ins>Attributes</ins>
 
 The abstract class `Command` have the following attributes:
