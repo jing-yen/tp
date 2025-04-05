@@ -324,10 +324,10 @@ Format: `list [n/NAME]`
 * If no name is provided, all past expenses for everyone are displayed.
 
 * If a `NAME` is provided, the list will categorize that person’s activities
-  into two sections: `fully paid` and `not fully paid`. An activity is marked 
-  as `fully paid` only if all payees have completed their payments to the specified 
+  into two sections: `Settled` and `Unsettled`. An activity is marked 
+  as `Settled` only if all payees have completed their payments to the specified 
   person for that activity. If any payee has not paid, the activity will appear under 
-  `not fully paid`.
+  `Unsettled`.
 
 * If a `NAME` is provided, any activities where the specified person is 
   the payer will display a `[PAYER]` tag next to the activity description.
