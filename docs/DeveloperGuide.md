@@ -280,10 +280,9 @@ The product aims to provide assistance in simplifying payments by minimising the
     Use case resumes at step 3.
     
 ### Non-Functional Requirements
-1. Should work on any mainstream OS as long as it has Java `17` or above installed.
-2. Should be able to hold up to 1000(?) expenses without a noticeable sluggishness in performance for typical usage
+1. The application should work on any mainstream OS as long as it has Java `17` or above installed.
+2. The application should be able to hold up to 1000 expenses without a noticeable sluggishness in performance for typical usage
 3. A user with above average typing speed for regular English test (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-4. (add more)
 
 ### Glossary
 
