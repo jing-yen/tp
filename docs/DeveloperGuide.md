@@ -37,12 +37,7 @@ The UML class diagram below provides an overview of the classes and their intera
 
 ![Main Class Diagram](diagrams/main.png)
 
-### Architecture
 
-![Architecture Diagram](diagrams/MainArchitecture.png)  
-
-The **Architecture Diagram** given above explains the high-level design of the App.  
-  
 Given below is a quick overview of the main components and how they interact with each other.  
   
 **Main components of the architecture**  
