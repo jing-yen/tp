@@ -18,6 +18,12 @@ Given below are my contributions to the project.
   * Justification: This reduces the need for the user to manually calculate the expense and input every amount using the custom add function. For common group expenses like meals or shared utilities, this significantly streamlines the data entry process.
   * Highlights: This enhancement inherits from the add command, making use of code from the parent class. This approach promotes code reusability and maintainability while extending the functionality of the basic add command.
   
+  
+* **New Feature**: Implemented deletion of groups
+  * What it does: Allows users to permanently remove entire groups from the system, including all associated expense records, transaction history, and member information.
+  * Justification: This feature addresses several key user needs: removing obsolete or erroneously created groups, managing application clutter, and protecting privacy by allowing complete removal of financial history for inactive groups. Without this functionality, users would be forced to maintain an ever-growing list of groups, potentially slowing application performance and creating confusion when navigating between active groups.
+  * Highlights: The implementation requires careful coordination between multiple system components. The feature ensures safe removal of all group data from disk storage while preserving other groups' data integrity, and implements proper cleanup of in-memory objects to prevent orphaned data and memory leaks. Special attention was given to synchronization with the master file index to ensure deleted groups are fully removed from listings.
+  
 
 * **Code Contributed**: [RepoSense Link](https://nus-cs2113-ay2425s2.github.io/tp-dashboard/?search=icknee&breakdown=true&sort=groupTitle%20dsc&sortWithin=title&since=2025-02-21&timeframe=commit&mergegroup=&groupSelect=groupByRepos&checkedFileTypes=docs~functional-code~test-code~other)
 
@@ -35,10 +41,11 @@ Given below are my contributions to the project.
 
 * **Project Management**
   * Managed release v1.0 on GitHub, creating the release with appropriate version tags.
-  * Wrote some of the issues in the issue tracker to document bugs, feature requests, and enhancement ideas, helping to organize the development workflow.
+  * Wrote some of the issues in the issue tracker to document bugs, feature requests, and enhancement ideas, helping to organize the development workflow. [#133](https://github.com/AY2425S2-CS2113-T13-2/tp/issues/133), [#99](https://github.com/AY2425S2-CS2113-T13-2/tp/issues/99), [#31](https://github.com/AY2425S2-CS2113-T13-2/tp/issues/31), [#26](https://github.com/AY2425S2-CS2113-T13-2/tp/issues/26), [#17](https://github.com/AY2425S2-CS2113-T13-2/tp/issues/17)
+  * Closed issues that have been resolved.
   * Enabled assertions in the codebase.
 
 
 * **Community**
-  * Gave PR comments to encourage group members, maintaining a positive team environment.
+  * Gave PR comments to encourage group members, maintaining a positive team environment. [PR #132](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/132), [#139](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/109), [#106](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/106)
   * Helped teammates troubleshoot issues with implementation.
