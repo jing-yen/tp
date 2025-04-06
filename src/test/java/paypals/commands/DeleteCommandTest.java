@@ -274,4 +274,14 @@ public class DeleteCommandTest extends PayPalsTest {
         // After deleting the second activity, only one should remain.
         assertEquals(1, activityManager.getSize());
     }
+
+    @Test
+    public void execute_negativeIdentifier_throwsException() throws PayPalsException {
+        DeleteCommand command = new DeleteCommand("i/-3");
+        try {
+            command.execute(activityManager, false);
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER.getMessage() + "-3", e.getMessage());
+        }
+    }
 }
