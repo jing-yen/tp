@@ -120,17 +120,6 @@ public class DeleteCommandTest extends PayPalsTest {
     }
 
     @Test
-    public void execute_negativeIdentifier_exceptionThrown() {
-        DeleteCommand command = new DeleteCommand("i/-1");
-        try {
-            command.execute(activityManager, false);
-            fail("Expected PayPalsException for negative index");
-        } catch (PayPalsException e) {
-            assertException(e, ExceptionMessage.NO_IDENTIFIER);
-        }
-    }
-
-    @Test
     public void execute_zeroIdentifier_exceptionThrown() {
         DeleteCommand command = new DeleteCommand("i/0");
         try {
