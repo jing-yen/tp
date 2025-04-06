@@ -58,7 +58,7 @@ public class DeleteCommand extends Command {
     private String getIdentifier() throws PayPalsException {
         String identifier;
         // Step 1: Process the description and name
-        String descRegex = "(?<=i/)(\\d+)";
+        String descRegex = "(?<=i/)-?\\d+";
         Pattern descPattern = Pattern.compile(descRegex);
         Matcher descMatcher = descPattern.matcher(command);
 
