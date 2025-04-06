@@ -3,22 +3,27 @@ title Sequence Diagram - Split Command
 actor user
 
 participant "ui:Ui" as ui
+participant ":PayPals" as pp
 participant "parser:Parser" as parser
 participant "splitCmd:SplitCommand" as splitCmd
 participant "mgr:ActivityManager" as mgr
 participant "activity:Activity" as activity
 
-user -> ui : enterCommand("split")
+activate pp
+pp -> ui : readLine()
 activate ui
-ui -> parser : decodeCommand(...)
+user -> ui : enterCommand("split")
+ui --> user
+pp -> parser : decodeCommand(...)
 activate parser
-parser -> splitCmd : new SplitCommand(...)
+parser -> splitCmd **: SplitCommand(...)
 activate splitCmd
 splitCmd --> parser :
 deactivate splitCmd
+parser --> pp
 deactivate parser
 
-ui -> splitCmd : execute(...)
+pp -> splitCmd : execute(...)
 activate splitCmd
 splitCmd -> mgr : getActivity(...)
 activate mgr
@@ -37,6 +42,7 @@ deactivate activity
 
 splitCmd -> ui : print transactions
 ui --> splitCmd :
+splitCmd --> pp
 deactivate splitCmd
 ui --> user :
 deactivate ui
