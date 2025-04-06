@@ -1,0 +1,69 @@
+@startuml
+actor User
+
+participant ":UI" as U
+participant ":Group" as G
+participant ":Storage" as S
+participant ":ActivityManager" as AM
+
+activate G
+G -> U : print("Please select a group number from the following:")
+activate U
+U --> G
+G -> S : getGroupNames()
+activate S
+S --> G : groupNames
+deactivate S
+G -> U : printGroupNames(groupNames)
+U --> G
+G -> U : print("or give your new group a name:")
+U --> G
+loop Until valid input
+    G -> U : readLine()
+    User -> U : "group name"
+    U --> G : groupNumberOrName
+    G -> S : checkIfFilenameValid(groupNumberOrName)
+    activate S
+    alt Valid input
+        S --> G : true
+    else Invalid input
+        S --> G : throws PayPalsException
+        deactivate S
+        G -> U : print(e.getMessage())
+        U --> G
+    end
+end
+
+
+G -> S : load(groupNumberOrName, activityManager)
+activate S
+
+S --> G :
+deactivate S
+
+
+G -> AM : getGroupName()
+activate AM
+AM --> G : groupName
+deactivate AM
+G -> U : print("You are currently in the \"groupName\" group.")
+U --> G
+G -> AM : checkIsNewGroup()
+activate AM
+AM --> G : isNewGroup
+deactivate AM
+alt isNewGroup == true
+    G -> U : print("It is a new group.")
+    U --> G
+else isNewGroup == false
+    G -> AM : getActivityList()
+    activate AM
+    AM --> G : activities
+    deactivate AM
+    G -> U : print("There are N transactions.")
+    U --> G
+end
+
+U --> User
+deactivate U
+@enduml
