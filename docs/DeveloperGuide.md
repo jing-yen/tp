@@ -61,13 +61,14 @@ The _Sequence Diagrams_ below illustrates how these components interact across t
 1. When the user issues an `add` command — showing parsing, command execution, activity creation, and data persistence.
 2. When the user issues a `list` command — showing command execution and retrieval of activity data.
 3. When the user issues a `split` command — showing how debts are calculated and resolved using in-memory data.
+4. When the user issues a `delete` command — showing how expenses are deleted in the database.
 
 This sequence diagrams below captures the flow from the user's input all the way to command execution and interaction with both memory (`Activity`) and disk (`Storage`), giving a comprehensive overview of the core execution paths in the application.
 
 ![Components Interaction Diagram - Add Command](diagrams/AddCmdSeq.png)
 ![Components Interaction Diagram - List Command](diagrams/ListCmdSeq.png)
 ![Components Interaction Diagram - Split Command](diagrams/SplitCmdSeq.png)
-
+![Components Interaction Diagram - Delete Command](diagrams/DeleteCommand.png)
 
 ### UI Component
 
@@ -175,9 +176,14 @@ DESCRIPTION|PAYER|AMOUNT|HASPAID|FRIEND|AMOUNT|HASPAID...
 ```
 ![Sample save file](diagrams/savefile.png)
 
+The following is the sequence diagram for how the data is loaded during group selection.
+
+![Select Group](diagrams/SelectGroup.png)
+
 The following is the sequence diagram for loading data from the save file into the `ActivityManager`.
 
 ![Load Storage](diagrams/StorageLoad.png)
+
 
 <ins>Attributes</ins>
 
