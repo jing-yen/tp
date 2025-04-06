@@ -174,16 +174,20 @@ The file format for group-specific save files is as follows:
 ```
 DESCRIPTION|PAYER|AMOUNT|HASPAID|FRIEND|AMOUNT|HASPAID...
 ```
+
+Do note that format above is just an example representation, the storage does not actually use the `|` character as the separator. 
+An example of an actual save file is shown below.
+
 ![Sample save file](diagrams/savefile.png)
 
+The storage would need to load the group that the user has selected during the Group Selection Menu, and then load the data from that group's save file into the `ActivityManager`.
 The following is the sequence diagram for how the data is loaded during group selection.
 
 ![Select Group](diagrams/SelectGroup.png)
 
-The following is the sequence diagram for loading data from the save file into the `ActivityManager`.
+The sequence diagram below shows how the data is loaded from the save file into the `ActivityManager`.
 
 ![Load Storage](diagrams/StorageLoad.png)
-
 
 <ins>Attributes</ins>
 
@@ -245,7 +249,7 @@ The product aims to provide assistance in simplifying payments by minimising the
 | v2.0    | user                              | edit an expense                                                   | can correct any mistakes I made when entering them          |
 | v2.0    | user                              | add an expense and split the cost equally among multiple people   | don't need to manually calculate individual shares.         |
 | v2.0    | user                              | create a new group                                                | can manage expenses with specific people                    |
-| v2.0     | user                              | delete a group                                                    | discard a group I don't want to track anymore                |
+| v2.0    | user                              | delete a group                                                    | discard a group I don't want to track anymore               |
 
 ### Use cases
 (For all use cases below, the **System** is `Paypals` and the **Actor** is the `user`, unless specified otherwise)

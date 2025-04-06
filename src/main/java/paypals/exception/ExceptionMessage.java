@@ -24,7 +24,7 @@ public enum ExceptionMessage {
     STORAGE_FILE_NOT_CREATED("ERROR: An error has occurred, storage file not created"),
     STORAGE_FILE_NOT_FOUND("ERROR: An error has occurred, storage file not found"),
     SAVE_NOT_WRITTEN("ERROR: An error has occurred, storage file not written"),
-    LOAD_ERROR("One of the lines has been modified and is corrupted, skipping corrupted line..."),
+    LOAD_ERROR("An activity has been detected to be modified and corrupted, skipping corrupted activity..."),
     EDIT_AMOUNT_WHEN_PAID("INPUT ERROR: Unable to edit amount owed if it has been paid"),
     EDIT_FORMAT_ERROR("INPUT ERROR: Invalid edit format. The format should be one of the following:" +
             "\n Edit description: edit i/ID d/DESC" +

@@ -7,7 +7,7 @@ PayPals is a CLI-based application that aims to provide assistance in simplifyin
 
 Given below are my contributions to the project.
 
-* **New Feature**: Added Data Storage
+* **New Feature**: Added data storage within groups
   * What it does: This feature introduces the ability to store data for a group into a save file. It includes methods for 
     loading data from the save file to memory, and saving data from memory to save files.
   * Justification: The ability to store data is essential for preserving data between program executions. By storing data in files,
@@ -45,7 +45,7 @@ Given below are my contributions to the project.
 * **Enhancement to Existing Features**:
   * Preventing the user from editing the amount owed by a person after it has been marked as paid. (Pull Request [#106](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/106))
   * Wrote additional JUnit tests for existing features to increase test coverage. (Pull Requests [#96](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/96), 
-    [#109](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/109), [#111](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/111))
+    [#109](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/109), [#111](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/111), [#113](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/113), [#121](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/121), [#141](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/141), [#171](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/171))
 
 
 * **Code Contributed**: [RepoSense Link](https://nus-cs2113-ay2425s2.github.io/tp-dashboard/?search=brand0nnn&breakdown=true)
@@ -53,21 +53,26 @@ Given below are my contributions to the project.
 
 * **Documentation**
   * User Guide
-    * Added initial outline of User Guide. Added Features. (Pull Request [#88](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/88))
-    * Added Command Reference Table, Updated Command Format for all commands with full details and sample code.
+    * Added initial outline of User Guide and added the Features section. (Pull Request [#88](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/88))
+    * Added Command Reference Table, and updated Command Format for all commands with full details and sample code.
       (Pull Request [#107](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/107))
   * Developer Guide
-    * Added Table of Contents, Acknowledgements, Product Scope, v1.0 User Stories, Non-Functional Requirements, Glossary and 
+    * Added initial content for the following sections: Table of Contents, Acknowledgements, Product Scope, v1.0 User Stories, Non-Functional Requirements, Glossary and 
       Instructions for Manual Testing. (Pull Request [#87](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/87))
-    * Added UML diagram for Command Class inheritance. (Pull Request [#91](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/91))
-    * Added details of Command Component. (Pull Request [#93](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/93))
-    * Added details of Storage Component. Added sequence diagram for loading of save file. Added sample image of save file. 
-      (Pull Request [#95](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/95))
-    * Added details of UI and Parse Component. (Pull Request [#107](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/107))
+    * Added initial UML diagram for Command Class inheritance. (Pull Request [#91](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/91))
+    * Added content details of Command Component. (Pull Request [#93](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/93))
+    * Added content details of Storage Component. Added sequence diagram for loading of save file. Added sample image of save file. 
+      (Pull Request [#95](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/95), [#127](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/127))
+    * Added content details of UI and Parser Component. (Pull Request [#107](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/107))
+    * Added UML Class diagram to provide an overview of the main classes. (Pull Request [#138](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/138))
 
 
 * **Project Management**
-  * Maintained issues and manages milestones.
+  * Led discussions on project implementation.
+  * Maintained issues and managed milestones.
+  * Conducted triaging of bugs during and after PE-D.
+
 
 * **Community**
-  * Pull Requests reviewed: [#98](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/98), [#108](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/108)
+  * Pull Requests reviewed: [#98](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/98), [#108](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/108), [#114](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/114), [#115](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/115), [#139](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/139), [#154](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/154), [#181](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/181), [#182](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/182), [#184](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/184)
+  * Reported bugs and suggestions for other teams in the class: [#1](https://github.com/brand0nnn/ped/issues/1), [#2](https://github.com/brand0nnn/ped/issues/2), [#3](https://github.com/brand0nnn/ped/issues/3), [#4](https://github.com/brand0nnn/ped/issues/4), [#5](https://github.com/brand0nnn/ped/issues/5), [#6](https://github.com/brand0nnn/ped/issues/6), [#7](https://github.com/brand0nnn/ped/issues/7), [#8](https://github.com/brand0nnn/ped/issues/8), [#9](https://github.com/brand0nnn/ped/issues/9), [#10](https://github.com/brand0nnn/ped/issues/10)
