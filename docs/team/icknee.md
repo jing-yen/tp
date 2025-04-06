@@ -28,7 +28,7 @@ Given below are my contributions to the project.
 * **General Enhancements**: 
   * Refactoring group selection to a new class to align better with OOP principles [PR #130](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/130)
   * Enabled assertions in the codebase.
-  * Fixed bug relating the multiple amounts add with AddEqual command [PR #182](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/182), [Issue #149](https://github.com/AY2425S2-CS2113-T13-2/tp/issues/149)
+  * Fixed bug relating the multiple amounts add with AddEqual command. [PR #182](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/182), [Issue #149](https://github.com/AY2425S2-CS2113-T13-2/tp/issues/149)
 
 
 * **Code Contributed**: [RepoSense Link](https://nus-cs2113-ay2425s2.github.io/tp-dashboard/?search=icknee&breakdown=true&sort=groupTitle%20dsc&sortWithin=title&since=2025-02-21&timeframe=commit&mergegroup=&groupSelect=groupByRepos&checkedFileTypes=docs~functional-code~test-code~other)
@@ -40,8 +40,11 @@ Given below are my contributions to the project.
     * Made tweaks to existing documentation of the feature `help` to improve clarity and provide more detailed information about available commands.
   * Developer Guide
     * Created sequence diagram for execute method in delete command, showing the interaction between objects when a delete operation is performed, which helps other developers understand the flow of execution.
+    * Created sequence diagram for group selection stage, showing the interaction between the Group class, Storage and Activity Manager which helps other developers understand how data is loaded in each group.
     * Wrote brief summary of the main components of the architecture, explaining the purpose and responsibilities of each component in the system.
     * Wrote non-functional requirements section detailing performance expectations, reliability standards, and compatibility requirements for the application.
+    * Fixed documentation bug relating to missing constructor call [PR #184](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/184)
+
 
 
 * **Project Management**
