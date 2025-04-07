@@ -45,9 +45,29 @@ public class EditCommandTest extends PayPalsTest {
     }
 
     @Test
+    public void execute_editDescriptionWithUppercaseParameters_success() {
+        // Edit the description of the first activity (index 1, which maps to index 0).
+        String command = "I/1 D/NewLunch";
+        EditCommand ec = new EditCommand(command);
+        assertDoesNotThrow(() -> ec.execute(activityManager, false));
+        // Verify the description is updated.
+        assertEquals("NewLunch", activityManager.getActivity(0).getDescription());
+    }
+
+    @Test
     public void execute_editPayer_success() {
         // Edit the payer name of the first activity.
         String command = "i/1 n/NewJane";
+        EditCommand ec = new EditCommand(command);
+        assertDoesNotThrow(() -> ec.execute(activityManager, false));
+        // Verify that the payer's name is updated.
+        assertEquals("NewJane", activityManager.getActivity(0).getPayer().getName());
+    }
+
+    @Test
+    public void execute_editPayerWithUppercaseParameters_success() {
+        // Edit the payer name of the first activity.
+        String command = "I/1 N/NewJane";
         EditCommand ec = new EditCommand(command);
         assertDoesNotThrow(() -> ec.execute(activityManager, false));
         // Verify that the payer's name is updated.
@@ -66,9 +86,30 @@ public class EditCommandTest extends PayPalsTest {
     }
 
     @Test
+    public void execute_editFriendNameWithUppercaseParameters_success() {
+        // Change the owed friend's name: from "John" to "NewJohn" in the first activity.
+        String command = "I/1 F/Johnny O/John";
+        EditCommand ec = new EditCommand(command);
+        assertDoesNotThrow(() -> ec.execute(activityManager, false));
+        // Verify that "John" is replaced with "NewJohn".
+        assertNull(activityManager.getActivity(0).getFriend("John"), "Old friend name should be removed");
+        assertNotNull(activityManager.getActivity(0).getFriend("Johnny"), "New friend name should exist");
+    }
+
+    @Test
     public void execute_editFriendAmount_success() {
         // Change the amount owed by friend "John" to 10 for the first activity.
         String command = "i/1 a/10 o/John";
+        EditCommand ec = new EditCommand(command);
+        assertDoesNotThrow(() -> ec.execute(activityManager, false));
+        // Verify that John's owed amount is updated to 35.
+        assertEquals(10.0, activityManager.getActivity(0).getFriend("John").getAmount(), 0.001);
+    }
+
+    @Test
+    public void execute_editFriendAmountWithUppercaseParameters_success() {
+        // Change the amount owed by friend "John" to 10 for the first activity.
+        String command = "I/1 A/10 O/John";
         EditCommand ec = new EditCommand(command);
         assertDoesNotThrow(() -> ec.execute(activityManager, false));
         // Verify that John's owed amount is updated to 35.

@@ -18,7 +18,8 @@ import paypals.util.UI;
 public class EditCommand extends Command {
 
     /** Regex pattern for extracting parameters with prefixes like i/, d/, n/, f/, a/, o/. */
-    private static final Pattern COMMAND_PATTERN = Pattern.compile("([idnfao])/\\s*([^/]+?)(?=\\s+[idnfao]/|$)");
+    private static final Pattern COMMAND_PATTERN = Pattern.compile(
+            "([idnfao])/\\s*([^/]+?)(?=\\s+[idnfao]/|$)", Pattern.CASE_INSENSITIVE);
 
     /** Maximum amount limit allowed per person. */
     private static final double LARGE_AMOUNT_LIMIT = 10000.0;
@@ -73,7 +74,7 @@ public class EditCommand extends Command {
         Matcher matcher = COMMAND_PATTERN.matcher(command);
 
         while (matcher.find()) {
-            parameters.put(matcher.group(1), matcher.group(2).trim());
+            parameters.put(matcher.group(1).toLowerCase(), matcher.group(2).trim());
         }
         return parameters;
     }
@@ -129,7 +130,7 @@ public class EditCommand extends Command {
         Matcher matcher = COMMAND_PATTERN.matcher(command);
         StringBuilder keyOrder = new StringBuilder();
         while (matcher.find()) {
-            keyOrder.append(matcher.group(1));
+            keyOrder.append(matcher.group(1).toLowerCase());
         }
         String order = keyOrder.toString();
         // Valid orders based on allowed formats.
@@ -162,7 +163,7 @@ public class EditCommand extends Command {
             if (payerName.matches(".*\\d.*")) {
                 throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
             }
-            if (activityManager.getActivity(activityId).getFriend(payerName) != null) {
+            if (activityManager.getActivity(activityId).getFriend(payerName.toLowerCase()) != null) {
                 throw new PayPalsException(ExceptionMessage.PAYER_NAME_SAME_AS_FRIEND);
             }
             activityManager.editActivityPayer(activityId, payerName);
@@ -174,16 +175,18 @@ public class EditCommand extends Command {
                 throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
             }
             String oldName = parameters.get("o");
-            if (activityManager.getActivity(activityId).getPayer().getName().equals(friend)) {
+            if (activityManager.getActivity(activityId).getPayer().getName().equalsIgnoreCase(friend)) {
                 throw new PayPalsException(ExceptionMessage.FRIEND_NAME_SAME_AS_PAYER);
             }
-            if (activityManager.getActivity(activityId).getFriend(friend) != null) {
+            if (activityManager.getActivity(activityId).getFriend(friend.toLowerCase()) != null) {
                 throw new PayPalsException(ExceptionMessage.FRIEND_NAME_SAME_AS_ANOTHER_FRIEND);
             }
-            if (activityManager.getActivity(activityId).getFriend(oldName) == null) {
+            if (activityManager.getActivity(activityId).getFriend(oldName.toLowerCase()) == null) {
                 throw new PayPalsException(ExceptionMessage.FRIEND_DOES_NOT_EXIST);
             }
-            activityManager.editActivityOwedName(activityId, oldName, friend);
+
+            // Reassign oldName to correct case name too
+            oldName = activityManager.editActivityOwedName(activityId, oldName, friend);
             ui.print(oldName + "'s name has been changed to " + friend);
 
         } else if (parameters.get("a") != null && parameters.get("o") != null) {

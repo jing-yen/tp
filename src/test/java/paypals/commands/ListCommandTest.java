@@ -35,6 +35,14 @@ public class ListCommandTest extends PayPalsTest {
     }
 
     @Test
+    public void execute_listActivitiesByPayerWithUppercaseParameters_success() {
+        ActivityManager manager = new ActivityManager();
+        manager.addActivity(createTestActivity());
+        ListCommand command = new ListCommand("N/Alice");
+        assertDoesNotThrow(() -> command.execute(manager, false));
+    }
+
+    @Test
     public void execute_listActivitiesByFriend_success() {
         ActivityManager manager = new ActivityManager();
         manager.addActivity(createTestActivity());
@@ -69,6 +77,14 @@ public class ListCommandTest extends PayPalsTest {
         ActivityManager manager = new ActivityManager();
         manager.addActivity(createTestActivity());
         ListCommand command = new ListCommand("balance n/Alice");
+        assertDoesNotThrow(() -> command.execute(manager, false));
+    }
+
+    @Test
+    public void execute_balanceCommandWithUppercaseParameters_success() {
+        ActivityManager manager = new ActivityManager();
+        manager.addActivity(createTestActivity());
+        ListCommand command = new ListCommand("BALANCE N/Alice");
         assertDoesNotThrow(() -> command.execute(manager, false));
     }
 

@@ -46,6 +46,7 @@ public class AddEqualCommand extends AddCommand {
         assert activityManager != null : "ActivityManager should not be null";
 
         UI ui = new UI(enablePrint);
+        HashMap<String, String> names = new HashMap<>();
         HashMap<String, Double> owed = new HashMap<>();
         if (activityManager.getSize() >= 1000) {
             throw new PayPalsException(ExceptionMessage.MORE_THAN_1000_ACTIVITIES);
@@ -63,8 +64,8 @@ public class AddEqualCommand extends AddCommand {
         double totalAmount = getTotalAmount();
         assert totalAmount >= 0 : "Total amount should not be less than 0";
 
-        String friendsPart = command.split("a/")[0];
-        String[] friends = friendsPart.split("\\s+f/");
+        String friendsPart = command.split("(?i)a/")[0];
+        String[] friends = friendsPart.split("\\s+(?i)f/");
         if (friends.length <= 1) {
             throw new PayPalsException(ExceptionMessage.NO_FRIENDS);
         }
@@ -75,9 +76,9 @@ public class AddEqualCommand extends AddCommand {
         bdAmount = bdAmount.setScale(2, RoundingMode.HALF_EVEN);
         double roundedAmount = bdAmount.doubleValue();
 
-
         for (String friend : friends) {
             String friendName = friend.trim();
+
             // Add explicit validation for empty friend names.
             if (friendName.isEmpty()) {
                 throw new PayPalsException(ExceptionMessage.INVALID_FRIEND);
@@ -85,8 +86,10 @@ public class AddEqualCommand extends AddCommand {
             if (friendName.matches(".*\\d.*")) {
                 throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
             }
-            validateFriend(name, friendName, owed);
-            owed.put(friendName,roundedAmount);
+
+            validateFriend(name, friendName, names);
+            names.put(friendName.toLowerCase(), friendName);
+            owed.put(friendName, roundedAmount);
             Logging.logInfo("Friend added successfully");
         }
 
@@ -98,7 +101,6 @@ public class AddEqualCommand extends AddCommand {
         activityManager.addActivity(newActivity);
 
         Logging.logInfo("Activity added successfully");
-
     }
 
     /**
@@ -108,7 +110,7 @@ public class AddEqualCommand extends AddCommand {
      * @throws PayPalsException if the amount is not a number, negative, or improperly formatted
      */
     private double getTotalAmount() throws PayPalsException {
-        int count = command.split("a/").length - 1; // Count occurrences of "a/"
+        int count = command.split("(?i)a/").length - 1; // Count occurrences of "a/"
         if (count > 1) {
             Logging.logWarning("Multiple 'a/' prefixes found in command");
             throw new PayPalsException(ExceptionMessage.MULTIPLE_AMOUNTS_FOR_ADDEQUAL);
@@ -147,10 +149,27 @@ public class AddEqualCommand extends AddCommand {
 
     @Override
     public void validatePrefixOrder() throws PayPalsException {
+        // Get positions of d/ flag
         int dIndex = command.indexOf("d/");
+        if (dIndex == -1) {
+            dIndex = command.indexOf("D/");
+        }
+        // Get positions of n/ flag
         int nIndex = command.indexOf("n/");
+        if (nIndex == -1) {
+            nIndex = command.indexOf("N/");
+        }
+        // Get positions of f/ flag
         int fIndex = command.indexOf("f/");
+        if (fIndex == -1) {
+            fIndex = command.indexOf("F/");
+        }
+        // Get positions of a/ flag
         int aIndex = command.indexOf("a/");
+        if (aIndex == -1) {
+            aIndex = command.indexOf("A/");
+        }
+
         if (dIndex == -1){
             throw new PayPalsException(ExceptionMessage.NO_DESCRIPTION);
         }

@@ -41,8 +41,8 @@ public class AddCommand extends Command {
      * @throws PayPalsException If the key is not found in the input.
      */
     String extractValue(String key, ExceptionMessage exceptionMessage) throws PayPalsException {
-        String regex = key + "\\s*([^/]+?)(?=\\s+[a-zA-Z]/|$)";
-        Pattern pattern = Pattern.compile(regex);
+        String regex = "(?i)"+ key + "\\s*([^/]+?)(?=\\s+[a-zA-Z]/|$)";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(command);
 
         if (matcher.find()) {
@@ -59,19 +59,22 @@ public class AddCommand extends Command {
      *
      * @param payer    Name of the payer.
      * @param oweName  Name of the friend who owes money.
-     * @param owedMap  Map of currently parsed owed entries.
+     * @param names  Map of names of payer/friends currently in the activity.
      * @throws PayPalsException If validation fails (e.g., duplicate friend or payer owes themselves).
      */
-    void validateFriend(String payer, String oweName, HashMap<String, Double> owedMap) throws PayPalsException {
+    void validateFriend(String payer, String oweName, HashMap<String, String> names) throws PayPalsException {
         assert payer != null : "Payer name should not be null";
         assert oweName != null : "OweName should not be null";
-        assert owedMap != null : "Owed map should not be null";
+        assert names != null : "Names map should not be null";
 
-        if (payer.equals(oweName)) {
+        String lowercasePayer = payer.toLowerCase();
+        String lowercaseOweName = oweName.toLowerCase();
+
+        if (lowercasePayer.equals(lowercaseOweName)) {
             Logging.logWarning("Payer tried to owe themselves.");
             throw new PayPalsException(ExceptionMessage.PAYER_OWES, oweName);
         }
-        if (owedMap.containsKey(oweName)) {
+        if (names.containsKey(lowercaseOweName)) {
             Logging.logWarning("Duplicate friend entry detected: {0} already exists.");
             System.out.println(WRONG_ADD_FORMAT);
             throw new PayPalsException(ExceptionMessage.DUPLICATE_FRIEND, oweName);
@@ -94,8 +97,10 @@ public class AddCommand extends Command {
         if (activityManager.getSize() >= 1000) {
             throw new PayPalsException(ExceptionMessage.MORE_THAN_1000_ACTIVITIES);
         }
+        HashMap<String, String> names = new HashMap<>();
         HashMap<String, Double> owed = new HashMap<>();
         validatePrefixOrder();
+
         // Step 1: Extract description and payer name
         String description = extractValue("d/", ExceptionMessage.NO_DESCRIPTION);
         String name = extractValue("n/", ExceptionMessage.NO_PAYER);
@@ -108,10 +113,10 @@ public class AddCommand extends Command {
         assert !name.isEmpty() : "Payer name should not be null or empty";
 
         // Step 2: Capture all (f/... a/...) pairs
-        String[] pairs = command.split("\\s+f/");
+        String[] pairs = command.split("\\s+(?i)f/");
         double totalOwed = 0.0;
         for (int i = 1; i < pairs.length; i++) {
-            String[] parameters = pairs[i].split("\\s+a/");
+            String[] parameters = pairs[i].split("\\s+(?i)a/");
             if (parameters.length == 2) {
                 String oweName = parameters[0].trim();
                 if (oweName.matches(".*\\d.*")) {
@@ -122,12 +127,14 @@ public class AddCommand extends Command {
                     throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_ADD_FORMAT);
                 }
                 double oweAmount;
+
                 try {
                     oweAmount = Double.parseDouble(parameters[1]);
                 } catch (Exception e) {
                     Logging.logWarning("Invalid amount entered for friend");
                     throw new PayPalsException(ExceptionMessage.INVALID_AMOUNT);
                 }
+
                 if (oweName.isEmpty()){
                     throw new PayPalsException(ExceptionMessage.INVALID_FRIEND);
                 }
@@ -142,7 +149,9 @@ public class AddCommand extends Command {
                     Logging.logWarning("Amount entered for friend out of bounds");
                     throw new PayPalsException(ExceptionMessage.LARGE_AMOUNT);
                 }
-                validateFriend(name, oweName, owed);
+
+                validateFriend(name, oweName, names);
+                names.put(oweName.toLowerCase(), oweName);
                 owed.put(oweName, oweAmount);
                 totalOwed += oweAmount;
 
@@ -177,10 +186,27 @@ public class AddCommand extends Command {
     }
 
     public void validatePrefixOrder() throws PayPalsException {
+        // Get positions of d/ flag
         int dIndex = command.indexOf("d/");
+        if (dIndex == -1) {
+            dIndex = command.indexOf("D/");
+        }
+        // Get positions of n/ flag
         int nIndex = command.indexOf("n/");
+        if (nIndex == -1) {
+            nIndex = command.indexOf("N/");
+        }
+        // Get positions of f/ flag
         int fIndex = command.indexOf("f/");
+        if (fIndex == -1) {
+            fIndex = command.indexOf("F/");
+        }
+        // Get positions of a/ flag
         int aIndex = command.indexOf("a/");
+        if (aIndex == -1) {
+            aIndex = command.indexOf("A/");
+        }
+      
         if (dIndex == -1){
             throw new PayPalsException(ExceptionMessage.NO_DESCRIPTION);
         }

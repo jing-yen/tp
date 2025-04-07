@@ -98,8 +98,8 @@ Below is a quick reference to all the commands in both stages, in the group sele
 # Features
 
 ## Notes on the general command format:
-- Words in UPPER_CASE are the parameters to be supplied by the user. e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John`.
-- Commands are case-insensitive and cannot contain the symbol `/`.
+- Words in UPPER_CASE are the parameters to be supplied by the user. e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John`.=
+  - Parameter are case-insensitive and cannot contain the symbol `/`, e.g. `NAME` cannot be `"John/Joseph"`.
 - Items in square brackets are optional. e.g `n/NAME [t/TAG]` can be used as `n/John t/friend` or as `n/John`.
 - Items with ... after them can be used multiple times including zero times. e.g. `[t/TAG]`... can be used as (i.e. 0 times), `t/friend, t/friend t/family` etc.
 - Do not execute commands that belong to the Group Selection Menu when inside a group and vice versa. Both stages use different commands.
