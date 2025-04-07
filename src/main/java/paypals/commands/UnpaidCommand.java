@@ -134,7 +134,7 @@ public class UnpaidCommand extends Command {
         String payerName = activity.getPayer().getName();
         Person friend = activity.getFriend(friendName);
 
-        if (payerName.equals(friendName)) {
+        if (payerName.equalsIgnoreCase(friendName)) {
             return true;
         }
 
