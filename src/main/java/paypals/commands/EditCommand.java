@@ -130,7 +130,7 @@ public class EditCommand extends Command {
         Matcher matcher = COMMAND_PATTERN.matcher(command);
         StringBuilder keyOrder = new StringBuilder();
         while (matcher.find()) {
-            keyOrder.append(matcher.group(1));
+            keyOrder.append(matcher.group(1).toLowerCase());
         }
         String order = keyOrder.toString();
         // Valid orders based on allowed formats.
