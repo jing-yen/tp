@@ -7,13 +7,11 @@ class Activity {
     - payer: Person
     - owed: HashMap<String, Person>
     + Activity(description: String, payer: Person, owedMap: HashMap<String, Double>)
-    + getDescription(): String
     + getPayer(): Person
     + getFriend(name: String): Person
     + getAllFriends(): Collection<Person>
     + getOwed(): HashMap<String, Person>
     + setOwed(owed: HashMap<String, Person>): void
-    + toString(): String
     + toStorageString(separator: String): String
 }
 
@@ -46,7 +44,7 @@ class Logging {
     + logInfo(message: String): void
 }
 
-ActivityManager "1" *-- "*" Activity
+ActivityManager "1" o-- "*" Activity
 Activity --> "1" Person : payer
 Activity --> "*" Person : owedFriends
 Person --> "*" Activity : paysFor
