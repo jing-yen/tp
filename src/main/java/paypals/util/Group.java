@@ -37,11 +37,12 @@ public class Group {
         ui.sayHello();
         ui.printLine();
         boolean groupSelected = false;
+
         while (!groupSelected) {
             ui.print("Would you like to delete or select a group?");
             ui.printLine();
             ui.printPrompt();
-            String command = ui.readLine();
+            String command = ui.readLine().toLowerCase();
             if (command.equals("select")) {
                 groupSelected = true;
                 selectGroup();
@@ -83,6 +84,7 @@ public class Group {
                 System.out.println(e.getMessage());
             }
         }
+
         storage.delete(groupNumberOrName, activityManager);
         ui.print("Group has been deleted.");
         ui.printLine();

@@ -9,19 +9,27 @@ import java.util.Map;
 public class Activity {
     private String description;
     private Person payer;
+    // Key: name (lower-cased) and Value: name (normal-cased)
+    private HashMap<String, String> names;
+    // Key: name (normal-cased) and Value: Person object
     private HashMap<String, Person> owed;
 
     public Activity(String description, Person payer, HashMap<String, Double> owedMap) {
         this.description = description;
         this.payer = payer;
+        this.names = new HashMap<>();
         this.owed = new HashMap<>();
 
         Logging.logInfo("Creating Activity: " + description + " paid by " + payer.getName());
 
-
         for (Map.Entry<String, Double> entry : owedMap.entrySet()) {
-            this.owed.put(entry.getKey(), new Person(entry.getKey(), entry.getValue(), false));
-            Logging.logInfo("Added owed person: " + entry.getKey() + " with amount " + entry.getValue());
+            String name = entry.getKey();
+            String lowercaseName = name.toLowerCase();
+            Double valueOwed = entry.getValue();
+
+            this.names.put(lowercaseName, name);
+            this.owed.put(name, new Person(name, valueOwed, false));
+            Logging.logInfo("Added owed person: " + name + " with amount " + valueOwed);
         }
     }
 
@@ -37,7 +45,12 @@ public class Activity {
 
     public Person getFriend(String name) {
         Logging.logInfo("Looking for friend: " + name);
-        return owed.get(name);
+
+        // Obtain the name in correct case from name parameter (which may have alphabets of wrong case)
+        String lowercaseName = name.toLowerCase();
+        String correctcaseName = names.get(lowercaseName);
+
+        return owed.get(correctcaseName);
     }
 
     public Collection<Person> getAllFriends() {
@@ -47,6 +60,10 @@ public class Activity {
 
     public HashMap<String, Person> getOwed() {
         return owed;
+    }
+
+    public HashMap<String, String> getNames() {
+        return names;
     }
 
     @Override
@@ -103,15 +120,27 @@ public class Activity {
     }
 
     public void editOwedName(String name, String newName) {
+        String lowercaseName = name.toLowerCase();
+        String lowercaseNewName = newName.toLowerCase();
+
+        // Remove and add the Person object into owed HashMap after changing name (normal-case)
         Person newPerson = this.owed.remove(name);
         if (newPerson != null) {
             newPerson.editName(newName);
             this.owed.put(newName, newPerson);
         }
+
+        // Remove old name and add the new name into names HashMap
+        this.names.remove(lowercaseName);
+        this.names.put(lowercaseNewName, newName);
     }
 
     public void editOwedAmount(String name, double newAmount) {
-        this.owed.get(name).editAmount(newAmount);
+        // Obtain the name in correct case from name parameter (which may have alphabets of wrong case)
+        String lowercaseName = name.toLowerCase();
+        String correctcaseName = names.get(lowercaseName);
+
+        this.owed.get(correctcaseName).editAmount(newAmount);
     }
 
     /**
@@ -125,7 +154,10 @@ public class Activity {
      * @return {@code true} if the activity is fully paid, {@code false} otherwise
      */
     public boolean isActivityFullyPaid(String name, boolean checkAllPayer) {
-        if (checkAllPayer || payer.getName().equals(name)) {
+        String lowercaseName = name.toLowerCase();
+        String lowercasePayer = payer.getName().toLowerCase();
+
+        if (checkAllPayer || lowercasePayer.equals(lowercaseName)) {
             for (Person friend : owed.values()) {
                 if (!friend.hasPaid()) {
                     return false;
