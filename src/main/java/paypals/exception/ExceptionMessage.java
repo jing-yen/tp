@@ -56,7 +56,9 @@ public enum ExceptionMessage {
             "\n Exiting the program now..."),
     MULTIPLE_AMOUNTS_FOR_ADDEQUAL("INPUT ERROR: Only one amount can be provided."),
     PAYER_NAME_DOES_NOT_EXIST("INPUT ERROR: Payer name entered does not exist."),
-    EXTRA_PARAMETERS("INPUT ERROR: Extra parameters detected, please follow the correct format.");
+    EXTRA_PARAMETERS("INPUT ERROR: Extra parameters detected, please follow the correct format."),
+    MULTIPLE_IDENTIFIER("INPUT ERROR: Multiple Identifiers entered"),
+    INVALID_DELETE_FORMAT("INPUT ERROR: Incorrect delete command format. The format is: delete i/ID");
     private final String message;
 
     ExceptionMessage(String message) {

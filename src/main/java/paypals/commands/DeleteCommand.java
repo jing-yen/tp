@@ -6,8 +6,6 @@ import paypals.exception.PayPalsException;
 import paypals.util.Logging;
 import paypals.util.UI;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Command that handles the deletion of an activity from the activity manager.
@@ -56,7 +54,18 @@ public class DeleteCommand extends Command {
      * @throws PayPalsException If no identifier is found in the command string
      */
     private String getIdentifier() throws PayPalsException {
-        String identifier;
+        int count = command.split("i/").length - 1; // Count occurrences of "a/"
+        if (count > 1) {
+            Logging.logWarning("Multiple 'i/' prefixes found in command");
+            throw new PayPalsException(ExceptionMessage.MULTIPLE_IDENTIFIER);
+        } else if (count < 1) {
+            throw new PayPalsException(ExceptionMessage.NO_IDENTIFIER);
+        }
+        if (!command.startsWith("i/")) {
+            throw new PayPalsException(ExceptionMessage.INVALID_DELETE_FORMAT);
+        }
+        return command.split("i/")[1];
+        /*String identifier;
         // Step 1: Process the description and name
         String descRegex = "(?<=i/)\\S+";
         Pattern descPattern = Pattern.compile(descRegex);
@@ -68,7 +77,7 @@ public class DeleteCommand extends Command {
             Logging.logWarning("No identifier found in command: " + command);
             throw new PayPalsException(ExceptionMessage.NO_IDENTIFIER);
         }
-        return identifier;
+        return identifier;*/
     }
 
     /**
