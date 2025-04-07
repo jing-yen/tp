@@ -36,6 +36,8 @@ public class PayPals {
     public void run() {
         boolean isExit = false;
         Logging.logInfo("Entering main program body. Begin accepting user commands");
+        ui.sayHello();
+        ui.printLine();
         Group.groupSelection();
         while (!isExit) {
             try {
