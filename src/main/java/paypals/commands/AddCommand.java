@@ -180,7 +180,7 @@ public class AddCommand extends Command {
         int dIndex = command.indexOf("d/");
         int nIndex = command.indexOf("n/");
         int fIndex = command.indexOf("f/");
-
+        int aIndex = command.indexOf("a/");
         if (dIndex == -1){
             throw new PayPalsException(ExceptionMessage.NO_DESCRIPTION);
         }
@@ -189,7 +189,18 @@ public class AddCommand extends Command {
             throw new PayPalsException(ExceptionMessage.NO_PAYER);
         }
 
-        if (!(dIndex < nIndex && nIndex < fIndex )) {
+        if (fIndex == -1){
+            throw new PayPalsException(ExceptionMessage.NO_FRIENDS);
+        }
+
+        if (aIndex == -1){
+            throw new PayPalsException(ExceptionMessage.NO_AMOUNT_ENTERED);
+        }
+
+        if (!(dIndex < nIndex && nIndex < fIndex && fIndex < aIndex)) {
+            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_ADD_FORMAT);
+        }
+        if (command.indexOf("d/",dIndex+1) != -1 || command.indexOf("n/",nIndex+1) != -1){
             throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_ADD_FORMAT);
         }
     }
