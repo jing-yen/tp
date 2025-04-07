@@ -131,17 +131,25 @@ public class DeleteCommandTest extends PayPalsTest {
     }
 
     @Test
-    public void execute_identifierWithSpaces_validCommandStillParses() throws PayPalsException {
+    public void execute_identifierWithSpaces_exceptionThrown() throws PayPalsException {
         DeleteCommand command = new DeleteCommand("   i/2   ");
-        command.execute(activityManager, false);
-        assertEquals(1, activityManager.getSize(), "Activity should be deleted successfully despite spaces");
+        try {
+            command.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertException(e, ExceptionMessage.INVALID_DELETE_FORMAT);
+        }
     }
 
     @Test
-    public void execute_identifierWithExtraText_ignoresTrailingGarbage() throws PayPalsException {
+    public void execute_identifierWithExtraText_exceptionThrown() throws PayPalsException {
         DeleteCommand command = new DeleteCommand("i/2 extra text");
-        command.execute(activityManager, false);
-        assertEquals(1, activityManager.getSize(), "Activity should be deleted even with extra trailing text");
+        try {
+            command.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertException(e, ExceptionMessage.INVALID_IDENTIFIER);
+        }
     }
 
     @Test
@@ -169,11 +177,15 @@ public class DeleteCommandTest extends PayPalsTest {
     // Test that if multiple identifiers are provided, the first one is used.
     // For instance, if the command contains "i/1 i/2", then the first activity is deleted.
     @Test
-    public void execute_multipleIdentifier_firstOneUsed() throws PayPalsException {
+    public void execute_multipleIdentifier_exceptionThrown() throws PayPalsException {
         // Issue a delete command with two identifiers.
         DeleteCommand command = new DeleteCommand("i/1 i/2");
-        command.execute(activityManager, false);
-        assertEquals("dinner", activityManager.getActivity(0).getDescription());
+        try {
+            command.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertException(e, ExceptionMessage.MULTIPLE_IDENTIFIER);
+        }
     }
 
     // Test that an identifier with leading zeros is parsed correctly.
@@ -191,10 +203,14 @@ public class DeleteCommandTest extends PayPalsTest {
     // Test that extra trailing text after the identifier is ignored.
     // For example, "i/2 random extra text" should still delete the activity with identifier 2.
     @Test
-    public void execute_validIdentifierWithExtraParameters_success() throws PayPalsException {
+    public void execute_validIdentifierWithExtraParameters_exceptionThrown() throws PayPalsException {
         DeleteCommand command = new DeleteCommand("i/2 random extra text");
-        command.execute(activityManager, false);
-        assertEquals(1, activityManager.getSize(), "Activity should be deleted even with extra trailing parameters.");
+        try {
+            command.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertException(e, ExceptionMessage.INVALID_IDENTIFIER);
+        }
     }
 
     // Test that a command with "i/" but no number throws a NO_IDENTIFIER exception.
@@ -219,7 +235,7 @@ public class DeleteCommandTest extends PayPalsTest {
             command.execute(activityManager, false);
             fail("Expected PayPalsException for identifier with a space after the slash");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.NO_IDENTIFIER.getMessage(), e.getMessage());
+            assertException(e, ExceptionMessage.INVALID_IDENTIFIER);
         }
     }
 
@@ -231,37 +247,46 @@ public class DeleteCommandTest extends PayPalsTest {
             command.execute(activityManager, false);
             fail("Expected PayPalsException for identifier with multiple spaces between i/ and number");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.NO_IDENTIFIER.getMessage(), e.getMessage());
+            assertException(e, ExceptionMessage.INVALID_IDENTIFIER);
         }
     }
 
     // Test that a command containing extra leading text before the identifier still deletes the correct activity.
     // For example, "random text i/1" should match the identifier "1".
     @Test
-    public void execute_identifierNotAtStart_success() throws PayPalsException {
+    public void execute_identifierNotAtStart_exceptionThrown() throws PayPalsException {
         DeleteCommand command = new DeleteCommand("random extra text i/1");
-        command.execute(activityManager, false);
-        // With the first activity deleted, only one activity should remain.
-        assertEquals(1, activityManager.getSize());
+        try {
+            command.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertException(e, ExceptionMessage.INVALID_DELETE_FORMAT);
+        }
     }
 
     // Test that a command with multiple "i/" tokens but with extra text in between uses only the first match.
     // For example, "i/1 some text i/2" should delete the first activity.
     @Test
-    public void execute_multipleIdentifierWithExtraText_firstOneUsed() throws PayPalsException {
+    public void execute_multipleIdentifierWithExtraText_exceptionThrown() throws PayPalsException {
         DeleteCommand command = new DeleteCommand("i/1 some extra text i/2");
-        command.execute(activityManager, false);
-        // After deletion, the remaining activity should be the one that originally had description "d/dinner".
-        assertEquals("dinner", activityManager.getActivity(0).getDescription());
+        try {
+            command.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertException(e, ExceptionMessage.MULTIPLE_IDENTIFIER);
+        }
     }
 
     // Test that a command with trailing whitespace after the identifier is still parsed correctly.
     @Test
-    public void execute_identifierWithTrailingWhitespace_success() throws PayPalsException {
+    public void execute_identifierWithTrailingWhitespace_exceptionThrown() throws PayPalsException {
         DeleteCommand command = new DeleteCommand("i/2   ");
-        command.execute(activityManager, false);
-        // After deleting the second activity, only one should remain.
-        assertEquals(1, activityManager.getSize());
+        try {
+            command.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertException(e, ExceptionMessage.INVALID_IDENTIFIER);
+        }
     }
 
     @Test
