@@ -201,7 +201,12 @@ public class AddCommand extends Command {
         if (fIndex == -1) {
             fIndex = command.indexOf("F/");
         }
-
+        // Get positions of a/ flag
+        int aIndex = command.indexOf("a/");
+        if (aIndex == -1) {
+            aIndex = command.indexOf("A/");
+        }
+      
         if (dIndex == -1){
             throw new PayPalsException(ExceptionMessage.NO_DESCRIPTION);
         }
@@ -210,7 +215,18 @@ public class AddCommand extends Command {
             throw new PayPalsException(ExceptionMessage.NO_PAYER);
         }
 
-        if (!(dIndex < nIndex && nIndex < fIndex )) {
+        if (fIndex == -1){
+            throw new PayPalsException(ExceptionMessage.NO_FRIENDS);
+        }
+
+        if (aIndex == -1){
+            throw new PayPalsException(ExceptionMessage.NO_AMOUNT_ENTERED);
+        }
+
+        if (!(dIndex < nIndex && nIndex < fIndex && fIndex < aIndex)) {
+            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_ADD_FORMAT);
+        }
+        if (command.indexOf("d/",dIndex+1) != -1 || command.indexOf("n/",nIndex+1) != -1){
             throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_ADD_FORMAT);
         }
     }

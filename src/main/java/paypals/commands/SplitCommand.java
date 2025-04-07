@@ -8,6 +8,8 @@ import java.util.Map;
 import paypals.Activity;
 import paypals.ActivityManager;
 import paypals.Person;
+import paypals.exception.ExceptionMessage;
+import paypals.exception.PayPalsException;
 import paypals.util.UI;
 
 /**
@@ -16,7 +18,6 @@ import paypals.util.UI;
  * to settle all outstanding debts among participants with the fewest number of transactions.
  */
 public class SplitCommand extends Command {
-    String command;
 
     /**
      * Constructs a SplitCommand with the given command string.
@@ -33,7 +34,10 @@ public class SplitCommand extends Command {
      * @param activityManager the ActivityManager containing all activities
      * @param enablePrint     whether output should be printed to the UI
      */
-    public void execute(ActivityManager activityManager, boolean enablePrint) {
+    public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
+        if (!command.isEmpty()) {
+            throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
+        }
         UI ui = new UI(enablePrint);
 
         // Maps lowercase strings to their correctcase equivalents (take the most recent name if there is conflict)

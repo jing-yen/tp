@@ -276,12 +276,12 @@ Adds an expense with amount split equally among everyone.
 > * Names of payer  and friends are case-sensitive.  
 > * Amount that each person owe will be rounded to 2 decimal place. 
 
-Format: `add d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`
+Format: `addequal d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`
 
 Example of usage:
 
 ```
-> add d/lunch n/Jane f/John a/28
+> addequal d/lunch n/Jane f/John a/28
 ____________________________________________________________
 Desc: lunch
 Name of payer: Jane
@@ -290,7 +290,7 @@ ____________________________________________________________
 ```
 
 ```
-> add d/tickets n/John f/Betty f/Jane f/Bob a/30.40
+> addequal d/tickets n/John f/Betty f/Jane f/Bob a/30.40
 ____________________________________________________________
 Desc: tickets
 Name of payer: John
@@ -411,7 +411,7 @@ Marks an expense as paid for a specific person.
 Format: `paid n/NAME i/IDENTIFIER`
 
 * Note: The `IDENTIFIER` used in the command is with respect to that person specified in the command.
-  In other words, the `IDENTIFIER` is the number labelled on the activity in the non-fully paid category
+  In other words, the `IDENTIFIER` is the number labelled on the activity in the unsettled category
   when you execute `list n/NAME`.
 
 * Note: If the paid command is used on an activity where the specified `NAME` is the payer for the activity,
@@ -460,7 +460,7 @@ Unmarks an expense as unpaid for a specific person.
 Format: `unpaid n/NAME i/IDENTIFIER`
 
 * Note: The `IDENTIFIER` used in the command is with respect to that person specified in the command.
-  In other words, the `IDENTIFIER` is the number labelled on the activity in the fully paid category when you execute `list n/NAME`.
+  In other words, the `IDENTIFIER` is the number labelled on the activity in the settled category when you execute `list n/NAME`.
 
 * Note: If the unpaid command is used on an activity where the specified `NAME` is the payer for the activity,
   it will mark all participants in the activity as unpaid.

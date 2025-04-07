@@ -1,13 +1,14 @@
 package paypals.commands;
 
 import paypals.ActivityManager;
+import paypals.exception.ExceptionMessage;
+import paypals.exception.PayPalsException;
 
 /**
  * Represents the ExitCommand in the PayPals application.
  * This command signals the termination of the program.
  */
 public class ExitCommand extends Command {
-    String command;
 
     /**
      * Constructs an ExitCommand with the given command string.
@@ -26,7 +27,10 @@ public class ExitCommand extends Command {
      * @param enablePrint     Flag to control whether output should be printed (not used here).
      */
     @Override
-    public void execute(ActivityManager activityManager, boolean enablePrint) {
+    public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
+        if (!command.isEmpty()) {
+            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT,"exit");
+        }
         assert isExit() : "isExit should be true";
     }
 
