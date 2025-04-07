@@ -56,7 +56,10 @@ public class ListCommandTest extends PayPalsTest {
         manager.addActivity(createTestActivity());
         ListCommand command = new ListCommand("n=Bob");
         PayPalsException e = assertThrows(PayPalsException.class, () -> command.execute(manager, true));
-        assertEquals("INPUT ERROR: Correct format should be: list n/NAME", e.getMessage());
+        assertEquals("INPUT ERROR: Correct format should be: \n" +
+                "list\n" +
+                "list n/NAME\n" +
+                "list balance n/NAME", e.getMessage());
     }
 
     @Test
@@ -86,14 +89,6 @@ public class ListCommandTest extends PayPalsTest {
         manager.addActivity(createTestActivity());
         ListCommand command = new ListCommand("BALANCE N/Alice");
         assertDoesNotThrow(() -> command.execute(manager, false));
-    }
-
-    @Test
-    public void execute_balanceCommandInvalidFormat_exceptionThrown() {
-        ActivityManager manager = new ActivityManager();
-        ListCommand command = new ListCommand("balance/Alice");
-        PayPalsException e = assertThrows(PayPalsException.class, () -> command.execute(manager, true));
-        assertEquals("INPUT ERROR: Correct format should be: list balance n/NAME", e.getMessage());
     }
 
     @Test

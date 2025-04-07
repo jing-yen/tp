@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Represents the addequal command in the PayPals application.
@@ -57,6 +59,9 @@ public class AddEqualCommand extends AddCommand {
         if (name.matches(".*\\d.*")) {
             throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
         }
+        if (name.contains("/")) {
+            throw new PayPalsException(ExceptionMessage.SLASH_IN_NAME);
+        }
 
         assert !description.isEmpty() : "Description should not be null or empty";
         assert !name.isEmpty() : "Payer name should not be null or empty";
@@ -85,6 +90,9 @@ public class AddEqualCommand extends AddCommand {
             }
             if (friendName.matches(".*\\d.*")) {
                 throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
+            }
+            if (friendName.contains("/")) {
+                throw new PayPalsException(ExceptionMessage.SLASH_IN_NAME);
             }
 
             validateFriend(name, friendName, names);
@@ -168,6 +176,14 @@ public class AddEqualCommand extends AddCommand {
         int aIndex = command.indexOf("a/");
         if (aIndex == -1) {
             aIndex = command.indexOf("A/");
+        }
+
+        // Check for incorrect flags, with 2 or more characters before the '/' character
+        String regex = "(?<=\\S[a-zA-Z]\\/)([^\\/]+?)(?=\\s+[a-zA-Z]+\\/|$)";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_ADDEQUAL_FORMAT);
         }
 
         if (dIndex == -1){
