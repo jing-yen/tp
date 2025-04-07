@@ -4,12 +4,14 @@ public enum ExceptionMessage {
     INVALID_COMMAND("INPUT ERROR: Invalid command entered" +
             "\nTry these commands: add | addequal | delete | " +
             "edit | list | split | paid | unpaid | change | exit | help"),
-    NO_DESCRIPTION("INPUT ERROR: No activity description"),
-    NO_IDENTIFIER("INPUT ERROR: No identifier entered"),
+    NO_DESCRIPTION("INPUT ERROR: No activity description, d/DESCRIPTION"),
+    NO_IDENTIFIER("INPUT ERROR: No identifier entered, i/IDENTIFIER"),
     INVALID_FORMAT("INPUT ERROR: Correct format should be: "),
     INVALID_IDENTIFIER("INPUT ERROR: Invalid identifier entered, should be an integer: "),
     LIST_BALANCE_FORMAT("INPUT ERROR: Correct format should be: list balance n/NAME"),
     OUTOFBOUNDS_IDENTIFIER("INPUT ERROR: Identifier entered is out of bounds: "),
+    OUTOFBOUNDS_UNSETTLED_IDENTIFIER("INPUT ERROR: Identifier entered is out of bounds in unsettled activities (to clarify use 'list n/NAME' command): "),
+    OUTOFBOUNDS_SETTLED_IDENTIFIER("INPUT ERROR: Identifier entered is out of bounds in settled activities (to clarify use 'list n/NAME' command): "),
     NO_PAYER("INPUT ERROR: No name of payer"),
     PAYER_OWES("LOGIC ERROR: Payer owes himself or herself: "),
     DUPLICATE_FRIEND("LOGIC ERROR: Friend is mentioned twice in an activity: "),
@@ -27,7 +29,7 @@ public enum ExceptionMessage {
     LOAD_ERROR("An activity has been detected to be modified and corrupted, skipping corrupted activity..."),
     EDIT_AMOUNT_WHEN_PAID("INPUT ERROR: Unable to edit amount owed if it has been paid"),
     EDIT_FORMAT_ERROR("INPUT ERROR: Invalid edit format. The format should be one of the following:" +
-            "\n Edit description: edit i/ID d/DESC" +
+            "\n Edit description: edit i/ID d/DESCRIPTION" +
             "\n Edit payer name: edit i/ID n/NEWNAME" +
             "\n Edit friend name: edit i/ID f/NEWNAME o/OLDNAME" +
             "\n Edit friend amount owed: edit i/ID a/NEWAMOUNT o/NAME"),
