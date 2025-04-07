@@ -54,17 +54,17 @@ public class DeleteCommand extends Command {
      * @throws PayPalsException If no identifier is found in the command string
      */
     private String getIdentifier() throws PayPalsException {
-        int count = command.split("i/").length - 1; // Count occurrences of "a/"
+        int count = command.split("(?i)i/").length - 1; // Count occurrences of "a/"
         if (count > 1) {
             Logging.logWarning("Multiple 'i/' prefixes found in command");
             throw new PayPalsException(ExceptionMessage.MULTIPLE_IDENTIFIER);
         } else if (count < 1) {
             throw new PayPalsException(ExceptionMessage.NO_IDENTIFIER);
         }
-        if (!command.startsWith("i/")) {
+        if (!command.toLowerCase().startsWith("i/")) {
             throw new PayPalsException(ExceptionMessage.INVALID_DELETE_FORMAT);
         }
-        return command.split("i/")[1];
+        return command.split("(?i)i/")[1];
         /*String identifier;
         // Step 1: Process the description and name
         String descRegex = "(?<=i/)\\S+";

@@ -149,10 +149,27 @@ public class AddEqualCommand extends AddCommand {
 
     @Override
     public void validatePrefixOrder() throws PayPalsException {
+        // Get positions of d/ flag
         int dIndex = command.indexOf("d/");
+        if (dIndex == -1) {
+            dIndex = command.indexOf("D/");
+        }
+        // Get positions of n/ flag
         int nIndex = command.indexOf("n/");
+        if (nIndex == -1) {
+            nIndex = command.indexOf("N/");
+        }
+        // Get positions of f/ flag
         int fIndex = command.indexOf("f/");
+        if (fIndex == -1) {
+            fIndex = command.indexOf("F/");
+        }
+        // Get positions of a/ flag
         int aIndex = command.indexOf("a/");
+        if (aIndex == -1) {
+            aIndex = command.indexOf("A/");
+        }
+
         if (dIndex == -1){
             throw new PayPalsException(ExceptionMessage.NO_DESCRIPTION);
         }
