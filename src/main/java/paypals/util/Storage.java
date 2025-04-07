@@ -116,6 +116,7 @@ public class Storage {
                     }
                     if (!Character.isDigit(fileName.charAt(i))) {
                         isAllDigit = false;
+                        break;
                     }
                 }
 
