@@ -10,8 +10,10 @@ public enum ExceptionMessage {
     INVALID_IDENTIFIER("INPUT ERROR: Invalid identifier entered, should be an integer: "),
     LIST_BALANCE_FORMAT("INPUT ERROR: Correct format should be: list balance n/NAME"),
     OUTOFBOUNDS_IDENTIFIER("INPUT ERROR: Identifier entered is out of bounds: "),
-    OUTOFBOUNDS_UNSETTLED_IDENTIFIER("INPUT ERROR: Identifier entered is out of bounds in unsettled activities (to clarify use 'list n/NAME' command): "),
-    OUTOFBOUNDS_SETTLED_IDENTIFIER("INPUT ERROR: Identifier entered is out of bounds in settled activities (to clarify use 'list n/NAME' command): "),
+    OUTOFBOUNDS_UNSETTLED_IDENTIFIER("INPUT ERROR: Identifier entered is out of bounds in unsettled activities " +
+                                    "(to clarify use 'list n/NAME' command): "),
+    OUTOFBOUNDS_SETTLED_IDENTIFIER("INPUT ERROR: Identifier entered is out of bounds in settled activities " +
+                                    "(to clarify use 'list n/NAME' command): "),
     NO_PAYER("INPUT ERROR: No name of payer"),
     PAYER_OWES("LOGIC ERROR: Payer owes himself or herself: "),
     DUPLICATE_FRIEND("LOGIC ERROR: Friend is mentioned twice in an activity: "),
