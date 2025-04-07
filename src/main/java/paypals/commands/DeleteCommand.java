@@ -6,8 +6,6 @@ import paypals.exception.PayPalsException;
 import paypals.util.Logging;
 import paypals.util.UI;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Command that handles the deletion of an activity from the activity manager.
