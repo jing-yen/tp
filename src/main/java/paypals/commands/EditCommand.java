@@ -49,6 +49,9 @@ public class EditCommand extends Command {
         if (command == null || command.trim().isEmpty()) {
             throw new PayPalsException(ExceptionMessage.EDIT_FORMAT_ERROR);
         }
+        if (!isValidEditCommandOrder(command)) {
+            throw new PayPalsException(ExceptionMessage.EDIT_FORMAT_ERROR);
+        }
 
         Map<String, String> parameters = parseCommand();
 
@@ -56,7 +59,6 @@ public class EditCommand extends Command {
         if (id == null) {
             throw new PayPalsException(ExceptionMessage.NO_IDENTIFIER);
         }
-
         int activityId = parseActivityId(id, activityManager.getSize() - 1);
         applyEdit(activityManager, ui, activityId, parameters);
     }
@@ -120,6 +122,19 @@ public class EditCommand extends Command {
 
         // If exactly one condition is attempted, return true, else return false.
         return (editCount == 1);
+    }
+
+    public boolean isValidEditCommandOrder(String command) {
+        // Use the existing regex to extract parameters in order.
+        Matcher matcher = COMMAND_PATTERN.matcher(command);
+        StringBuilder keyOrder = new StringBuilder();
+        while (matcher.find()) {
+            keyOrder.append(matcher.group(1));
+        }
+        String order = keyOrder.toString();
+        // Valid orders based on allowed formats.
+        return order.equals("id") || order.equals("in") ||
+                order.equals("ifo") || order.equals("iao");
     }
 
     /**

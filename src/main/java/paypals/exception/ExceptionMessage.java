@@ -55,7 +55,8 @@ public enum ExceptionMessage {
             "save files), please ensure that there are less than 1000 activities for any given group" +
             "\n Exiting the program now..."),
     MULTIPLE_AMOUNTS_FOR_ADDEQUAL("INPUT ERROR: Only one amount can be provided."),
-    PAYER_NAME_DOES_NOT_EXIST("INPUT ERROR: Payer name entered does not exist.");
+    PAYER_NAME_DOES_NOT_EXIST("INPUT ERROR: Payer name entered does not exist."),
+    EXTRA_PARAMETERS("INPUT ERROR: Extra parameters detected, please follow the correct format.");
     private final String message;
 
     ExceptionMessage(String message) {
