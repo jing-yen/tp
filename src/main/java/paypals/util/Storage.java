@@ -98,6 +98,7 @@ public class Storage {
         if (fileName.contains("/")) {
             throw new PayPalsException(ExceptionMessage.INVALID_FILENAME);
         }
+
         try {
             int testNumber = Integer.parseInt(fileName);
             if (testNumber <= 0 || testNumber > groupNames.size()) {
@@ -108,6 +109,19 @@ public class Storage {
             String testFileName = fileName + ".txt";
             String testFilePath = STORAGE_FOLDER_PATH + "/" + testFileName;
             try {
+                boolean isAllDigit = true;
+                for (int i = 0; i < fileName.length(); i++){
+                    if (i == 0 && fileName.charAt(i) == '-') {
+                        continue;
+                    }
+                    if (!Character.isDigit(fileName.charAt(i))) {
+                        isAllDigit = false;
+                    }
+                }
+
+                if (isAllDigit && !fileName.equals("-")) {
+                    throw new PayPalsException(ExceptionMessage.INVALID_FILENAME);
+                }
                 File testFile = new File(testFilePath);
                 testFile.createNewFile();
             } catch (IOException error) {

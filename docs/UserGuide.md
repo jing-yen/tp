@@ -139,6 +139,24 @@ ____________________________________________________________
 ## Command Format: Group Selection Menu
 ### Selecting a group: `select`
 Shows a list of existing groups. Enter the corresponding group name or number after to enter the group. If not, a new group will be created with the input.
+
+Group Naming Convention:
+1. The group name specified must not be a whole number.
+2. Te group name specified must not include the character `/`.
+
+Example of Group Naming Convention:
+```
+> -100000000000000000000000000000000000
+INPUT ERROR: Filename specified must be a valid filename. Please try again.
+> 1000000000000
+INPUT ERROR: Filename specified must be a valid filename. Please try again.
+> test/
+INPUT ERROR: Filename specified must be a valid filename. Please try again.
+> test
+You are currently in the "test" group.
+There are 0 transactions.
+____________________________________________________________
+```
   
 Example of usage:  
 ```
