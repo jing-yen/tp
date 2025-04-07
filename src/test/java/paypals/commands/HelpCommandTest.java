@@ -26,7 +26,11 @@ public class HelpCommandTest {
         System.setOut(new PrintStream(outputStream));
 
         HelpCommand helpCommand = new HelpCommand("");
-        helpCommand.execute(activityManager, true);
+        try {
+            helpCommand.execute(activityManager, true);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         // Convert output to string and assert parts of help message are printed
         String output = outputStream.toString();

@@ -1,5 +1,7 @@
 package paypals.commands;
 
+import paypals.exception.ExceptionMessage;
+import paypals.exception.PayPalsException;
 import paypals.util.UI;
 import paypals.ActivityManager;
 
@@ -26,7 +28,10 @@ public class HelpCommand extends Command {
      * @param enablePrint     Flag to control whether output should be printed.
      */
     @Override
-    public void execute(ActivityManager activityManager, boolean enablePrint) {
+    public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
+        if (!command.isEmpty()){
+            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, "help");
+        }
         UI ui = new UI(enablePrint);
         ui.print("""
                 Help - Available Commands:
