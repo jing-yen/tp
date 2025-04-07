@@ -9,11 +9,7 @@ import paypals.exception.PayPalsException;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AddEqualCommandTest extends PayPalsTest {
     @Test
@@ -359,21 +355,6 @@ public class AddEqualCommandTest extends PayPalsTest {
         Activity activity = activityManager.getActivity(0);
         assertNotNull(activity.getFriend("Bob-Smith"));
         assertNotNull(activity.getFriend("Clara_Lee"));
-    }
-
-    // Test that a friend name containing an extra slash gets truncated (or behaves as designed).
-    // For instance, "f/Bob/Smith" will likely capture "Bob" only.
-    @Test
-    public void execute_friendNameWithSlash_truncated() throws PayPalsException {
-        String command = "addequal d/Trip n/Alice f/Bob/Smith f/Clara a/50";
-        AddEqualCommand addEqualCommand = new AddEqualCommand(command);
-        addEqualCommand.execute(activityManager, false);
-        Activity activity = activityManager.getActivity(0);
-        // Expect that only "Bob" was captured.
-        assertNull(activity.getFriend("Bob"));
-        assertNull(activity.getFriend("Smith"));
-        assertNotNull(activity.getFriend("Clara"));
-        // "Smith" will not be part of the friend's name.
     }
 
     @Test

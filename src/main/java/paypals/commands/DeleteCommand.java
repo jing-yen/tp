@@ -125,10 +125,10 @@ public class DeleteCommand extends Command {
      *   <li>Flags with two or more characters before the '/' are considered invalid (e.g., "ab/", "nn/").</li>
      * </ul>
      *
-     * <p>If an invalid flag is detected, the method throws a {@link PayPalsException} with an appropriate error message.
+     * <p>If an invalid flag is detected, the method throws {@link PayPalsException} with an error message.
      *
-     * @throws PayPalsException if the command string contains invalid flags that do not conform to the expected format.
-     *                          The exception includes the error message defined by {@link ExceptionMessage#INVALID_FORMAT}
+     * @throws PayPalsException if the command string contains invalid flags that do not conform to expected format.
+     *                          The exception includes the error message {@link ExceptionMessage#INVALID_FORMAT}
      *                          and the specific format error code {@code WRONG_DELETE_FORMAT}.
      */
     public void validatePrefixOrder() throws PayPalsException {

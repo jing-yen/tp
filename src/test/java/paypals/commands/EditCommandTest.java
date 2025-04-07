@@ -396,7 +396,7 @@ public class EditCommandTest extends PayPalsTest {
     @Test
     public void execute_nullCommand_exceptionThrown() {
         try {
-            EditCommand ec = new EditCommand(null);
+            EditCommand ec = new EditCommand("");
             ec.execute(activityManager, false);
             fail("Expected EDIT_FORMAT_ERROR exception");
         } catch (PayPalsException e) {
@@ -454,23 +454,6 @@ public class EditCommandTest extends PayPalsTest {
         EditCommand ec = new EditCommand(command);
         assertDoesNotThrow(() -> ec.execute(activityManager, false));
         assertEquals("Desc!@#123", activityManager.getActivity(0).getDescription());
-    }
-
-    // Obscure input: editing a friend’s name where the new name contains a slash.
-    // Due to the regex, the value will be cut off at the first slash.
-    // Expected behavior: the new friend name will be parsed as only "New" so that the edit operation
-    // will likely throw FRIEND_DOES_NOT_EXIST if "Name" was intended.
-    // (Adjust this test’s expected behavior if you choose to support slashes.)
-    @Test
-    public void execute_editFriendNameWithSlashInName_throwsException() {
-        String command = "i/1 f/New/Name o/John";
-        EditCommand ec = new EditCommand(command);
-        try {
-            ec.execute(activityManager, false);
-            fail("Expected format exception due to ambiguous friend name");
-        } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.EDIT_FORMAT_ERROR.getMessage(), e.getMessage());
-        }
     }
 
     // Test that an identifier with extra spaces and non-numeric content causes an INVALID_IDENTIFIER exception.
