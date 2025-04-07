@@ -147,7 +147,7 @@ public class EditCommand extends Command {
             if (payerName.matches(".*\\d.*")) {
                 throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
             }
-            if (activityManager.getActivity(activityId).getFriend(payerName) != null) {
+            if (activityManager.getActivity(activityId).getFriend(payerName.toLowerCase()) != null) {
                 throw new PayPalsException(ExceptionMessage.PAYER_NAME_SAME_AS_FRIEND);
             }
             activityManager.editActivityPayer(activityId, payerName);
@@ -159,13 +159,13 @@ public class EditCommand extends Command {
                 throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
             }
             String oldName = parameters.get("o");
-            if (activityManager.getActivity(activityId).getPayer().getName().equals(friend)) {
+            if (activityManager.getActivity(activityId).getPayer().getName().equalsIgnoreCase(friend)) {
                 throw new PayPalsException(ExceptionMessage.FRIEND_NAME_SAME_AS_PAYER);
             }
-            if (activityManager.getActivity(activityId).getFriend(friend) != null) {
+            if (activityManager.getActivity(activityId).getFriend(friend.toLowerCase()) != null) {
                 throw new PayPalsException(ExceptionMessage.FRIEND_NAME_SAME_AS_ANOTHER_FRIEND);
             }
-            if (activityManager.getActivity(activityId).getFriend(oldName) == null) {
+            if (activityManager.getActivity(activityId).getFriend(oldName.toLowerCase()) == null) {
                 throw new PayPalsException(ExceptionMessage.FRIEND_DOES_NOT_EXIST);
             }
 

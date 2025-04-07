@@ -148,7 +148,8 @@ public class SplitCommand extends Command {
      * @param names             a map containing payer and friend names with their lowercase equivalents
      * @param netOwedMap   the map storing cumulative net owed balances
      */
-    public void addAmountToNetOwedMap(Activity activity, HashMap<String, Double> netOwedMap, HashMap<String, String> names) {
+    public void addAmountToNetOwedMap(Activity activity, HashMap<String, Double> netOwedMap,
+                                      HashMap<String, String> names) {
         String payerName = activity.getPayer().getName();
         String lowercasePayerName = payerName.toLowerCase();
         Collection<Person> allFriends = activity.getAllFriends();
