@@ -61,13 +61,14 @@ The _Sequence Diagrams_ below illustrates how these components interact across t
 1. When the user issues an `add` command — showing parsing, command execution, activity creation, and data persistence.
 2. When the user issues a `list` command — showing command execution and retrieval of activity data.
 3. When the user issues a `split` command — showing how debts are calculated and resolved using in-memory data.
+4. When the user issues a `delete` command — showing how expenses are deleted in the database.
 
 This sequence diagrams below captures the flow from the user's input all the way to command execution and interaction with both memory (`Activity`) and disk (`Storage`), giving a comprehensive overview of the core execution paths in the application.
 
 ![Components Interaction Diagram - Add Command](diagrams/AddCmdSeq.png)
 ![Components Interaction Diagram - List Command](diagrams/ListCmdSeq.png)
 ![Components Interaction Diagram - Split Command](diagrams/SplitCmdSeq.png)
-
+![Components Interaction Diagram - Delete Command](diagrams/DeleteCommand.png)
 
 ### UI Component
 
@@ -173,9 +174,18 @@ The file format for group-specific save files is as follows:
 ```
 DESCRIPTION|PAYER|AMOUNT|HASPAID|FRIEND|AMOUNT|HASPAID...
 ```
+
+Do note that format above is just an example representation, the storage does not actually use the `|` character as the separator. 
+An example of an actual save file is shown below.
+
 ![Sample save file](diagrams/savefile.png)
 
-The following is the sequence diagram for loading data from the save file into the `ActivityManager`.
+The storage would need to load the group that the user has selected during the Group Selection Menu, and then load the data from that group's save file into the `ActivityManager`.
+The following is the sequence diagram for how the data is loaded during group selection.
+
+![Select Group](diagrams/SelectGroup.png)
+
+The sequence diagram below shows how the data is loaded from the save file into the `ActivityManager`.
 
 ![Load Storage](diagrams/StorageLoad.png)
 
@@ -239,7 +249,7 @@ The product aims to provide assistance in simplifying payments by minimising the
 | v2.0    | user                              | edit an expense                                                   | can correct any mistakes I made when entering them          |
 | v2.0    | user                              | add an expense and split the cost equally among multiple people   | don't need to manually calculate individual shares.         |
 | v2.0    | user                              | create a new group                                                | can manage expenses with specific people                    |
-| v2.0     | user                              | delete a group                                                    | discard a group I don't want to track anymore                |
+| v2.0    | user                              | delete a group                                                    | discard a group I don't want to track anymore               |
 
 ### Use cases
 (For all use cases below, the **System** is `Paypals` and the **Actor** is the `user`, unless specified otherwise)

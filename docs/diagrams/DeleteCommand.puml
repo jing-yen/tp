@@ -1,40 +1,61 @@
 @startuml
 'https://plantuml.com/sequence-diagram
-hide footbox
+title Sequence Diagram - Delete Command
+
+actor User
+participant ":UI" as UI
+participant ":PayPals" as PP
+participant ":Parser" as PA
 participant ":DeleteCommand" as DC
 participant ":ActivityManager" as AM
 participant ":Activities" as AC
-participant ":UI" as UI
-[-> DC : execute(activityManager, enablePrint)
+participant ":Storage" as SR
+
+
+
+activate PP
+PP -> UI : readLine()
+activate UI
+User -> UI : "delete i/1"
+UI --> PP : fullCommand
+
+PP -> PA : decodeCommand(...)
+activate PA
+create DC
+PA -> DC : DeleteCommand(...)
+activate DC
+DC --> PA :
+deactivate DC
+PP <-- PA : deleteCommand
+deactivate PA
+PP -> DC : execute(...)
 activate DC
 DC -> DC : getIdentifier()
 activate DC
 DC --> DC : identifier
 deactivate DC
-DC -> DC : getID(identifier, activityManager.getSize())
+DC -> DC : getID(...)
 activate DC
 DC --> DC : id
 deactivate DC
-DC -> AM : deleteActivity(id)
+DC -> AM : deleteActivity(...)
 activate AM
-AM -> AC : remove(id)
+AM -> AC : remove(...)
 activate AC
 AC --> AM
 deactivate AC
 AM --> DC
 deactivate AM
-DC -> UI ** : Ui(enablePrint)
-activate UI
-UI --> DC
-deactivate UI
+
 DC -> UI : print("Expense removed successfully!")
-activate UI
 UI --> DC
+PP <-- DC
+deactivate DC
+
+PP -> SR : save(...)
+activate SR
+SR --> PP
+deactivate SR
+UI --> User
 deactivate UI
-[<- DC
-destroy UI
-
-
-
-
 @enduml

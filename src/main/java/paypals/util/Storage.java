@@ -243,6 +243,8 @@ public class Storage {
             boolean hasPaid = Boolean.parseBoolean(parts[i + 2]);
             if (hasPaid) {
                 hasPaidNames.add(parts[i]);
+            } else if (!parts[i + 2].equals("false")) {
+                throw new PayPalsException(ExceptionMessage.LOAD_ERROR);
             }
             input += owedName + owedAmount;
         }
