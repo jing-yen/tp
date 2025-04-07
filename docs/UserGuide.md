@@ -299,7 +299,6 @@ ____________________________________________________________
 ```
 ### Delete an expense: `delete`
 Deletes an expense.
-> Note: if more than one`IDENTIFIER` is entered, only the first one is regarded.
 
 Format: `delete i/IDENTIFIER`
 

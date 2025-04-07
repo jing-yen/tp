@@ -20,8 +20,8 @@ import java.math.RoundingMode;
  */
 public class AddEqualCommand extends AddCommand {
 
-    private static final String WRONG_ADD_FORMAT =
-            "Format: addequal d/DESCRIPTION n/PAYER f/FRIEND1 f/FRIEND2 ... a/AMOUNT_OWED";
+    private static final String WRONG_ADDEQUAL_FORMAT =
+            "addequal d/DESCRIPTION n/PAYER f/FRIEND1 f/FRIEND2 ... a/AMOUNT_OWED";
     private static final double LARGE_AMOUNT_LIMIT = 10000.0;
     private static final String MONEY_FORMAT = "^-?\\d+(\\.\\d{1,2})?$";
 
@@ -51,7 +51,7 @@ public class AddEqualCommand extends AddCommand {
         if (activityManager.getSize() >= 1000) {
             throw new PayPalsException(ExceptionMessage.MORE_THAN_1000_ACTIVITIES);
         }
-
+        validatePrefixOrder();
         String description = extractValue("d/", ExceptionMessage.NO_DESCRIPTION);
         String name = extractValue("n/", ExceptionMessage.NO_PAYER);
         if (name.matches(".*\\d.*")) {
@@ -145,5 +145,35 @@ public class AddEqualCommand extends AddCommand {
      */
     public boolean isValidAmount(String amountStr) {
         return amountStr.matches(MONEY_FORMAT);
+    }
+
+    @Override
+    public void validatePrefixOrder() throws PayPalsException {
+        int dIndex = command.indexOf("d/");
+        int nIndex = command.indexOf("n/");
+        int fIndex = command.indexOf("f/");
+        int aIndex = command.indexOf("a/");
+        if (dIndex == -1){
+            throw new PayPalsException(ExceptionMessage.NO_DESCRIPTION);
+        }
+
+        if (nIndex == -1){
+            throw new PayPalsException(ExceptionMessage.NO_PAYER);
+        }
+
+        if (fIndex == -1){
+            throw new PayPalsException(ExceptionMessage.NO_FRIENDS);
+        }
+
+        if (aIndex == -1){
+            throw new PayPalsException(ExceptionMessage.NO_AMOUNT_ENTERED);
+        }
+
+        if (!(dIndex < nIndex && nIndex < fIndex && fIndex < aIndex)) {
+            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_ADDEQUAL_FORMAT);
+        }
+        if (command.indexOf("d/",dIndex+1) != -1 || command.indexOf("n/",nIndex+1) != -1){
+            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_ADDEQUAL_FORMAT);
+        }
     }
 }
