@@ -46,6 +46,24 @@ public class DeleteCommandTest extends PayPalsTest {
         }
     }
 
+    @Test
+    public void execute_uppercaseIdentifier_correctlyUpdatesNetOwedMap() throws PayPalsException {
+        DeleteCommand command = new DeleteCommand("I/2");
+        command.execute(activityManager, false);
+        HashMap<String, Double> netOwedMap = getNetOwedMap();
+        for (String key : netOwedMap.keySet()) {  //ensure set up is correct
+            if (key.equals("john")) {
+                assertEquals(50.0, netOwedMap.get(key), 0.001, "For john expected 50.0");
+            } else if (key.equals("jane")) {
+                assertEquals(-30.0, netOwedMap.get(key), 0.001, "For jane expected -30.0");
+            } else if (key.equals("jake")) {
+                assertEquals(-20.0, netOwedMap.get(key), 0.001, "For jake expected -20.0");
+            } else {
+                fail("Unexpected key in netOwedMap: " + key);
+            }
+        }
+    }
+
     private HashMap<String, Double> getNetOwedMap() {
         HashMap<String, Double> netOwedMap = new HashMap<>();
         int activitiesSize = activityManager.getSize();

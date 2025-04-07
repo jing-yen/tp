@@ -88,7 +88,7 @@ public class ActivityManager {
     public int getIdentifierFromUnpaidList(Activity activity, String name) {
         ArrayList<Activity> personActivities = getActivities(name, activities);
         int identifier = 1;
-        for (Activity personActivity : activities) {
+        for (Activity personActivity : personActivities) {
             if (!personActivity.isActivityFullyPaid(name, false)) {
                 if (personActivity.equals(activity)) {
                     return identifier;

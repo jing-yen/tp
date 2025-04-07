@@ -42,6 +42,31 @@ public class AddEqualCommandTest extends PayPalsTest {
     }
 
     @Test
+    public void execute_uppercaseIdentifier_correctlyUpdatesNetOwedMap() throws PayPalsException {
+        String command = "addequal D/Trip N/Eve F/Frank F/Gina A/30";
+        AddEqualCommand addEqualCommand = new AddEqualCommand(command);
+        addEqualCommand.execute(activityManager, false);
+
+        assertEquals(1, activityManager.getSize());
+        Activity activity = activityManager.getActivity(0);
+        assertEquals("Trip", activity.getDescription());
+        assertEquals("Eve", activity.getPayer().getName());
+
+        Person payer = activity.getPayer();
+        assertEquals(-20, payer.getAmount());
+        ArrayList<Person> friends = new ArrayList<>(activity.getAllFriends());
+        assertEquals(2, friends.size());
+
+        for (Person person : friends) {
+            if (person.getName().equals("Frank")) {
+                assertEquals(10, person.getAmount());
+            } else if (person.getName().equals("Gina")) {
+                assertEquals(10, person.getAmount());
+            }
+        }
+    }
+
+    @Test
     public void execute_activityWithZeroAmount_exceptionThrown() {
         String command = "addequal d/Meeting n/Jake f/Karen a/0";
         AddEqualCommand addEqualCommand = new AddEqualCommand(command);

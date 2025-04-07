@@ -55,6 +55,17 @@ class UnpaidCommandTest extends PayPalsTest {
     }
 
     @Test
+    public void testMarkAllAsUnpaidWithUppercaseParameters_everyoneMarkedAsPaid_everyoneMarkedAsUnpaid() {
+        callCommand(new PaidCommand("N/John I/2"));
+        callCommand(new UnpaidCommand("N/John I/1"));
+        Collection<Person> friends = activityManager.getActivity(1).getAllFriends();
+        for (Person friend : friends) {
+            assertFalse(friend.hasPaid(), friend.getName()
+                    + " should have been marked as unpaid");
+        }
+    }
+
+    @Test
     public void testUnpaidCommand_alreadyUnpaidFriend_throwsException() {
         callCommand(new UnpaidCommand("n/Jane i/1"));
         try {

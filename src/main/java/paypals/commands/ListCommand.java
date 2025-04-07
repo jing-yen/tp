@@ -48,7 +48,7 @@ public class ListCommand extends Command {
     public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
         if (command.isEmpty()) {
             printAllActivities(activityManager);
-        } else if (command.startsWith("balance")) {
+        } else if (command.toLowerCase().startsWith("balance")) {
             printBalance(activityManager);
         } else {
             printPersonActivities(activityManager);
