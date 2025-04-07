@@ -12,7 +12,9 @@ activate pp
 pp -> ui : readLine()
 activate ui
 user -> ui : "list"
+ui --> user
 ui --> pp : fullCommand
+deactivate ui
 
 pp -> parser : decodeCommand(...)
 activate parser
@@ -20,6 +22,7 @@ parser -> listCmd **: ListCommand(...)
 activate listCmd
 listCmd --> parser :
 deactivate listCmd
+parser --> pp
 deactivate parser
 
 pp -> listCmd : execute(...)
@@ -30,10 +33,13 @@ mgr --> listCmd :
 deactivate mgr
 
 listCmd -> ui : print activities
+activate ui
 ui --> listCmd :
+deactivate ui
 
 listCmd --> pp
 deactivate listCmd
-ui --> user
-deactivate ui
+
+destroy listCmd
+
 @enduml

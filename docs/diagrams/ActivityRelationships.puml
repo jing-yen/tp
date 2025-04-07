@@ -46,7 +46,7 @@ class Logging {
     + logInfo(message: String): void
 }
 
-ActivityManager "1" *-- "*" Activity
+ActivityManager "1" o-- "*" Activity
 Activity --> "1" Person : payer
 Activity --> "*" Person : owedFriends
 Person --> "*" Activity : paysFor
