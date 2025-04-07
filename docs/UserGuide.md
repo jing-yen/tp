@@ -103,6 +103,7 @@ Below is a quick reference to all the commands in both stages, in the group sele
 - Items in square brackets are optional. e.g `n/NAME [t/TAG]` can be used as `n/John t/friend` or as `n/John`.
 - Items with ... after them can be used multiple times including zero times. e.g. `[t/TAG]`... can be used as (i.e. 0 times), `t/friend, t/friend t/family` etc.
 - Do not execute commands that belong to the Group Selection Menu when inside a group and vice versa. Both stages use different commands.
+- All terminals on mainstream OS support basic ASCII characters, but note that not all OS can support Unicode.
 
 ### Expense Tracking
 
