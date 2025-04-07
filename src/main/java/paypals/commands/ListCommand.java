@@ -90,7 +90,7 @@ public class ListCommand extends Command {
 
         if (personActivities.isEmpty()) {
             Logging.logWarning("Payer could not be found");
-            throw new PayPalsException(ExceptionMessage.NO_PAYER);
+            throw new PayPalsException(ExceptionMessage.PAYER_NAME_DOES_NOT_EXIST);
         }
 
         ArrayList<Activity> paid = new ArrayList<>();

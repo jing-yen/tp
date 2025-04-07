@@ -124,7 +124,7 @@ public class EditCommandTest extends PayPalsTest {
             ec.execute(activityManager, false);
             fail();
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.INVALID_IDENTIFIER.getMessage(), e.getMessage());
+            assertEquals(ExceptionMessage.INVALID_IDENTIFIER.getMessage() + "test", e.getMessage());
         }
     }
 
@@ -136,7 +136,7 @@ public class EditCommandTest extends PayPalsTest {
             ec.execute(activityManager, false);
             fail();
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER.getMessage(), e.getMessage());
+            assertEquals(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER.getMessage() + "-1", e.getMessage());
         }
     }
 
@@ -461,7 +461,7 @@ public class EditCommandTest extends PayPalsTest {
             ec.execute(activityManager, false);
             fail("Expected OUTOFBOUNDS_IDENTIFIER exception due to identifier overwrite");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER.getMessage(), e.getMessage());
+            assertEquals(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER.getMessage() + "2", e.getMessage());
         }
     }
 
@@ -474,7 +474,7 @@ public class EditCommandTest extends PayPalsTest {
             ec.execute(activityManager, false);
             fail("Expected INVALID_IDENTIFIER exception");
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.INVALID_IDENTIFIER.getMessage(), e.getMessage());
+            assertEquals(ExceptionMessage.INVALID_IDENTIFIER.getMessage() + "abc", e.getMessage());
         }
     }
 

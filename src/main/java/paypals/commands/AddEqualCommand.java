@@ -66,7 +66,7 @@ public class AddEqualCommand extends AddCommand {
         String friendsPart = command.split("a/")[0];
         String[] friends = friendsPart.split("\\s+f/");
         if (friends.length <= 1) {
-            throw new PayPalsException(ExceptionMessage.NO_FRIENDS, null);
+            throw new PayPalsException(ExceptionMessage.NO_FRIENDS);
         }
         friends = Arrays.copyOfRange(friends, 1, friends.length);  // remove command part
 

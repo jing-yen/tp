@@ -346,4 +346,15 @@ public class AddEqualCommandTest extends PayPalsTest {
             assertEquals(ExceptionMessage.NUMBERS_IN_NAME.getMessage(), e.getMessage());
         }
     }
+
+    @Test
+    public void execute_noFriends_throwsException() {
+        AddEqualCommand cmd = new AddEqualCommand("d/dinner n/Bob a/28");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.NO_FRIENDS.getMessage(), e.getMessage());
+        }
+    }
 }
