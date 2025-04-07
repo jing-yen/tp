@@ -95,7 +95,7 @@ Below is a quick reference to all the commands in both stages, in the group sele
 | Change to group selection menu                  | `change`                                                              |
 | Close the application                           | `exit`                                                                |
 
-# Features 
+# Features
 
 ## Notes on the general command format:
 - Words in UPPER_CASE are the parameters to be supplied by the user. e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John`.
@@ -201,7 +201,7 @@ Please select a group number from the following:
 ## Command Format: Inside A Group
 
 Note: 
-* If more than one command keyword (`add`, `delete`, `edit`, etc) is specified, only the first one will be used and the rest will be ignored.
+* If more than one command keyword (`add`, `delete`, `edit`, etc.) is specified, only the first one will be used and the rest will be ignored.
 * For `edit` commands, if a parameter (e.g. `i/`) is specified more than one time when it does not require it to be specified multiple times, the latest one will overwrite the earlier ones. Whereas for other commands, only the first one will be used while the later ones get ignored. 
   * Example: `add addequal split d/Lunch n/John f/Farah a/50` will be treated as `add d/Lunch n/John f/Farah a/50`.
 * Commands that require the `i/IDENTIFIER` parameter refer to the number identifiers of the activities when you execute the `list` command, except for `paid` and `unpaid` commands. (Refer to [paid](#mark-as-paid-when-settled-paid) and [unpaid](#unmark-as-paid-unpaid) for more details)
@@ -709,7 +709,7 @@ ____________________________________________________________
 ```
 
 This could be potentially caused by 
-* Misspelled commands (e.g. lsit instead of list)
+* Misspelled commands (e.g. list instead of list)
 * Absence of required parameters for the command
 * Absence of parameter prefixes (e.g. n/)
 * User input does not follow command format

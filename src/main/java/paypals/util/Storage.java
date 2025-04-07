@@ -86,7 +86,7 @@ public class Storage {
 
     /**
      * Checks if a given filename is valid by attempting to create a corresponding file in the storage folder.
-     * The file is created temporarily to validate the filename and then deleted.
+     * If the file name is valid but does not exist, it is created.
      *
      * @param fileName the name of the file to validate (without the file extension)
      * @return true if the file can be successfully created.
