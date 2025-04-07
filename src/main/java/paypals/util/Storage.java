@@ -189,6 +189,9 @@ public class Storage {
             } catch (PayPalsException e) {
                 throw new PayPalsException(ExceptionMessage.LOAD_ERROR);
             }
+            if (activityManager.getSize() >= 1000) {
+                throw new PayPalsException(ExceptionMessage.MORE_THAN_1000_ACTIVITIES);
+            }
         }
         scanner.close();
         Logging.logInfo("Data has been loaded from save file");
