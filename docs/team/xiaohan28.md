@@ -46,14 +46,20 @@ Given below are my contributions to the project.
     - Updated display formats for command responses and enhanced error messaging in the UI class.
 
 
-* **User Guide Improvements**
-    * **What it does**: Revised all command examples to reflect clearer outputs, added a detailed Help section, included a Glossary to define key terms, and incorporated Command Tips to assist users. (Pull Request [#122](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/122))
+* **User Guide**
+    * **Improvements**: 
+      * Revised all command examples to reflect clearer outputs. (Pull Request [#179](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/179))
+      * Added a detailed Help section.
+      * Included a Glossary to define key terms and incorporated Command Tips to assist users. (Pull Request [#122](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/122))
     * **Justification**: Enhancing the User Guide ensures that new users can quickly understand and effectively use the application.
     * **Highlights**: Added the new `list balance` information and improved troubleshooting guidance for command mistakes.
 
 
-* **Developer Guide Enhancements**
-    * **What it does**: Added sequence diagrams that illustrate interactions among key components (commands, storage, UI, etc.) (Pull Request [#117](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/117)) and a class diagram for the activity component (showing interactions between `Activity`, `ActivityManager`, `Person`, and `Logging`). (Pull Request [#94](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/94))
+* **Developer Guide**
+    * **Improvements**: 
+      * Added sequence diagrams that illustrate interactions among key components (commands, storage, UI, etc.) (Pull Request [#117](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/117)) 
+      * Added class diagrams for the activity component (showing interactions between `Activity`, `ActivityManager`, `Person`, and `Logging`). (Pull Request [#94](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/94))
+      * Improved on all class and sequence diagrams to make it less complex a readable. (Pull Request [#179](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/179))
     * **Justification**: Detailed diagrams provide clarity on system architecture, making it easier for future development and maintenance.
     * **Highlights**: Comprehensive coverage of the activity component section and clear documentation of internal workflows.
 

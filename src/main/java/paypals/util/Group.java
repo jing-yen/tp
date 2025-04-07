@@ -34,8 +34,6 @@ public class Group {
      * between selecting or deleting a group.
      */
     public static void groupSelection() {
-        ui.sayHello();
-        ui.printLine();
         boolean groupSelected = false;
 
         while (!groupSelected) {
