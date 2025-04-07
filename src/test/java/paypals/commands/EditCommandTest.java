@@ -153,7 +153,7 @@ public class EditCommandTest extends PayPalsTest {
             ec.execute(activityManager, false);
             fail();
         } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.NO_IDENTIFIER.getMessage(), e.getMessage());
+            assertEquals(ExceptionMessage.EDIT_FORMAT_ERROR.getMessage(), e.getMessage());
         }
     }
 
@@ -323,15 +323,6 @@ public class EditCommandTest extends PayPalsTest {
         assertEquals("NewJane", activityManager.getActivity(0).getPayer().getName());
     }
 
-    // Test that the order of parameters does not matter (e.g., identifier can come after the edit parameter).
-    @Test
-    public void execute_editPayerOrderIrrelevant_success() {
-        String command = "n/AnotherJane i/1";
-        EditCommand ec = new EditCommand(command);
-        assertDoesNotThrow(() -> ec.execute(activityManager, false));
-        assertEquals("AnotherJane", activityManager.getActivity(0).getPayer().getName());
-    }
-
     // Test when editing a friend's name, if the 'o/' (old friend name)
     // parameter is missing, EDIT_FORMAT_ERROR is thrown.
     @Test
@@ -438,16 +429,6 @@ public class EditCommandTest extends PayPalsTest {
         }
     }
 
-    // Test that duplicate description parameters result in the last one being used.
-    @Test
-    public void execute_duplicateDescriptionParameters_lastOneWins() {
-        String command = "i/1 d/FirstDesc d/SecondDesc";
-        EditCommand ec = new EditCommand(command);
-        assertDoesNotThrow(() -> ec.execute(activityManager, false));
-        // The second occurrence should overwrite the first.
-        assertEquals("SecondDesc", activityManager.getActivity(0).getDescription());
-    }
-
     // Test that commands with tabs and newlines as whitespace are parsed correctly.
     @Test
     public void execute_withTabsAndNewlines_success() {
@@ -492,20 +473,6 @@ public class EditCommandTest extends PayPalsTest {
         }
     }
 
-    // Test duplicate identifier parameters: later identifier overwrites earlier one.
-    // Here, "i/2" is used, but if only one activity exists, that should be out of bounds.
-    @Test
-    public void execute_duplicateIdentifierOverwritesPrevious_exceptionThrown() {
-        String command = "i/1 i/2 d/UpdatedDesc";
-        EditCommand ec = new EditCommand(command);
-        try {
-            ec.execute(activityManager, false);
-            fail("Expected OUTOFBOUNDS_IDENTIFIER exception due to identifier overwrite");
-        } catch (PayPalsException e) {
-            assertEquals(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER.getMessage() + "2", e.getMessage());
-        }
-    }
-
     // Test that an identifier with extra spaces and non-numeric content causes an INVALID_IDENTIFIER exception.
     @Test
     public void execute_identifierWithSpaces_exceptionThrown() {
@@ -526,18 +493,6 @@ public class EditCommandTest extends PayPalsTest {
         EditCommand ec = new EditCommand(command);
         assertDoesNotThrow(() -> ec.execute(activityManager, false));
         assertEquals(25.50, activityManager.getActivity(0).getFriend("John").getAmount(), 0.001);
-    }
-
-    // Test duplicate friend name edit parameters: the last occurrence should win.
-    @Test
-    public void execute_duplicateFriendNameParametersLastOneWins_success() {
-        // Both friend edit parameters are provided twice. The map will retain the last values.
-        String command = "i/1 f/NewName o/John f/AnotherName o/John";
-        EditCommand ec = new EditCommand(command);
-        assertDoesNotThrow(() -> ec.execute(activityManager, false));
-        // Verify that the friend "John" has been changed to "AnotherName".
-        assertNull(activityManager.getActivity(0).getFriend("John"));
-        assertNotNull(activityManager.getActivity(0).getFriend("AnotherName"));
     }
 
     @Test
@@ -592,6 +547,83 @@ public class EditCommandTest extends PayPalsTest {
             fail();
         } catch (PayPalsException e) {
             assertEquals(ExceptionMessage.FRIEND_NAME_SAME_AS_ANOTHER_FRIEND.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_editWithMultipleIdentifiers_throwsException() {
+        EditCommand cmd = new EditCommand("i/1 i/2 f/Jim o/John");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.EDIT_FORMAT_ERROR.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_editWithMultipleDescriptions_throwsException() {
+        EditCommand cmd = new EditCommand("i/1 d/test1 d/test2");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.EDIT_FORMAT_ERROR.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_editWithMultiplePayers_throwsException() {
+        EditCommand cmd = new EditCommand("i/1 n/Bob n/Bobby");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.EDIT_FORMAT_ERROR.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_editWithMultipleFriends_throwsException() {
+        EditCommand cmd = new EditCommand("i/1 f/Bobby f/Bob o/John");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.EDIT_FORMAT_ERROR.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_editWithMultipleAmounts_throwsException() {
+        EditCommand cmd = new EditCommand("i/1 a/10 a/20 o/John");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.EDIT_FORMAT_ERROR.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_editWithWrongOrder_throwsException() {
+        EditCommand cmd = new EditCommand("o/John i/1 f/Bob");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.EDIT_FORMAT_ERROR.getMessage(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void execute_editMultipleFeatures_throwsException() {
+        EditCommand cmd = new EditCommand("i/1 d/test n/Bob");
+        try {
+            cmd.execute(activityManager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.EDIT_FORMAT_ERROR.getMessage(), e.getMessage());
         }
     }
 }

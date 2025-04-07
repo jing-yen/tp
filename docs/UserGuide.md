@@ -95,7 +95,7 @@ Below is a quick reference to all the commands in both stages, in the group sele
 | Change to group selection menu                  | `change`                                                              |
 | Close the application                           | `exit`                                                                |
 
-# Features 
+# Features
 
 ## Notes on the general command format:
 - Words in UPPER_CASE are the parameters to be supplied by the user. e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John`.=
@@ -201,7 +201,7 @@ Please select a group number from the following:
 ## Command Format: Inside A Group
 
 Note: 
-* If more than one command keyword (`add`, `delete`, `edit`, etc) is specified, only the first one will be used and the rest will be ignored.
+* If more than one command keyword (`add`, `delete`, `edit`, etc.) is specified, only the first one will be used and the rest will be ignored.
 * For `edit` commands, if a parameter (e.g. `i/`) is specified more than one time when it does not require it to be specified multiple times, the latest one will overwrite the earlier ones. Whereas for other commands, only the first one will be used while the later ones get ignored. 
   * Example: `add addequal split d/Lunch n/John f/Farah a/50` will be treated as `add d/Lunch n/John f/Farah a/50`.
 * Commands that require the `i/IDENTIFIER` parameter refer to the number identifiers of the activities when you execute the `list` command, except for `paid` and `unpaid` commands. (Refer to [paid](#mark-as-paid-when-settled-paid) and [unpaid](#unmark-as-paid-unpaid) for more details)
@@ -276,12 +276,12 @@ Adds an expense with amount split equally among everyone.
 > * Names of payer  and friends are case-sensitive.  
 > * Amount that each person owe will be rounded to 2 decimal place. 
 
-Format: `add d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`
+Format: `addequal d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`
 
 Example of usage:
 
 ```
-> add d/lunch n/Jane f/John a/28
+> addequal d/lunch n/Jane f/John a/28
 ____________________________________________________________
 Desc: lunch
 Name of payer: Jane
@@ -290,7 +290,7 @@ ____________________________________________________________
 ```
 
 ```
-> add d/tickets n/John f/Betty f/Jane f/Bob a/30.40
+> addequal d/tickets n/John f/Betty f/Jane f/Bob a/30.40
 ____________________________________________________________
 Desc: tickets
 Name of payer: John
@@ -411,7 +411,7 @@ Marks an expense as paid for a specific person.
 Format: `paid n/NAME i/IDENTIFIER`
 
 * Note: The `IDENTIFIER` used in the command is with respect to that person specified in the command.
-  In other words, the `IDENTIFIER` is the number labelled on the activity in the non-fully paid category
+  In other words, the `IDENTIFIER` is the number labelled on the activity in the unsettled category
   when you execute `list n/NAME`.
 
 * Note: If the paid command is used on an activity where the specified `NAME` is the payer for the activity,
@@ -460,7 +460,7 @@ Unmarks an expense as unpaid for a specific person.
 Format: `unpaid n/NAME i/IDENTIFIER`
 
 * Note: The `IDENTIFIER` used in the command is with respect to that person specified in the command.
-  In other words, the `IDENTIFIER` is the number labelled on the activity in the fully paid category when you execute `list n/NAME`.
+  In other words, the `IDENTIFIER` is the number labelled on the activity in the settled category when you execute `list n/NAME`.
 
 * Note: If the unpaid command is used on an activity where the specified `NAME` is the payer for the activity,
   it will mark all participants in the activity as unpaid.
@@ -709,7 +709,7 @@ ____________________________________________________________
 ```
 
 This could be potentially caused by 
-* Misspelled commands (e.g. lsit instead of list)
+* Misspelled commands (e.g. list instead of list)
 * Absence of required parameters for the command
 * Absence of parameter prefixes (e.g. n/)
 * User input does not follow command format

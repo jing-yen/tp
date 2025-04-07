@@ -83,7 +83,7 @@ class PaidCommandTest extends PayPalsTest {
         try {
             callCommand(new PaidCommand("n/Bob i/1"));
         } catch (Exception e) {
-            assertException(e, ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
+            assertException(e, ExceptionMessage.OUTOFBOUNDS_UNSETTLED_IDENTIFIER);
         }
     }
 
@@ -92,7 +92,7 @@ class PaidCommandTest extends PayPalsTest {
         try {
             callCommand(new PaidCommand("n/John i/-1"));
         } catch (Exception e) {
-            assertException(e, ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
+            assertException(e, ExceptionMessage.OUTOFBOUNDS_UNSETTLED_IDENTIFIER);
         }
     }
 
@@ -101,7 +101,7 @@ class PaidCommandTest extends PayPalsTest {
         try {
             callCommand(new PaidCommand("n/John i/0"));
         } catch (Exception e) {
-            assertException(e, ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
+            assertException(e, ExceptionMessage.OUTOFBOUNDS_UNSETTLED_IDENTIFIER);
         }
     }
 

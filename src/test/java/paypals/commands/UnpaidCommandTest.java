@@ -30,7 +30,7 @@ class UnpaidCommandTest extends PayPalsTest {
         try {
             callCommand(new UnpaidCommand("unpaid n/Jane i/2"));
         } catch (Exception e) {
-            assertException(e, ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
+            assertException(e, ExceptionMessage.OUTOFBOUNDS_SETTLED_IDENTIFIER);
         }
     }
 
@@ -99,7 +99,7 @@ class UnpaidCommandTest extends PayPalsTest {
         try {
             callCommand(new UnpaidCommand("n/Jane i/1")); // Again = out of bounds
         } catch (Exception e) {
-            assertException(e, ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
+            assertException(e, ExceptionMessage.OUTOFBOUNDS_SETTLED_IDENTIFIER);
         }
     }
 
@@ -108,7 +108,7 @@ class UnpaidCommandTest extends PayPalsTest {
         try {
             callCommand(new UnpaidCommand("n/Jane i/-1"));
         } catch (Exception e) {
-            assertException(e, ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
+            assertException(e, ExceptionMessage.OUTOFBOUNDS_SETTLED_IDENTIFIER);
         }
     }
 
@@ -117,7 +117,7 @@ class UnpaidCommandTest extends PayPalsTest {
         try {
             callCommand(new UnpaidCommand("n/Jane i/0"));
         } catch (Exception e) {
-            assertException(e, ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
+            assertException(e, ExceptionMessage.OUTOFBOUNDS_SETTLED_IDENTIFIER);
         }
     }
 

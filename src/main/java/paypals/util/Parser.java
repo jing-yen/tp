@@ -64,13 +64,13 @@ public class Parser {
             case "list":
                 return new ListCommand(parameters);
             case "split":
-                return new SplitCommand("");
+                return new SplitCommand(parameters);
             case "paid":
                 return new PaidCommand(parameters);
             case "exit":
-                return new ExitCommand("");
+                return new ExitCommand(parameters);
             case "help":
-                return new HelpCommand("");
+                return new HelpCommand(parameters);
             case "edit":
                 return new EditCommand(parameters);
             case "unpaid":
