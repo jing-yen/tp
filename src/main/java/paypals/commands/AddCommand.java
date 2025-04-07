@@ -109,6 +109,10 @@ public class AddCommand extends Command {
             throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
         }
 
+        if (name.contains("/")) {
+            throw new PayPalsException(ExceptionMessage.SLASH_IN_NAME);
+        }
+
         assert !description.isEmpty() : "Description should not be null or empty";
         assert !name.isEmpty() : "Payer name should not be null or empty";
 
@@ -127,6 +131,10 @@ public class AddCommand extends Command {
                     throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_ADD_FORMAT);
                 }
                 double oweAmount;
+
+                if (oweName.contains("/")) {
+                    throw new PayPalsException(ExceptionMessage.SLASH_IN_NAME);
+                }
 
                 try {
                     oweAmount = Double.parseDouble(parameters[1]);

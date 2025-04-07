@@ -59,6 +59,9 @@ public class AddEqualCommand extends AddCommand {
         if (name.matches(".*\\d.*")) {
             throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
         }
+        if (name.contains("/")) {
+            throw new PayPalsException(ExceptionMessage.SLASH_IN_NAME);
+        }
 
         assert !description.isEmpty() : "Description should not be null or empty";
         assert !name.isEmpty() : "Payer name should not be null or empty";
@@ -87,6 +90,9 @@ public class AddEqualCommand extends AddCommand {
             }
             if (friendName.matches(".*\\d.*")) {
                 throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
+            }
+            if (friendName.contains("/")) {
+                throw new PayPalsException(ExceptionMessage.SLASH_IN_NAME);
             }
 
             validateFriend(name, friendName, names);
