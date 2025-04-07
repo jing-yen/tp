@@ -42,7 +42,7 @@ PayPals is a CLI-based application that aims to provide assistance in simplifyin
 
 ## Quick Start
 
-1. Ensure that you have Java 17 installed on your computer. Mac users can install the JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html)
+1. Ensure that you have Java 17 installed on your computer. Mac users can install the JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 2. Download the latest .jar file from the [Releases page](https://github.com/AY2425S2-CS2113-T13-2/tp/releases).
 3. Copy the file to the folder you want to use as the home folder for your PayPals application.
 4. Open a command terminal, cd into the folder you put the jar file in, and use the following command to run the application:
@@ -99,9 +99,10 @@ Below is a quick reference to all the commands in both stages, in the group sele
 
 ## Notes on the general command format:
 - Words in UPPER_CASE are the parameters to be supplied by the user. e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John`.
-  - Parameters are case-insensitive and cannot contain the symbol `/`.
-- Items in square brackets are optional. e.g. `n/NAME [t/TAG]` can be used as `n/John t/friend` or as `n/John`.
+- Commands are case-insensitive and cannot contain the symbol `/`.
+- Items in square brackets are optional. e.g `n/NAME [t/TAG]` can be used as `n/John t/friend` or as `n/John`.
 - Items with ... after them can be used multiple times including zero times. e.g. `[t/TAG]`... can be used as (i.e. 0 times), `t/friend, t/friend t/family` etc.
+- Do not execute commands that belong to the Group Selection Menu when inside a group and vice versa. Both stages use different commands.
 
 ### Expense Tracking
 
@@ -115,7 +116,7 @@ When it’s time to split the total bill, the app simplifies the process by calc
 
 PayPals data is saved in the storage automatically after any command that changes the data. There is no need to save manually.
 The file is also created automatically if it does not exist.
-Note: Do not edit any of the data files manually as it will result in corrupted files. Also do not add more than 1000 transactions for any given group.
+Note: Do not edit or rename any of the data files manually as it will result in corrupted files. Also do not add more than 1000 transactions for any given group.
 
 ### Groups
 
@@ -204,8 +205,6 @@ Note:
 * For `edit` commands, if a parameter (e.g. `i/`) is specified more than one time when it does not require it to be specified multiple times, the latest one will overwrite the earlier ones. Whereas for other commands, only the first one will be used while the later ones get ignored. 
   * Example: `add addequal split d/Lunch n/John f/Farah a/50` will be treated as `add d/Lunch n/John f/Farah a/50`.
 * Commands that require the `i/IDENTIFIER` parameter refer to the number identifiers of the activities when you execute the `list` command, except for `paid` and `unpaid` commands. (Refer to [paid](#mark-as-paid-when-settled-paid) and [unpaid](#unmark-as-paid-unpaid) for more details)
-* The commands in this section can only be executed when inside a group. The commands will not be executed if used during the group selection menu.
-* The commands are case-insensitive.
 
 ### Viewing help: `help`
 

@@ -12,8 +12,10 @@ participant "activity:Activity" as activity
 activate pp
 pp -> ui : readLine()
 activate ui
-user -> ui : enterCommand("split")
+user -> ui : "split"
 ui --> user
+ui --> pp : fullCommand
+deactivate ui
 pp -> parser : decodeCommand(...)
 activate parser
 parser -> splitCmd **: SplitCommand(...)
@@ -41,9 +43,12 @@ activity --> splitCmd :
 deactivate activity
 
 splitCmd -> ui : print transactions
+activate ui
 ui --> splitCmd :
+deactivate ui
 splitCmd --> pp
 deactivate splitCmd
-ui --> user :
-deactivate ui
+
+destroy splitCmd
+
 @enduml
