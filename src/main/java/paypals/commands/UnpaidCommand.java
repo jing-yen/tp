@@ -20,7 +20,7 @@ import static paypals.ActivityManager.getActivities;
  */
 public class UnpaidCommand extends Command {
 
-    private static final String WRONG_PAID_FORMAT = "unpaid n/NAME i/IDENTIFIER";
+    private static final String WRONG_UNPAID_FORMAT = "unpaid n/NAME i/IDENTIFIER";
 
     /**
      * Constructs an UnpaidCommand with the given command string.
@@ -72,7 +72,7 @@ public class UnpaidCommand extends Command {
         Matcher matcher = pattern.matcher(command);
 
         if (!matcher.matches() || matcher.groupCount() != 2) {
-            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_PAID_FORMAT);
+            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_UNPAID_FORMAT);
         }
 
         assert matcher.group(1) != null : "Friend name should not be null";
@@ -134,6 +134,8 @@ public class UnpaidCommand extends Command {
         String payerName = activity.getPayer().getName();
         Person friend = activity.getFriend(friendName);
 
+        validatePrefixOrder();
+
         if (payerName.equalsIgnoreCase(friendName)) {
             return true;
         }
@@ -181,5 +183,31 @@ public class UnpaidCommand extends Command {
      */
     public ArrayList<Activity> getPersonActivities(String name, ArrayList<Activity> allActivities) {
         return getActivities(name, allActivities);
+    }
+
+    /**
+     * Validates the format of flags in the command string to ensure they conform to the expected pattern.
+     *
+     * <p>This method checks for invalid flags in the command string where:
+     * <ul>
+     *   <li>A valid flag must consist of a single alphabetic character followed by a '/' (e.g., "a/", "b/").</li>
+     *   <li>The content after the '/' must not contain additional '/' characters or spaces.</li>
+     *   <li>Flags with two or more characters before the '/' are considered invalid (e.g., "ab/", "nn/").</li>
+     * </ul>
+     *
+     * <p>If an invalid flag is detected, the method throws a {@link PayPalsException} with an appropriate error message.
+     *
+     * @throws PayPalsException if the command string contains invalid flags that do not conform to the expected format.
+     *                          The exception includes the error message defined by {@link ExceptionMessage#INVALID_FORMAT}
+     *                          and the specific format error code {@code WRONG_DELETE_FORMAT}.
+     */
+    public void validatePrefixOrder() throws PayPalsException {
+        // Check for incorrect flags, with 2 or more characters before the '/' character
+        String regex = "(?<=\\S[a-zA-Z]\\/)([^\\/]+?)(?=\\s+[a-zA-Z]+\\/|$)";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_UNPAID_FORMAT);
+        }
     }
 }

@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Represents the addequal command in the PayPals application.
@@ -168,6 +170,14 @@ public class AddEqualCommand extends AddCommand {
         int aIndex = command.indexOf("a/");
         if (aIndex == -1) {
             aIndex = command.indexOf("A/");
+        }
+
+        // Check for incorrect flags, with 2 or more characters before the '/' character
+        String regex = "(?<=\\S[a-zA-Z]\\/)([^\\/]+?)(?=\\s+[a-zA-Z]+\\/|$)";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_ADDEQUAL_FORMAT);
         }
 
         if (dIndex == -1){

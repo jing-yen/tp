@@ -6,6 +6,9 @@ import paypals.exception.PayPalsException;
 import paypals.util.Logging;
 import paypals.util.UI;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 /**
  * Command that handles the deletion of an activity from the activity manager.
@@ -13,6 +16,7 @@ import paypals.util.UI;
  * which activity to delete.
  */
 public class DeleteCommand extends Command {
+    private static final String WRONG_DELETE_FORMAT = "delete i/IDENTIFIER";
 
     /**
      * Constructs a new DeleteCommand with the specified command string.
@@ -35,6 +39,8 @@ public class DeleteCommand extends Command {
     @Override
     public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
         assert activityManager != null : "ActivityManager should not be null";
+
+        validatePrefixOrder();
 
         Logging.logInfo("Executing DeleteCommand with command: " + command);
         String identifier = getIdentifier();
@@ -107,5 +113,31 @@ public class DeleteCommand extends Command {
             throw new PayPalsException(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER, Integer.toString(id+1));
         }
         return id;
+    }
+
+    /**
+     * Validates the format of flags in the command string to ensure they conform to the expected pattern.
+     *
+     * <p>This method checks for invalid flags in the command string where:
+     * <ul>
+     *   <li>A valid flag must consist of a single alphabetic character followed by a '/' (e.g., "a/", "b/").</li>
+     *   <li>The content after the '/' must not contain additional '/' characters or spaces.</li>
+     *   <li>Flags with two or more characters before the '/' are considered invalid (e.g., "ab/", "nn/").</li>
+     * </ul>
+     *
+     * <p>If an invalid flag is detected, the method throws a {@link PayPalsException} with an appropriate error message.
+     *
+     * @throws PayPalsException if the command string contains invalid flags that do not conform to the expected format.
+     *                          The exception includes the error message defined by {@link ExceptionMessage#INVALID_FORMAT}
+     *                          and the specific format error code {@code WRONG_DELETE_FORMAT}.
+     */
+    public void validatePrefixOrder() throws PayPalsException {
+        // Check for incorrect flags, with 2 or more characters before the '/' character
+        String regex = "(?<=\\S[a-zA-Z]\\/)([^\\/]+?)(?=\\s+[a-zA-Z]+\\/|$)";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            throw new PayPalsException(ExceptionMessage.INVALID_FORMAT, WRONG_DELETE_FORMAT);
+        }
     }
 }
