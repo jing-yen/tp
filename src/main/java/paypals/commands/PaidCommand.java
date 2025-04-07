@@ -117,7 +117,7 @@ public class PaidCommand extends Command {
         ArrayList<Activity> unpaid = getUnpaidArray(activities, friendName);
 
         if (index < 0 || index >= unpaid.size()) {
-            throw new PayPalsException(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER, Integer.toString(index + 1));
+            throw new PayPalsException(ExceptionMessage.OUTOFBOUNDS_UNSETTLED_IDENTIFIER, Integer.toString(index + 1));
         }
         return unpaid.get(index);
     }

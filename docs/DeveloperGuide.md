@@ -3,24 +3,22 @@
 - [Developer Guide](#developer-guide)
 - [Table of Contents](#table-of-contents)
 - [Acknowledgements](#acknowledgements)
-- [Design \& Implementation](#design--implementation)
-  - [Architecture](#architecture)
+- [Design & Implementation](#design--implementation)
   - [UI Component](#ui-component)
   - [Parser Component](#parser-component)
   - [Command Component](#command-component)
   - [Activity Component](#activity-component)
   - [Storage Component](#storage-component)
-  - [Common Classes](#common-classes)
 - [Documentation, logging, testing, configuration, dev-ops]()
 - [Appendix: Requirements](#appendix-requirements)
   - [Product scope](#product-scope)
     - [Target user profile](#target-user-profile)
-    - [Value proposition](#value-propposition)
+    - [Value proposition](#value-proposition)
   - [User Stories](#user-stories)
   - [Use cases](#use-cases)
   - [Non-functional Requirements](#non-functional-requirements)
   - [Glossary](#glossary)
-- [Appendix: Instructions for Testing](#appendix-instructions-for-testing)
+- [Instructions for Testing](#instructions-for-testing)
   - [Manual Testing]()
   - [JUnit Testing]()
 
@@ -277,7 +275,7 @@ The product aims to provide assistance in simplifying payments by minimising the
 1. User selects the trip group
 2. User requests to list expenses
 3. Paypals shows a list of expenses
-4. User request to mark a specific expenese as paid in the list
+4. User request to mark a specific expenses as paid in the list
 5. Paypals marks the expense as paid
 
 &ensp; &ensp; Use case ends
