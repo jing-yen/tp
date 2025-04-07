@@ -18,7 +18,8 @@ import paypals.util.UI;
 public class EditCommand extends Command {
 
     /** Regex pattern for extracting parameters with prefixes like i/, d/, n/, f/, a/, o/. */
-    private static final Pattern COMMAND_PATTERN = Pattern.compile("([idnfao])/\\s*([^/]+?)(?=\\s+[idnfao]/|$)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern COMMAND_PATTERN = Pattern.compile(
+            "([idnfao])/\\s*([^/]+?)(?=\\s+[idnfao]/|$)", Pattern.CASE_INSENSITIVE);
 
     /** Maximum amount limit allowed per person. */
     private static final double LARGE_AMOUNT_LIMIT = 10000.0;

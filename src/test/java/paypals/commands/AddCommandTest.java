@@ -366,24 +366,7 @@ public class AddCommandTest extends PayPalsTest {
         assertNotNull(friend);
         assertEquals(40, friend.getAmount(), 0.001);
     }
-/*
-    // Test that friend names differing only by case are treated as distinct (if allowed).
-    @Test
-    public void execute_duplicateFriendDifferentCase_validCommandExecutes() throws PayPalsException {
-        String command = "d/Outing n/Alice f/Bob a/30 f/bob a/20";
-        AddCommand cmd = new AddCommand(command);
-        cmd.execute(activityManager, false);
-        Activity activity = activityManager.getActivity(0);
-        // Both "Bob" and "bob" should be present as separate entries.
-        Person friend1 = activity.getFriend("Bob");
-        Person friend2 = activity.getFriend("bob");
-        assertNotNull(friend1);
-        assertNotNull(friend2);
-        assertEquals(30, friend1.getAmount(), 0.001);
-        assertEquals(20, friend2.getAmount(), 0.001);
-        assertEquals(2, activity.getAllFriends().size());
-    }
-*/
+
     // Test the isValidAmount method returns false for an empty string.
     @Test
     public void isValidAmount_emptyString_returnsFalse() {
