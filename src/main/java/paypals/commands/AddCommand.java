@@ -41,8 +41,8 @@ public class AddCommand extends Command {
      * @throws PayPalsException If the key is not found in the input.
      */
     String extractValue(String key, ExceptionMessage exceptionMessage) throws PayPalsException {
-        String regex = key + "\\s*([^/]+?)(?=\\s+[a-zA-Z]/|$)";
-        Pattern pattern = Pattern.compile(regex);
+        String regex = "(?i)"+ key + "\\s*([^/]+?)(?=\\s+[a-zA-Z]/|$)";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(command);
 
         if (matcher.find()) {
@@ -113,10 +113,10 @@ public class AddCommand extends Command {
         assert !name.isEmpty() : "Payer name should not be null or empty";
 
         // Step 2: Capture all (f/... a/...) pairs
-        String[] pairs = command.split("\\s+f/");
+        String[] pairs = command.split("\\s+(?i)f/");
         double totalOwed = 0.0;
         for (int i = 1; i < pairs.length; i++) {
-            String[] parameters = pairs[i].split("\\s+a/");
+            String[] parameters = pairs[i].split("\\s+(?i)a/");
             if (parameters.length == 2) {
                 String oweName = parameters[0].trim();
                 if (oweName.matches(".*\\d.*")) {
@@ -186,9 +186,21 @@ public class AddCommand extends Command {
     }
 
     public void validatePrefixOrder() throws PayPalsException {
+        // Get positions of d/ flag
         int dIndex = command.indexOf("d/");
+        if (dIndex == -1) {
+            dIndex = command.indexOf("D/");
+        }
+        // Get positions of n/ flag
         int nIndex = command.indexOf("n/");
+        if (nIndex == -1) {
+            nIndex = command.indexOf("N/");
+        }
+        // Get positions of f/ flag
         int fIndex = command.indexOf("f/");
+        if (fIndex == -1) {
+            fIndex = command.indexOf("F/");
+        }
 
         if (dIndex == -1){
             throw new PayPalsException(ExceptionMessage.NO_DESCRIPTION);

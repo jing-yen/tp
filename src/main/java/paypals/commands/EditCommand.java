@@ -18,7 +18,7 @@ import paypals.util.UI;
 public class EditCommand extends Command {
 
     /** Regex pattern for extracting parameters with prefixes like i/, d/, n/, f/, a/, o/. */
-    private static final Pattern COMMAND_PATTERN = Pattern.compile("([idnfao])/\\s*([^/]+?)(?=\\s+[idnfao]/|$)");
+    private static final Pattern COMMAND_PATTERN = Pattern.compile("([idnfao])/\\s*([^/]+?)(?=\\s+[idnfao]/|$)", Pattern.CASE_INSENSITIVE);
 
     /** Maximum amount limit allowed per person. */
     private static final double LARGE_AMOUNT_LIMIT = 10000.0;
@@ -71,7 +71,7 @@ public class EditCommand extends Command {
         Matcher matcher = COMMAND_PATTERN.matcher(command);
 
         while (matcher.find()) {
-            parameters.put(matcher.group(1), matcher.group(2).trim());
+            parameters.put(matcher.group(1).toLowerCase(), matcher.group(2).trim());
         }
         return parameters;
     }
@@ -168,7 +168,9 @@ public class EditCommand extends Command {
             if (activityManager.getActivity(activityId).getFriend(oldName) == null) {
                 throw new PayPalsException(ExceptionMessage.FRIEND_DOES_NOT_EXIST);
             }
-            activityManager.editActivityOwedName(activityId, oldName, friend);
+
+            // Reassign oldName to correct case name too
+            oldName = activityManager.editActivityOwedName(activityId, oldName, friend);
             ui.print(oldName + "'s name has been changed to " + friend);
 
         } else if (parameters.get("a") != null && parameters.get("o") != null) {

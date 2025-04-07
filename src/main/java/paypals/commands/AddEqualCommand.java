@@ -64,10 +64,10 @@ public class AddEqualCommand extends AddCommand {
         double totalAmount = getTotalAmount();
         assert totalAmount >= 0 : "Total amount should not be less than 0";
 
-        String friendsPart = command.split("a/")[0];
-        String[] friends = friendsPart.split("\\s+f/");
+        String friendsPart = command.split("(?i)a/")[0];
+        String[] friends = friendsPart.split("\\s+(?i)f/");
         if (friends.length <= 1) {
-            throw new PayPalsException(ExceptionMessage.NO_FRIENDS, null);
+            throw new PayPalsException(ExceptionMessage.NO_FRIENDS);
         }
         friends = Arrays.copyOfRange(friends, 1, friends.length);  // remove command part
 
@@ -110,7 +110,7 @@ public class AddEqualCommand extends AddCommand {
      * @throws PayPalsException if the amount is not a number, negative, or improperly formatted
      */
     private double getTotalAmount() throws PayPalsException {
-        int count = command.split("a/").length - 1; // Count occurrences of "a/"
+        int count = command.split("(?i)a/").length - 1; // Count occurrences of "a/"
         if (count > 1) {
             Logging.logWarning("Multiple 'a/' prefixes found in command");
             throw new PayPalsException(ExceptionMessage.MULTIPLE_AMOUNTS_FOR_ADDEQUAL);

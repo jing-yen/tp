@@ -45,7 +45,7 @@ public class UnpaidCommand extends Command {
         Matcher matcher = parseCommand();
 
         try {
-            String friendName = matcher.group(1).trim();
+            String friendName = matcher.group(1).trim().toLowerCase();
             int activityIndex = Integer.parseInt(matcher.group(2)) - 1;
 
             Activity activity = getValidActivity(activityManager, friendName, activityIndex);
@@ -68,7 +68,7 @@ public class UnpaidCommand extends Command {
      * @throws PayPalsException if format is invalid
      */
     public Matcher parseCommand() throws PayPalsException {
-        Pattern pattern = Pattern.compile("^n/([^\\s]+)\\s+i/(\\S+)$");
+        Pattern pattern = Pattern.compile("^n/([^\\s]+)\\s+i/(\\S+)$", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(command);
 
         if (!matcher.matches() || matcher.groupCount() != 2) {

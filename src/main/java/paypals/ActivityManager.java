@@ -55,8 +55,8 @@ public class ActivityManager {
         activities.get(activityId).editPayer(newPayer);
     }
 
-    public void editActivityOwedName(int activityId, String name, String newName) {
-        activities.get(activityId).editOwedName(name, newName);
+    public String editActivityOwedName(int activityId, String name, String newName) {
+        return activities.get(activityId).editOwedName(name, newName);
     }
 
     public void editActivityOwedAmount(int activityId, String name, double newAmount) {

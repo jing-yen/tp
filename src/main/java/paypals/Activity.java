@@ -119,9 +119,11 @@ public class Activity {
         this.payer.editName(newPayer);
     }
 
-    public void editOwedName(String name, String newName) {
+    public String editOwedName(String name, String newName) {
         String lowercaseName = name.toLowerCase();
         String lowercaseNewName = newName.toLowerCase();
+        // Old name (in correct case) to be returned
+        String oldName = names.get(lowercaseName);
 
         // Remove and add the Person object into owed HashMap after changing name (normal-case)
         Person newPerson = this.owed.remove(name);
@@ -133,6 +135,8 @@ public class Activity {
         // Remove old name and add the new name into names HashMap
         this.names.remove(lowercaseName);
         this.names.put(lowercaseNewName, newName);
+
+        return oldName;
     }
 
     public void editOwedAmount(String name, double newAmount) {

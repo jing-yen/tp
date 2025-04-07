@@ -59,7 +59,7 @@ public class DeleteCommand extends Command {
         String identifier;
         // Step 1: Process the description and name
         String descRegex = "(?<=i/)-?\\d+";
-        Pattern descPattern = Pattern.compile(descRegex);
+        Pattern descPattern = Pattern.compile(descRegex, Pattern.CASE_INSENSITIVE);
         Matcher descMatcher = descPattern.matcher(command);
 
         if (descMatcher.find()) {
