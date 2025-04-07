@@ -16,7 +16,7 @@ public enum ExceptionMessage {
                                     "(to clarify use 'list n/NAME' command): "),
     NO_PAYER("INPUT ERROR: No name of payer"),
     PAYER_OWES("LOGIC ERROR: Payer owes himself or herself: "),
-    DUPLICATE_FRIEND("LOGIC ERROR: Friend is mentioned twice in an activity: "),
+    DUPLICATE_FRIEND("LOGIC ERROR: Friend is mentioned more than once in an activity: "),
     INVALID_FRIEND("INPUT ERROR: Invalid friend entered: "),
     INVALID_AMOUNT("INPUT ERROR: Amount owed is not a number"),
     AMOUNT_OUT_OF_BOUNDS("INPUT ERROR: Amount entered should be more than $0"),

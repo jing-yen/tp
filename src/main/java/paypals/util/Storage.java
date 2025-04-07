@@ -98,6 +98,7 @@ public class Storage {
         if (fileName.contains("/")) {
             throw new PayPalsException(ExceptionMessage.INVALID_FILENAME);
         }
+
         try {
             int testNumber = Integer.parseInt(fileName);
             if (testNumber <= 0 || testNumber > groupNames.size()) {
@@ -108,6 +109,20 @@ public class Storage {
             String testFileName = fileName + ".txt";
             String testFilePath = STORAGE_FOLDER_PATH + "/" + testFileName;
             try {
+                boolean isAllDigit = true;
+                for (int i = 0; i < fileName.length(); i++){
+                    if (i == 0 && fileName.charAt(i) == '-') {
+                        continue;
+                    }
+                    if (!Character.isDigit(fileName.charAt(i))) {
+                        isAllDigit = false;
+                        break;
+                    }
+                }
+
+                if (isAllDigit && !fileName.equals("-")) {
+                    throw new PayPalsException(ExceptionMessage.INVALID_FILENAME);
+                }
                 File testFile = new File(testFilePath);
                 testFile.createNewFile();
             } catch (IOException error) {
@@ -188,6 +203,9 @@ public class Storage {
                 processLine(data, activityManager);
             } catch (PayPalsException e) {
                 throw new PayPalsException(ExceptionMessage.LOAD_ERROR);
+            }
+            if (activityManager.getSize() >= 1000) {
+                throw new PayPalsException(ExceptionMessage.MORE_THAN_1000_ACTIVITIES);
             }
         }
         scanner.close();

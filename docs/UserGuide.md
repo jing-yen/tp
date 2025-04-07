@@ -103,6 +103,7 @@ Below is a quick reference to all the commands in both stages, in the group sele
 - Items in square brackets are optional. e.g `n/NAME [t/TAG]` can be used as `n/John t/friend` or as `n/John`.
 - Items with ... after them can be used multiple times including zero times. e.g. `[t/TAG]`... can be used as (i.e. 0 times), `t/friend, t/friend t/family` etc.
 - Do not execute commands that belong to the Group Selection Menu when inside a group and vice versa. Both stages use different commands.
+- All terminals on mainstream OS support basic ASCII characters, but note that not all OS can support Unicode.
 
 ### Expense Tracking
 
@@ -138,6 +139,24 @@ ____________________________________________________________
 ## Command Format: Group Selection Menu
 ### Selecting a group: `select`
 Shows a list of existing groups. Enter the corresponding group name or number after to enter the group. If not, a new group will be created with the input.
+
+Group Naming Convention:
+1. The group name specified must not be a whole number.
+2. Te group name specified must not include the character `/`.
+
+Example of Group Naming Convention:
+```
+> -100000000000000000000000000000000000
+INPUT ERROR: Filename specified must be a valid filename. Please try again.
+> 1000000000000
+INPUT ERROR: Filename specified must be a valid filename. Please try again.
+> test/
+INPUT ERROR: Filename specified must be a valid filename. Please try again.
+> test
+You are currently in the "test" group.
+There are 0 transactions.
+____________________________________________________________
+```
   
 Example of usage:  
 ```
