@@ -129,8 +129,34 @@ public class AddCommandTest extends PayPalsTest {
     }
 
     @Test
+    public void execute_payerOwesThemselvesMixedCase_exceptionThrown() {
+        String command = "d/Lunch n/Bob f/BOB a/15";
+        AddCommand addCommand = new AddCommand(command);
+
+        try {
+            addCommand.execute(activityManager, false);
+            fail("Expected PayPalsException but none was thrown");
+        } catch (PayPalsException e) {
+            assertException(e, ExceptionMessage.PAYER_OWES);
+        }
+    }
+
+    @Test
     public void execute_duplicateFriendEntry_exceptionThrown() {
         String command = "d/Trip n/Alice f/Bob a/20 f/Bob a/10";
+        AddCommand addCommand = new AddCommand(command);
+
+        try {
+            addCommand.execute(activityManager, false);
+            fail("Expected PayPalsException but none was thrown");
+        } catch (PayPalsException e) {
+            assertException(e, ExceptionMessage.DUPLICATE_FRIEND);
+        }
+    }
+
+    @Test
+    public void execute_duplicateFriendEntryMixedCase_exceptionThrown() {
+        String command = "d/Trip n/Alice f/bob a/20 f/BOB a/10";
         AddCommand addCommand = new AddCommand(command);
 
         try {

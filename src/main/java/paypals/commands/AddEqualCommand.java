@@ -46,6 +46,7 @@ public class AddEqualCommand extends AddCommand {
         assert activityManager != null : "ActivityManager should not be null";
 
         UI ui = new UI(enablePrint);
+        HashMap<String, String> names = new HashMap<>();
         HashMap<String, Double> owed = new HashMap<>();
         if (activityManager.getSize() >= 1000) {
             throw new PayPalsException(ExceptionMessage.MORE_THAN_1000_ACTIVITIES);
@@ -75,9 +76,9 @@ public class AddEqualCommand extends AddCommand {
         bdAmount = bdAmount.setScale(2, RoundingMode.HALF_EVEN);
         double roundedAmount = bdAmount.doubleValue();
 
-
         for (String friend : friends) {
             String friendName = friend.trim();
+
             // Add explicit validation for empty friend names.
             if (friendName.isEmpty()) {
                 throw new PayPalsException(ExceptionMessage.INVALID_FRIEND);
@@ -85,8 +86,10 @@ public class AddEqualCommand extends AddCommand {
             if (friendName.matches(".*\\d.*")) {
                 throw new PayPalsException(ExceptionMessage.NUMBERS_IN_NAME);
             }
-            validateFriend(name, friendName, owed);
-            owed.put(friendName,roundedAmount);
+
+            validateFriend(name, friendName, names);
+            names.put(friendName.toLowerCase(), friendName);
+            owed.put(friendName, roundedAmount);
             Logging.logInfo("Friend added successfully");
         }
 
@@ -98,7 +101,6 @@ public class AddEqualCommand extends AddCommand {
         activityManager.addActivity(newActivity);
 
         Logging.logInfo("Activity added successfully");
-
     }
 
     /**
