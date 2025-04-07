@@ -17,7 +17,9 @@ activate PP
 PP -> UI : readLine()
 activate UI
 User -> UI : "delete i/1"
+UI --> User
 UI --> PP : fullCommand
+deactivate UI
 
 PP -> PA : decodeCommand(...)
 activate PA
@@ -48,7 +50,9 @@ AM --> DC
 deactivate AM
 
 DC -> UI : print("Expense removed successfully!")
+activate UI
 UI --> DC
+deactivate UI
 PP <-- DC
 deactivate DC
 
@@ -56,6 +60,7 @@ PP -> SR : save(...)
 activate SR
 SR --> PP
 deactivate SR
-UI --> User
-deactivate UI
+
+destroy DC
+
 @enduml

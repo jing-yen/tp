@@ -40,10 +40,10 @@ The UML class diagram below provides an overview of the classes and their intera
 ![Main Class Diagram](diagrams/main.png)
 
 
-Given below is a quick overview of the main components and how they interact with each other.  
+Given below is a quick high level overview of the main components and how they interact with each other.  
   
 **Main components of the architecture**  
-` Paypals` is in charge of the app launch and shut down.  
+` PayPals` is in charge of the app launch and shut down.  
 - At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
 - At shut down, it shuts down all components.
 
@@ -56,7 +56,7 @@ The bulk of the app's work is done by the following five components:
 * `Storage`: Reads data from, and writes data to, the hard disk.
 
 **How the architecture components interact with each other**  
-The _Sequence Diagrams_ below illustrates how these components interact across three key scenarios:
+The _Sequence Diagrams_ below illustrates how these components interact across four key scenarios:
 
 1. When the user issues an `add` command — showing parsing, command execution, activity creation, and data persistence.
 2. When the user issues a `list` command — showing command execution and retrieval of activity data.
