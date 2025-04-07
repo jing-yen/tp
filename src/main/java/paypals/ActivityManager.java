@@ -55,8 +55,8 @@ public class ActivityManager {
         activities.get(activityId).editPayer(newPayer);
     }
 
-    public void editActivityOwedName(int activityId, String name, String newName) {
-        activities.get(activityId).editOwedName(name, newName);
+    public String editActivityOwedName(int activityId, String name, String newName) {
+        return activities.get(activityId).editOwedName(name, newName);
     }
 
     public void editActivityOwedAmount(int activityId, String name, double newAmount) {
@@ -64,24 +64,31 @@ public class ActivityManager {
     }
 
     public static ArrayList<Activity> getActivities(String name, ArrayList<Activity> allActivities) {
+        String lowercaseName = name.toLowerCase();
         ArrayList<Activity> personActivities = new ArrayList<>();
+
         for (Activity activity : allActivities) {
-            if (activity.getPayer().getName().equals(name)) {
+            String lowercasePayer = activity.getPayer().getName().toLowerCase();
+
+            if (lowercasePayer.equals(lowercaseName)) {
                 personActivities.add(activity);
             } else {
+                HashMap<String, String> names = activity.getNames();
                 HashMap<String, Person> owed = activity.getOwed();
-                if (owed.containsKey(name)) {
+
+                if (names.containsKey(lowercaseName)) {
                     personActivities.add(activity);
                 }
             }
         }
+
         return personActivities;
     }
 
     public int getIdentifierFromUnpaidList(Activity activity, String name) {
         ArrayList<Activity> personActivities = getActivities(name, activities);
         int identifier = 1;
-        for (Activity personActivity : activities) {
+        for (Activity personActivity : personActivities) {
             if (!personActivity.isActivityFullyPaid(name, false)) {
                 if (personActivity.equals(activity)) {
                     return identifier;

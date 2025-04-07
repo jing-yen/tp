@@ -13,7 +13,7 @@ public class UI {
     }
 
     public String readLine() {
-        return in.nextLine();
+        return in.nextLine().trim();
     }
 
     public void print(String message) {

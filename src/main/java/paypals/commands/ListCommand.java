@@ -21,8 +21,8 @@ import static paypals.ActivityManager.getActivities;
 public class ListCommand extends Command {
 
     private static final String WRONG_LIST_FORMAT = "list n/NAME";
-    private static final Pattern NAME_PATTERN = Pattern.compile("^n/([^/]+)$");
-    private static final Pattern BALANCE_PATTERN = Pattern.compile("^balance n/([^/]+)$");
+    private static final Pattern NAME_PATTERN = Pattern.compile("^n/([^/]+)$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern BALANCE_PATTERN = Pattern.compile("^balance n/([^/]+)$", Pattern.CASE_INSENSITIVE);
     private static final String INDENT = "    ";
 
     private final UI ui;
@@ -48,7 +48,7 @@ public class ListCommand extends Command {
     public void execute(ActivityManager activityManager, boolean enablePrint) throws PayPalsException {
         if (command.isEmpty()) {
             printAllActivities(activityManager);
-        } else if (command.startsWith("balance")) {
+        } else if (command.toLowerCase().startsWith("balance")) {
             printBalance(activityManager);
         } else {
             printPersonActivities(activityManager);

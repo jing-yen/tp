@@ -28,6 +28,15 @@ class PaidCommandTest extends PayPalsTest {
     }
 
     @Test
+    public void execute_payerIsNotFriendWithUppercaseParameters_marksOnlyOnePerson() {
+        callCommand(new PaidCommand("N/Jane I/1"));
+        Person jane = activityManager.getActivity(0).getFriend("Jane");
+        Person john = activityManager.getActivity(0).getFriend("John");
+        assertTrue(jane.hasPaid(), "Jane should be marked as paid");
+        assertFalse(john.hasPaid(), "John should not be marked as paid");
+    }
+
+    @Test
     public void someFriendsAlreadyPaid_payerMarksAll_remainingMarkedAsPaid() {
         activityManager.getActivity(0).getFriend("Jane").markAsPaid(); // Jane already paid
         callCommand(new PaidCommand("n/Alice i/1")); // payer pays for everyone else

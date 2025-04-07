@@ -39,13 +39,19 @@ public class SplitCommand extends Command {
             throw new PayPalsException(ExceptionMessage.INVALID_COMMAND);
         }
         UI ui = new UI(enablePrint);
-        HashMap<String, Double> netOwedMap = getNetOwedMap(activityManager);
+
+        // Maps lowercase strings to their correctcase equivalents (take the most recent name if there is conflict)
+        HashMap<String, String> names = new HashMap<>();
+        HashMap<String, Double> netOwedMap = getNetOwedMap(activityManager, names);
+
         ArrayList<Person> persons = new ArrayList<>();
         for (Map.Entry<String, Double> entry : netOwedMap.entrySet()) {
             if (entry.getValue() == 0.0) {
                 continue;
             }
-            persons.add(new Person(entry.getKey(), entry.getValue(), false));
+            // Retrieve the correctcase name from names using lowercase name
+            String name = names.get(entry.getKey());
+            persons.add(new Person(name, entry.getValue(), false));
         }
 
         ArrayList<String> transactions = new ArrayList<>();
@@ -125,15 +131,16 @@ public class SplitCommand extends Command {
     /**
      * Computes the net owed amount for each person by aggregating all unpaid balances.
      *
-     * @param activityManager the manager containing all activities
-     * @return a map of each person's name to their net owed amount
+     * @param activityManager   the manager containing all activities
+     * @param names             a map containing payer and friend names with their lowercase equivalents
+     * @return                  a map of each person's name to their net owed amount
      */
-    public HashMap<String, Double> getNetOwedMap(ActivityManager activityManager) {
+    public HashMap<String, Double> getNetOwedMap(ActivityManager activityManager, HashMap<String, String> names) {
         HashMap<String, Double> netOwedMap = new HashMap<>();
         int activitiesSize = activityManager.getSize();
         for (int i = 0; i < activitiesSize; i++) {
             Activity activity = activityManager.getActivity(i);
-            addAmountToNetOwedMap(activity, netOwedMap);
+            addAmountToNetOwedMap(activity, netOwedMap, names);
         }
         return netOwedMap;
     }
@@ -142,19 +149,30 @@ public class SplitCommand extends Command {
      * Updates the net owed map based on a single activity's unpaid debts.
      *
      * @param activity     the activity to process
+     * @param names             a map containing payer and friend names with their lowercase equivalents
      * @param netOwedMap   the map storing cumulative net owed balances
      */
-    public void addAmountToNetOwedMap(Activity activity, HashMap<String, Double> netOwedMap) {
+    public void addAmountToNetOwedMap(Activity activity, HashMap<String, Double> netOwedMap,
+                                      HashMap<String, String> names) {
         String payerName = activity.getPayer().getName();
+        String lowercasePayerName = payerName.toLowerCase();
         Collection<Person> allFriends = activity.getAllFriends();
+
+        names.put(lowercasePayerName, payerName);
+
         for (Person friend : allFriends) {
             if (friend.hasPaid()) {
                 continue;
             }
+
             String friendName = friend.getName();
+            String lowercaseFriendName = friendName.toLowerCase();
             double amountOwed = friend.getAmount();
-            netOwedMap.put(friendName, netOwedMap.getOrDefault(friendName, 0.0) - amountOwed);
-            netOwedMap.put(payerName, netOwedMap.getOrDefault(payerName, 0.0) + amountOwed);
+
+            names.put(lowercaseFriendName, friendName);
+
+            netOwedMap.put(lowercaseFriendName, netOwedMap.getOrDefault(lowercaseFriendName, 0.0) - amountOwed);
+            netOwedMap.put(lowercasePayerName, netOwedMap.getOrDefault(lowercasePayerName, 0.0) + amountOwed);
         }
     }
 }
