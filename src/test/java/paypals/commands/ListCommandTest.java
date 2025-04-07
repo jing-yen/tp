@@ -5,6 +5,7 @@ import paypals.Activity;
 import paypals.ActivityManager;
 import paypals.PayPalsTest;
 import paypals.Person;
+import paypals.exception.ExceptionMessage;
 import paypals.exception.PayPalsException;
 
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ListCommandTest extends PayPalsTest {
 
@@ -54,8 +56,12 @@ public class ListCommandTest extends PayPalsTest {
         ActivityManager manager = new ActivityManager();
         manager.addActivity(createTestActivity());
         ListCommand command = new ListCommand("n/NotAName");
-        PayPalsException e = assertThrows(PayPalsException.class, () -> command.execute(manager, true));
-        assertEquals("INPUT ERROR: No name of payer", e.getMessage());
+        try {
+            command.execute(manager, false);
+            fail();
+        } catch (PayPalsException e) {
+            assertEquals(ExceptionMessage.PAYER_NAME_DOES_NOT_EXIST.getMessage(), e.getMessage());
+        }
     }
 
     @Test

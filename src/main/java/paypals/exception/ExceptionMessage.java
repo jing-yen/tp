@@ -50,7 +50,8 @@ public enum ExceptionMessage {
     LARGE_NUMBER_OF_ACTIVITIES("You have somehow entered a large number of activities (probably through modifying " +
             "save files), please ensure that there are less than 1000 activities for any given group" +
             "\n Exiting the program now..."),
-    MULTIPLE_AMOUNTS_FOR_ADDEQUAL("INPUT ERROR: Only one amount can be provided.");
+    MULTIPLE_AMOUNTS_FOR_ADDEQUAL("INPUT ERROR: Only one amount can be provided."),
+    PAYER_NAME_DOES_NOT_EXIST("INPUT ERROR: Payer name entered does not exist.");
     private final String message;
 
     ExceptionMessage(String message) {
