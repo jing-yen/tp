@@ -88,11 +88,11 @@ public class EditCommand extends Command {
         try {
             int activityId = Integer.parseInt(id) - 1;
             if (activityId > size || activityId < 0) {
-                throw new PayPalsException(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER);
+                throw new PayPalsException(ExceptionMessage.OUTOFBOUNDS_IDENTIFIER, id);
             }
             return activityId;
         } catch (NumberFormatException e) {
-            throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER);
+            throw new PayPalsException(ExceptionMessage.INVALID_IDENTIFIER, id);
         }
     }
 

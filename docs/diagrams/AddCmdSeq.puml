@@ -14,7 +14,9 @@ activate pp
 pp -> ui : readLine()
 activate ui
 user -> ui : "add d/... n/... f/... a/..."
+ui --> user
 ui --> pp : fullCommand
+deactivate ui
 pp -> parser : decodeCommand(...)
 activate parser
 parser -> addCmd ** : AddCommand(...)
@@ -37,7 +39,9 @@ mgr --> addCmd :
 deactivate mgr
 
 addCmd -> ui : print confirmation
+activate ui
 ui --> addCmd :
+deactivate ui
 addCmd --> pp
 deactivate addCmd
 
@@ -45,7 +49,7 @@ pp -> storage : save(...)
 activate storage
 storage --> pp :
 deactivate storage
-ui --> user :
-deactivate ui
+
+destroy addCmd
 
 @enduml
