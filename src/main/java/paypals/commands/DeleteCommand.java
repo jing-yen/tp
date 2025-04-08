@@ -71,19 +71,6 @@ public class DeleteCommand extends Command {
             throw new PayPalsException(ExceptionMessage.INVALID_DELETE_FORMAT);
         }
         return command.split("(?i)i/")[1];
-        /*String identifier;
-        // Step 1: Process the description and name
-        String descRegex = "(?<=i/)\\S+";
-        Pattern descPattern = Pattern.compile(descRegex, Pattern.CASE_INSENSITIVE);
-        Matcher descMatcher = descPattern.matcher(command);
-        if (descMatcher.find()) {
-            identifier = descMatcher.group(0);
-            Logging.logInfo("Identifier found: " + identifier);
-        } else {
-            Logging.logWarning("No identifier found in command: " + command);
-            throw new PayPalsException(ExceptionMessage.NO_IDENTIFIER);
-        }
-        return identifier;*/
     }
 
     /**
