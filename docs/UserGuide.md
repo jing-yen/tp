@@ -34,7 +34,6 @@
   - [Common Errors](#common-errors)
     - [Failure to adhere to command format](#failure-to-adhere-to-command-format)
     - [Invalid Requests](#invalid-requests)
-  - [Known Issues](#known-issues)
 
 ## Introduction
 
@@ -85,9 +84,10 @@ Below is a quick reference to all the commands in both stages, in the group sele
 | List all expenses by a person                   | `list n/NAME`                                                         |
 | View the net balance of a person                | `list balance n/NAME`                                                 |
 | Split bills                                     | `split`                                                               |
-| Mark an activity as paid for a person           | `paid n/NAME i/IDENTIFIER`                                            |
-| Mark an activity as unpaid for a person         | `unpaid n/NAME i/IDENTIFIER`                                          |
-| Mark an activity as paid for everyone           | `paid n/PAYER i/IDENTIFIER`                                           |
+| Mark an activity as paid for a friend           | `paid n/FRIENDNAME i/IDENTIFIER`                                      |
+| Mark an activity as unpaid for a friend         | `unpaid n/FRIENDNAME i/IDENTIFIER`                                    |
+| Mark an activity as paid for everyone           | `paid n/PAYERNAME i/IDENTIFIER`                                       |
+| Mark an activity as unpaid for everyone         | `unpaid n/PAYERNAME i/IDENTIFIER`                                     |
 | Edit the description of an activity             | `edit i/IDENTIFIER d/DESCRIPTION`                                     |
 | Edit the payer name of an activity              | `edit i/IDENTIFIER n/NEWNAME`                                         |
 | Edit the name of a friend that owes money       | `edit i/IDENTIFIER f/NEWNAME o/OLDNAME`                               |
@@ -98,10 +98,10 @@ Below is a quick reference to all the commands in both stages, in the group sele
 # Features
 
 ## Notes on the general command format:
-- Words in UPPER_CASE are the parameters to be supplied by the user. e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John`.=
-  - Parameter are case-insensitive and cannot contain the symbol `/`, e.g. `NAME` cannot be `"John/Joseph"`.
-- Items in square brackets are optional. e.g `n/NAME [t/TAG]` can be used as `n/John t/friend` or as `n/John`.
-- Items with ... after them can be used multiple times including zero times. e.g. `[t/TAG]`... can be used as (i.e. 0 times), `t/friend, t/friend t/family` etc.
+- Words in UPPER_CASE are the parameters to be supplied by the user. e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John`.
+- Commands are case-insensitive.
+- Parameters cannot contain the symbol `/`, e.g. `NAME` cannot be `"John/Joseph"`.
+- Items with ... after them can be used multiple times including zero times. e.g. `[t/TAG]`... can be used as (i.e. 0 times), `t/friend t/friend t/family` etc.
 - Do not execute commands that belong to the Group Selection Menu when inside a group and vice versa. Both stages use different commands.
 - All terminals on mainstream OS support basic ASCII characters, but note that not all OS can support Unicode.
 
@@ -142,7 +142,7 @@ Shows a list of existing groups. Enter the corresponding group name or number af
 
 Group Naming Convention:
 1. The group name specified must not be a whole number.
-2. Te group name specified must not include the character `/`.
+2. The group name specified must not include the character `/`.
 
 Example of Group Naming Convention:
 ```
@@ -291,9 +291,6 @@ ____________________________________________________________
 
 ### Add an expense with equal portions of spending  
 Adds an expense with amount split equally among everyone.
-> Note:  
-> * Names of payer  and friends are case-sensitive.  
-> * Amount that each person owe will be rounded to 2 decimal place. 
 
 Format: `addequal d/DESCRIPTION n/NAME f/FRIEND1 f/FRIEND2 ... a/AMOUNT`
 
@@ -343,7 +340,7 @@ ____________________________________________________________
 ### List all past expenses: `list`
 Displays all past expenses for everyone or a single person.
 
-Format: `list [n/NAME]`
+Format: `list` or `list n/NAME`
 
 * If no name is provided, all past expenses for everyone are displayed.
 
@@ -435,8 +432,8 @@ Format: `paid n/NAME i/IDENTIFIER`
 * Note: If the paid command is used on an activity where the specified `NAME` is the payer for the activity,
   it will mark all participants in the activity as paid.
 
-* Note: The `IDENTIFIER` shown in the `LIST` command will change after using the `PAID` command. If you 
-  intend to use the `PAID` command again, please run the `LIST` command first to get the updated `IDENTIFIER`.
+* Note: The `IDENTIFIER` shown in the `list n/NAME` command will change after using the `PAID` command. If you 
+  intend to use the `PAID` command again, please run the `list n/NAME` command first to get the updated `IDENTIFIER`.
 
 Example of usage: 
 
@@ -446,11 +443,9 @@ ____________________________________________________________
 Settled activities for John:
 
 Unsettled activities for John:
-1.  Desc: lunch
+1.  Desc: dinner
     Payer: Jane
     Amount: $28.00 [Unpaid]
-2.  [PAYER] Desc: tickets
-    Owed by: Bob [Unpaid] Betty [Unpaid] Jane [Unpaid]
 
 ____________________________________________________________
 > paid n/John i/1
@@ -460,15 +455,14 @@ ____________________________________________________________
 > list n/John
 ____________________________________________________________
 Settled activities for John:
-1.  Desc: lunch
+1.  Desc: dinner
     Payer: Jane
     Amount: $28.00 [Paid]
 
 Unsettled activities for John:
-1.  [PAYER] Desc: tickets
-    Owed by: Bob [Unpaid] Betty [Unpaid] Jane [Unpaid]
 
 ____________________________________________________________
+> 
 ```
 
 ### Unmark as "paid": `unpaid`
@@ -483,36 +477,37 @@ Format: `unpaid n/NAME i/IDENTIFIER`
 * Note: If the unpaid command is used on an activity where the specified `NAME` is the payer for the activity,
   it will mark all participants in the activity as unpaid.
 
-* Note: The `IDENTIFIER` shown in the `LIST` command will change after using the `UNPAID` command. If you
-  intend to use the `UNPAID` command again, please run the `LIST` command first to get the updated `IDENTIFIER`.
+* Note: The `IDENTIFIER` shown in the `list n/NAME` command will change after using the `UNPAID` command. If you
+  intend to use the `UNPAID` command again, please run the `list n/NAME` command first to get the updated `IDENTIFIER`.
 
 Example of usage: 
 
 ```
-> list n/Bobby
+> list n/John
 ____________________________________________________________
-Settled activities for Bobby:
-1.  Desc: tickets
-    Payer: Johnny
-    Amount: $15.00 [Paid]
+Settled activities for John:
+1.  Desc: dinner
+    Payer: Jane
+    Amount: $28.00 [Paid]
 
-Unsettled activities for Bobby:
+Unsettled activities for John:
 
 ____________________________________________________________
-> unpaid n/Bobby i/1
+> unpaid n/John i/1
 ____________________________________________________________
 Marked as unpaid!
 ____________________________________________________________
-> list n/Bobby
+> list n/John
 ____________________________________________________________
-Settled activities for Bobby:
+Settled activities for John:
 
-Unsettled activities for Bobby:
-1.  Desc: tickets
-    Payer: Johnny
-    Amount: $15.00 [Unpaid]
+Unsettled activities for John:
+1.  Desc: dinner
+    Payer: Jane
+    Amount: $28.00 [Unpaid]
 
 ____________________________________________________________
+> 
 ```
 
 ### Edit description of an activity: `edit`
@@ -655,10 +650,6 @@ It is a new group.
 ____________________________________________________________
 > change
 ____________________________________________________________
-
-
-Welcome to PayPals!
-____________________________________________________________
 Would you like to delete or select a group?
 ____________________________________________________________
 >
@@ -677,21 +668,20 @@ Example of usage:
 ____________________________________________________________
 Thank you for using PayPals!
 Hope you have enjoyed your trip and see you again soon!
-____________________________________________________________
 ```
 ## Command Tips
 
 - You can use the `list` command without a name to see all activities.
-- If you're not sure of an activity's ID, use `list` to find it before using `edit`, `paid`, or `delete`.
+- If you're not sure of an activity's ID, use `list` to find it before using `edit` or `delete`, or use `list n/NAME` to find it before using `paid` or `unpaid`.
 - Use `addequal` when everyone owes an equal share – it's quicker and cleaner!
 - `split` only calculates who owes whom — it doesn't change any records.
 - Use `help` when inside a group to see all available commands and their expected formats.
 - Commands are case-insensitive, so `ADD`, `Add`, and `add` all work the same.
 - You can repeat `f/... a/...` pairs in the `add` command to include multiple friends.
 - Use `edit` to fix typos or update activity details instead of deleting and re-adding.
-- To check what someone still owes, use `list n/NAME` — it shows paid and unpaid sections clearly.
-- Use `paid n/PAYER i/IDENTIFIER` to instantly mark all friends in the activity as paid.
-- After using `paid` or `unpaid`, run `list` again to get the updated identifiers for future actions.
+- To check what someone still owes, use `list n/NAME` — it shows `Settled` and `Unsettled` activities clearly.
+- Use `paid n/PAYERNAME i/IDENTIFIER` to instantly mark all friends in the activity as paid.
+- After using `paid` or `unpaid`, run `list n/NAME` again to get the updated identifiers for future actions.
 - If you’re unsure why something failed, scroll down to the [Common Errors](#common-errors) section for examples and explanations.
 
 
@@ -721,7 +711,6 @@ Or
 ```
 > add d/Dinner f/Bob a/10
 ____________________________________________________________
-Format: add d/DESCRIPTION n/PAYER f/FRIEND1 a/AMOUNT_OWED_1 f/FRIEND2 a/AMOUNT_OWED_2...
 INPUT ERROR: No name of payer
 ____________________________________________________________
 ```
@@ -741,7 +730,7 @@ may also trigger error messages. For example:
 > list n/John
 ____________________________________________________________
 Settled activities for John:
-1.  Desc: lunch
+1.  Desc: dinner
     Payer: Jane
     Amount: $28.00 [Paid]
 
@@ -750,7 +739,7 @@ Unsettled activities for John:
 ____________________________________________________________
 > edit i/1 a/10 o/John
 ____________________________________________________________
-ERROR: Unable to edit amount owed if it has been paid
+INPUT ERROR: Unable to edit amount owed if it has been paid
 ____________________________________________________________
 ```
 
@@ -777,5 +766,3 @@ ____________________________________________________________
 This could potentially be caused by
 * Invalid parameters (Monetary value more than 2 decimal places)
 * Illogical parameters (Changing the amount owed after it has been paid, or owing tens of thousands of dollars)
-
-## Known Issues
