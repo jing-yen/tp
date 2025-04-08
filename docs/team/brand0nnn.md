@@ -69,10 +69,9 @@ Given below are my contributions to the project.
 
 * **Project Management**
   * Led discussions on project implementation.
-  * Maintained issues and managed milestones.
   * Conducted triaging of bugs during and after PE-D.
 
 
 * **Community**
-  * Pull Requests reviewed: [#98](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/98), [#108](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/108), [#114](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/114), [#115](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/115), [#139](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/139), [#154](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/154), [#181](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/181), [#182](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/182), [#184](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/184)
+  * Pull Requests reviewed: [#98](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/98), [#108](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/108), [#114](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/114), [#115](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/115), [#139](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/139), [#154](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/154), [#181](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/181), [#182](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/182), [#184](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/184), [#189](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/189), [#194](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/194), [#198](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/198), [#199](https://github.com/AY2425S2-CS2113-T13-2/tp/pull/199)
   * Reported bugs and suggestions for other teams in the class: [#1](https://github.com/brand0nnn/ped/issues/1), [#2](https://github.com/brand0nnn/ped/issues/2), [#3](https://github.com/brand0nnn/ped/issues/3), [#4](https://github.com/brand0nnn/ped/issues/4), [#5](https://github.com/brand0nnn/ped/issues/5), [#6](https://github.com/brand0nnn/ped/issues/6), [#7](https://github.com/brand0nnn/ped/issues/7), [#8](https://github.com/brand0nnn/ped/issues/8), [#9](https://github.com/brand0nnn/ped/issues/9), [#10](https://github.com/brand0nnn/ped/issues/10)

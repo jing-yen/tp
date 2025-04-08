@@ -54,19 +54,17 @@ The bulk of the app's work is done by the following five components:
 * `Storage`: Reads data from, and writes data to, the hard disk.
 
 **How the architecture components interact with each other**  
-The _Sequence Diagrams_ below illustrates how these components interact across four key scenarios:
+The _Sequence Diagrams_ below illustrates how these components interact across three key scenarios:
 
 1. When the user issues an `add` command — showing parsing, command execution, activity creation, and data persistence.
 2. When the user issues a `list` command — showing command execution and retrieval of activity data.
 3. When the user issues a `split` command — showing how debts are calculated and resolved using in-memory data.
-4. When the user issues a `delete` command — showing how expenses are deleted in the database.
 
 This sequence diagrams below captures the flow from the user's input all the way to command execution and interaction with both memory (`Activity`) and disk (`Storage`), giving a comprehensive overview of the core execution paths in the application.
 
 ![Components Interaction Diagram - Add Command](diagrams/AddCmdSeq.png)
 ![Components Interaction Diagram - List Command](diagrams/ListCmdSeq.png)
 ![Components Interaction Diagram - Split Command](diagrams/SplitCmdSeq.png)
-![Components Interaction Diagram - Delete Command](diagrams/DeleteCommand.png)
 
 ### UI Component
 
@@ -203,6 +201,7 @@ The sequence diagram below shows how the data is loaded from the save file into 
 * `save`: Goes through each `Activity` in `ActivityManager` and saves its data in the save file.
 * `load`: Reads the save file line by line with the `Scanner` object and load the data into `ActivityManager`.
 * `checkIfFilenameValid`: Checks the user input whether it is a valid filename before creating the file.
+* `isValidEditCommandOrder`: Checks whether the user input provides the correct order and number of parameters as required by the command format.
 * `loadFromGroupName`: Reads from the save file that was specified as the group name by the user.
 * `processLine`: Processes a single line of the save file to be loaded.
 * `buildInput`: Builds the command input string from the parts obtained in the save file, while also recording each `Person` that `hasPaid` is `true`.
