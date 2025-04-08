@@ -132,7 +132,7 @@ public class ListCommand extends Command {
         double balance = 0.0;
         int activityCount = 0;
         for (Activity activity : activityManager.getActivityList()) {
-            if (activity.getPayer().getName().equals(name)) {
+            if (activity.getPayer().getName().equalsIgnoreCase(name)) {
                 for (Person friend : activity.getAllFriends()) {
                     if (!friend.hasPaid()) {
                         balance += friend.getAmount();
